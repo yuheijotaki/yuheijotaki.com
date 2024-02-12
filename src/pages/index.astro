@@ -10,8 +10,8 @@ const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
 );
 
-const latastPosts = 3;
-const posts = allPosts.slice(0, latastPosts);
+const postsPerPage = 3;
+const posts = allPosts.slice(0, postsPerPage);
 ---
 
 <!doctype html>
@@ -27,7 +27,7 @@ const posts = allPosts.slice(0, latastPosts);
         <p>ここにWebサイトの説明が入ります。</p>
       </section>
       <section>
-        <h2>ブログ記事</h2>
+        <h2>最近のブログ記事</h2>
         <ul>
           {
             posts.map((post) => (

@@ -70,8 +70,8 @@ This theme is based off of the lovely [Bear Blog](https://github.com/HermanMarti
 ## ToDo
 
 - [x] Lint
-- [ ] SCSS
-- [ ] Markup
+- [x] SCSS
+- [x] Markup
 - [ ] Styling
 - [ ] Hosting
 - [ ] Docs
@@ -79,3 +79,4 @@ This theme is based off of the lovely [Bear Blog](https://github.com/HermanMarti
   - [ ] Migrate
 - [ ] README.md
 - [ ] Favicon
+- [ ] Draft

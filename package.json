@@ -1,5 +1,5 @@
 {
-  "name": "yuheijotaki-com",
+  "name": "yuheijotaki.com",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,11 +10,31 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.5.2",
     "@astrojs/mdx": "^2.1.1",
     "@astrojs/rss": "^4.0.5",
     "@astrojs/sitemap": "^3.0.5",
     "astro": "^4.3.5",
-    "@astrojs/check": "^0.5.2",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@markuplint/astro-parser": "^4.0.2",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-astro": "^0.31.4",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.2",
+    "markuplint": "^4.0.3",
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.13.0",
+    "sass": "^1.70.0",
+    "stylelint": "^16.2.1",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-recess-order": "^4.6.0",
+    "stylelint-config-standard-scss": "^13.0.0",
+    "stylelint-prettier": "^5.0.0"
   }
 }

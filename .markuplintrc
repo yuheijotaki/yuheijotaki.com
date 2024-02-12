@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "markuplint:html-standard",
+    "markuplint:a11y",
+    "markuplint:performance",
+    "markuplint:rdfa",
+    "markuplint:security"
+  ],
+  "parser": {
+    ".astro$": "@markuplint/astro-parser"
+  },
+  "rules": {
+    "indentation": false,
+    "no-hard-code-id": false
+  },
+  "nodeRules": [
+    {
+      "tagName": "img",
+      "rules": {
+        "required-attr": [
+          "alt",
+          "width",
+          "height"
+        ]
+      }
+    }
+  ]
+}

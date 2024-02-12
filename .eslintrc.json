@@ -1,0 +1,105 @@
+{
+  "extends": [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "prettier"
+  ],
+  "plugins": ["import"],
+  "rules": {
+    "require-jsdoc": ["off"],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "type",
+          "unknown"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "{astro,astro/**}",
+            "group": "builtin",
+            "position": "after"
+          },
+          {
+            "pattern": "*.scss",
+            "patternOptions": { "matchBase": true },
+            "group": "unknown",
+            "position": "after"
+          }
+        ]
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": 0
+  },
+  "overrides": [
+    {
+      "files": ["*.astro"],
+      "extends": [
+        "plugin:astro/recommended",
+        "plugin:astro/jsx-a11y-recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "eslint:recommended"
+      ],
+      "plugins": ["astro"],
+      "env": {
+        "node": true,
+        "astro/astro": true,
+        "es2021": true
+      },
+      "parser": "astro-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "extraFileExtensions": [".astro"],
+        "sourceType": "module"
+      },
+      "rules": {
+        "astro/no-conflict-set-directives": 2,
+        "astro/no-unused-define-vars-in-style": 2
+      }
+    },
+    {
+      "files": ["**/*.astro/*.js", "*.astro/*.js"],
+      "env": {
+        "browser": true,
+        "es2021": true
+      },
+      "parserOptions": {
+        "sourceType": "module"
+      },
+      "rules": {
+        "prettier/prettier": 0
+      }
+    },
+    {
+      "files": ["*.tsx"],
+      "extends": [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "eslint:recommended"
+      ],
+      "plugins": ["react", "@typescript-eslint"],
+      "env": {
+        "browser": true,
+        "es2021": true
+      },
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "sourceType": "module"
+      },
+      "rules": {
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off"
+      }
+    }
+  ]
+}

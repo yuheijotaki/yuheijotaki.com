@@ -7,7 +7,6 @@ body {
   margin: 0;
 
   @include mq-max(md) {
-    background-color: blue;
   }
 }
 

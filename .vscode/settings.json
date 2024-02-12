@@ -10,5 +10,9 @@
   "files.insertFinalNewline": true,
   "stylelint.validate": ["css", "scss", "astro"],
   "eslint.validate": ["javascript", "javascriptreact", "astro", "typescript", "typescriptreact"],
-  "github.copilot.chat.localeOverride": "en"
+  "github.copilot.chat.localeOverride": "en",
+  "[mdx]": {
+    // "editor.formatOnSave": false,
+    "files.trimTrailingWhitespace": false
+  }
 }

@@ -7,7 +7,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import FormattedDate from '../../components/FormattedDate.astro';
 
 const posts = (await getCollection('blog')).sort(
-  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
 );
 ---
 
@@ -27,7 +27,7 @@ const posts = (await getCollection('blog')).sort(
               <a href={`/blog/${post.slug}/`}>
                 <p class="title">{post.data.title}</p>
                 <p class="date">
-                  <FormattedDate date={post.data.pubDate} />
+                  <FormattedDate date={post.data.publishDate} />
                 </p>
               </a>
             </li>

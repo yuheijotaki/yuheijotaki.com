@@ -1,7 +1,22 @@
 ---
+import TextLink from './TextLink.astro';
 const today = new Date();
 ---
 
 <footer>
-  &copy; {today.getFullYear()} Yuhei Jotaki. All rights reserved.
+  <nav>
+    <ul>
+      <li><TextLink href="/">トップページ</TextLink></li>
+      <li><TextLink href="/blog/">ブログ記事一覧</TextLink></li>
+    </ul>
+  </nav>
+  <aside>
+    <ul>
+      <li><TextLink href="https://github.com/yuheijotaki" target="_blank">GitHub</TextLink></li>
+      <li><TextLink href="https://yuheijotaki.tumblr.com/" target="_blank">Tumblr</TextLink></li>
+    </ul>
+  </aside>
+  <p>
+    &copy; {today.getFullYear()} Yuhei Jotaki. All rights reserved.
+  </p>
 </footer>

@@ -1,17 +1,23 @@
 ---
 import { SITE_TITLE } from '../consts';
-import HeaderLink from './HeaderLink.astro';
+
+type Props = {
+  isHome: boolean;
+};
+
+const { isHome = true } = Astro.props;
 ---
 
-<header>
-  <nav>
-    <h2><a href="/">{SITE_TITLE}</a></h2>
-    <div class="internal-links">
-      <ul>
-        <li><HeaderLink href="/">Home</HeaderLink></li>
-        <li><HeaderLink href="/blog">Blog</HeaderLink></li>
-      </ul>
-    </div>
-  </nav>
+<header class="header">
+  {
+    isHome ? (
+      <h1>
+        <a href="/">{SITE_TITLE}</a>
+      </h1>
+    ) : (
+      <p>
+        <a href="/">{SITE_TITLE}</a>
+      </p>
+    )
+  }
 </header>
-<style></style>

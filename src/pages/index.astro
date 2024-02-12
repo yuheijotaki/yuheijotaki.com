@@ -1,8 +1,17 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+);
+
+const latastPosts = 3;
+const posts = allPosts.slice(0, latastPosts);
 ---
 
 <!doctype html>
@@ -11,17 +20,29 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
-    <Header />
+    <Header isHome={true} />
     <main>
-      <h1>Hello, Astronaut!</h1>
-      <p>
-        Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-        template serves as a lightweight, minimally-styled starting point for anyone looking to build
-        a personal website, blog, or portfolio with Astro.
-      </p>
-      <ul>
-        <li>Edit this page in <code>src/pages/index.astro</code></li>
-      </ul>
+      <section>
+        <h2>このWebサイトについて</h2>
+        <p>ここにWebサイトの説明が入ります。</p>
+      </section>
+      <section>
+        <h2>ブログ記事</h2>
+        <ul>
+          {
+            posts.map((post) => (
+              <li>
+                <a href={`/blog/${post.slug}/`}>
+                  <p class="title">{post.data.title}</p>
+                  <p class="date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </main>
     <Footer />
   </body>

@@ -1,8 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import FormattedDate from '../components/FormattedDate.astro';
 
@@ -14,36 +12,31 @@ const postsPerPage = 3;
 const posts = allPosts.slice(0, postsPerPage);
 ---
 
-<!doctype html>
-<html lang="ja">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header isHome={true} />
-    <main>
-      <section>
-        <h2>このWebサイトについて</h2>
-        <p>ここにWebサイトの説明が入ります。</p>
-      </section>
-      <section>
-        <h2>最近のブログ記事</h2>
-        <ul>
-          {
-            posts.map((post) => (
-              <li>
-                <a href={`/blog/${post.slug}/`}>
-                  <p class="title">{post.data.title}</p>
-                  <p class="date">
-                    <FormattedDate date={post.data.publishDate} />
-                  </p>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-    </main>
-    <Footer />
-  </body>
-</html>
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION} isHome={true}>
+  <section>
+    <h2>このWebサイトについて</h2>
+    <p>ここにWebサイトの説明が入ります。</p>
+  </section>
+  <section>
+    <h2>最近のブログ記事</h2>
+    <ul>
+      {
+        posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.slug}/`}>
+              <p class="title">{post.data.title}</p>
+              <p class="date">
+                <FormattedDate date={post.data.publishDate} />
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

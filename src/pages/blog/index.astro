@@ -1,40 +1,35 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import Layout from '../../layouts/Layout.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import FormattedDate from '../../components/FormattedDate.astro';
+
+const pageTitle = `ブログ記事一覧 | ${SITE_TITLE}`;
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
 );
 ---
 
-<!doctype html>
-<html lang="ja">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header isHome={false} />
-    <main>
-      <h1>ブログ記事一覧</h1>
-      <ul>
-        {
-          posts.map((post) => (
-            <li>
-              <a href={`/blog/${post.slug}/`}>
-                <p class="title">{post.data.title}</p>
-                <p class="date">
-                  <FormattedDate date={post.data.publishDate} />
-                </p>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </main>
-    <Footer />
-  </body>
-</html>
+<Layout title={pageTitle} description={SITE_DESCRIPTION} isHome={false}>
+  <h1>ブログ記事一覧</h1>
+  <ul>
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.slug}/`}>
+            <p class="title">{post.data.title}</p>
+            <p class="date">
+              <FormattedDate date={post.data.publishDate} />
+            </p>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

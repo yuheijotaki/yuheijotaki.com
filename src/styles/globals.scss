@@ -3,10 +3,18 @@
 @use 'foundation';
 
 body {
-  padding: 0;
+  padding: var(--spacing-lg);
   margin: 0;
 
   @include mq-max(md) {
     background-color: blue;
   }
+}
+
+.main {
+  margin-block-start: var(--spacing-lg);
+}
+
+.section {
+  margin-block-start: var(--spacing-md);
 }

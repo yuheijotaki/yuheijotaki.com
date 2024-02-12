@@ -3,7 +3,7 @@ import TextLink from './TextLink.astro';
 const today = new Date();
 ---
 
-<footer>
+<footer class="footer">
   <nav>
     <ul>
       <li><TextLink href="/">トップページ</TextLink></li>
@@ -20,3 +20,12 @@ const today = new Date();
     &copy; {today.getFullYear()} Yuhei Jotaki. All rights reserved.
   </p>
 </footer>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  .footer {
+    margin-block-start: var(--spacing-lg);
+  }
+</style>

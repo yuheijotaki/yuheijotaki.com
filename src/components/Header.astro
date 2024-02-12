@@ -11,11 +11,11 @@ const { isHome = true } = Astro.props;
 <header class="header">
   {
     isHome ? (
-      <h1>
+      <h1 class="brand">
         <a href="/">{SITE_TITLE}</a>
       </h1>
     ) : (
-      <p>
+      <p class="brand">
         <a href="/">{SITE_TITLE}</a>
       </p>
     )
@@ -26,7 +26,9 @@ const { isHome = true } = Astro.props;
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
 
-  .header {
-    background-color: var(--sample);
+  .brand {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1;
   }
 </style>

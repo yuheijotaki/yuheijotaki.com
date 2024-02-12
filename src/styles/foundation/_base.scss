@@ -1,0 +1,9 @@
+@use '../extension' as *;
+@use '../variables' as var;
+
+body {
+  font-family: sans-serif;
+}
+
+:focus-visible {
+}

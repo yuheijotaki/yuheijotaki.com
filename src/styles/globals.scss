@@ -1,0 +1,12 @@
+@use 'variables' as var;
+@use 'extension' as *;
+@use 'foundation';
+
+body {
+  padding: 0;
+  margin: 0;
+
+  @include mq-max(md) {
+    background-color: blue;
+  }
+}

@@ -1,0 +1,64 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use '../variables' as var;
+
+$break-points: (
+  'md': var.$mq-md,
+) !default;
+
+@mixin mq-min($_break-point, $unit: px) {
+  $break-point: meta.inspect($_break-point);
+
+  @if map-has-key($break-points, $_break-point) {
+    $break-point: map.get($break-points, $_break-point) + 1;
+  } @else if type-of($_break-point) != 'number' {
+    @error '#{ $_break-point } is not a number.';
+  }
+
+  @media screen and (min-width: #{$break-point}#{$unit}) {
+    @content;
+  }
+}
+
+@mixin mq-max($_break-point, $unit: px) {
+  $break-point: meta.inspect($_break-point);
+
+  @if map-has-key($break-points, $_break-point) {
+    $break-point: map.get($break-points, $_break-point);
+  } @else if type-of($_break-point) != 'number' {
+    @error '#{ $_break-point } is not a number.';
+  }
+
+  @media screen and (max-width: #{$break-point}#{$unit}) {
+    @content;
+  }
+}
+
+@mixin mq-min-max($_min, $_max) {
+  $min: meta.inspect($_min);
+  $max: meta.inspect($_max);
+
+  @if map-has-key($break-points, $_min) {
+    $min: map.get($break-points, $_min) + 1;
+  } @else if type-of($_min) != 'number' {
+    @error '#{ $_min } is not a number.';
+  }
+
+  @if map-has-key($break-points, $_max) {
+    $max: map.get($break-points, $_max);
+  } @else if type-of($_max) != 'number' {
+    @error '#{ $_max } is not a number.';
+  }
+
+  @media screen and (min-width: #{$min}px) and (max-width: #{$max}px) {
+    @content;
+  }
+}
+
+@mixin hoverAnime {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}

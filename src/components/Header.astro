@@ -21,3 +21,12 @@ const { isHome = true } = Astro.props;
     )
   }
 </header>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  .header {
+    background-color: var(--sample);
+  }
+</style>

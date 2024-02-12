@@ -1,7 +1,11 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "strictNullChecks": true,
+    // "importsNotUsedAsValues": "error",
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "baseUrl": ".",
+    "jsx": "react-jsx",
     "paths": {
       "@/*": ["./src/*"]
     }

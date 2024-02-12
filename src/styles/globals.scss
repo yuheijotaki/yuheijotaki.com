@@ -5,6 +5,8 @@
 body {
   padding: var(--spacing-lg);
   margin: 0;
+  color: var(--color-dark-primary);
+  background-color: var(--color-light-primary);
 
   @include mq-max(md) {
   }

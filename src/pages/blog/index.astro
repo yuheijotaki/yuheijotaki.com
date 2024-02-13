@@ -32,4 +32,13 @@ const posts = (await getCollection('blog')).sort(
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
+
+  ul li {
+    margin-top: 2em;
+  }
+
+  ul li p {
+    margin: 0;
+    line-height: 1.5;
+  }
 </style>

@@ -22,3 +22,4 @@ pnpm-debug.log*
 
 # images
 public/images/hatena/*
+public/images/wp/*

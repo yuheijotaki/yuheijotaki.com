@@ -9,6 +9,5 @@ export default defineConfig({
     open: true,
   },
   site: 'https://yuheijotaki.com',
-  integrations: [mdx()],
-  // integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap()],
 });

@@ -1,0 +1,5 @@
+@use 'sass:math';
+
+@function spacing($value, $base: 0.8) {
+  @return #{$value * $base}rem;
+}

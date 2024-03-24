@@ -3,23 +3,33 @@ import Heading2 from '@/components/Heading2.astro';
 ---
 
 <footer class="footer">
-  <nav>
+  <nav class="section">
     <Heading2 text="サイト内リンク" tag="h2" />
-    <ul>
+    <ul class="block">
       <li><a href="/">トップページ</a></li>
       <li><a href="/blog/">ブログ記事一覧</a></li>
     </ul>
   </nav>
-  <nav>
+  <!--
+  <nav class="section">
     <Heading2 text="外部リンク" tag="h2" />
-    <ul>
+    <ul class="block">
       <li><a href="https://github.com/yuheijotaki" target="_blank">GitHub</a></li>
       <li><a href="https://yuheijotaki.tumblr.com/" target="_blank">Tumblr</a></li>
     </ul>
   </nav>
+  -->
 </footer>
 
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-xxs);
+    padding-inline: 0;
+    list-style: none;
+  }
 </style>

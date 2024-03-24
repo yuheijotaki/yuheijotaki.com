@@ -9,7 +9,7 @@ interface Props {
 const { posts } = Astro.props;
 ---
 
-<ul>
+<ul class="block list">
   {
     posts.map((post) => (
       <li>
@@ -23,4 +23,9 @@ const { posts } = Astro.props;
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
+
+  li {
+    a {
+    }
+  }
 </style>

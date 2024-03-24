@@ -3,19 +3,34 @@ interface Props {
   text: string;
   tag: string;
   url?: string;
+  bold?: boolean;
 }
 
-const { text, tag, url } = Astro.props;
+const { text, tag, url, bold = true } = Astro.props;
 
 const Tag = tag;
 ---
 
 <Tag class:list={['heading2']}>
-  {url && <a href={url}>{text}</a>}
-  {!url && text}
+  {url ? <a href={url}>{bold ? <b>{text}</b> : text}</a> : bold ? <b>{text}</b> : text}
 </Tag>
 
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
+
+  .heading2 {
+    font-size: var(--font-size-lg);
+    font-weight: normal;
+    font-feature-settings: 'palt';
+    line-height: var(--line-height-sm);
+
+    a {
+      color: var(--color-dark);
+    }
+
+    b {
+      display: block;
+    }
+  }
 </style>

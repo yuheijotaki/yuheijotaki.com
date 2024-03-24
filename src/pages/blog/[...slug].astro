@@ -21,9 +21,11 @@ const pageDescription = `${post.data.description}`;
 ---
 
 <Layout title={pageTitle} description={pageDescription} isHome={false}>
-  <Article {...post.data}>
-    <Content />
-  </Article>
+  <main class="main">
+    <Article {...post.data}>
+      <Content />
+    </Article>
+  </main>
 </Layout>
 
 <style lang="scss">

@@ -14,14 +14,20 @@ const posts = allPosts.slice(0, postsPerPage);
 ---
 
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION} isHome={true}>
-  <section class="section">
-    <Heading2 text="このウェブサイトについて" tag="h2" />
-    <p>主にウェブデザインや技術についてのブログサイトです。</p>
-  </section>
-  <section class="section">
-    <Heading2 text="最近のブログ記事" tag="h2" />
-    <Posts posts={posts} />
-  </section>
+  <main class="main">
+    <section class="section">
+      <Heading2 text="このウェブサイトについて" tag="h2" />
+      <div class="block">
+        <p>主にウェブデザインや技術についてのブログサイトです。</p>
+      </div>
+    </section>
+    <section class="section">
+      <Heading2 text="最近のブログ記事" tag="h2" />
+      <div class="block">
+        <Posts posts={posts} />
+      </div>
+    </section>
+  </main>
 </Layout>
 
 <style lang="scss">

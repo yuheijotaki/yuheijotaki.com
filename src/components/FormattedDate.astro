@@ -23,4 +23,10 @@ const formattedDate = `${zoneDate.format('YYYY')}年${zoneDate.format('M')}月${
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
+
+  time {
+    display: block;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
+  }
 </style>

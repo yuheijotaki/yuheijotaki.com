@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 import Layout from '@/layouts/Layout.astro';
-import Heading1 from '@/components/Heading1.astro';
+import Heading2 from '@/components/Heading2.astro';
 import Posts from '@/components/Posts.astro';
 
 const pageTitle = `ブログ記事一覧 | ${SITE_TITLE}`;
@@ -13,11 +13,21 @@ const posts = (await getCollection('blog')).sort(
 ---
 
 <Layout title={pageTitle} description={SITE_DESCRIPTION} isHome={false}>
-  <Heading1 text="ブログ記事一覧" tag="h1" />
-  <Posts posts={posts} />
+  <main class="main">
+    <Heading2 text="ブログ記事一覧" tag="h1" />
+    <div>
+      <Posts posts={posts} />
+    </div>
+  </main>
 </Layout>
 
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-sm);
+  }
 </style>

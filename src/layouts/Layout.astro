@@ -19,9 +19,7 @@ const { title, description, isHome } = Astro.props;
   </head>
   <body>
     <Header isHome={isHome} />
-    <main class="main">
-      <slot />
-    </main>
+    <slot />
     <Footer />
   </body>
 </html>

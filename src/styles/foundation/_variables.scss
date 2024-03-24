@@ -2,9 +2,26 @@
 @use '../variables' as var;
 
 :root {
-  --sample: #eee;
-  --color-dark-primary: #444;
-  --color-light-primary: #eee;
-  --spacing-md: 2rem;
-  --spacing-lg: 4rem;
+  // color
+  --color-dark: #0a0a0a;
+  --color-light: #fafafa;
+  --color-link: #0018ee;
+  --color-link-visited: #6f0878;
+
+  // spacing
+  --container-width: 768px;
+  --spacing-xxs: #{spacing(1)};
+  --spacing-xs: #{spacing(2)};
+  --spacing-sm: #{spacing(10)};
+  --spacing-md: #{spacing(15)};
+  --spacing-lg: #{spacing(20)};
+  --spacing-xl: #{spacing(30)};
+
+  // font
+  --font-size-sm: 1.4rem;
+  --font-size-md: 1.6rem;
+  --font-size-lg: 2rem;
+  --font-size-xl: 2.4rem;
+  --line-height-sm: 1.6;
+  --line-height-md: 2;
 }

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
-import FormattedDate from '@/components/FormattedDate.astro';
+import Posts from '@/components/Posts.astro';
 import Layout from '@/layouts/Layout.astro';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -19,16 +19,7 @@ const posts = allPosts.slice(0, postsPerPage);
   </section>
   <section class="section">
     <h2>最近のブログ記事</h2>
-    <ul>
-      {
-        posts.map((post) => (
-          <li>
-            <FormattedDate date={post.data.publishDate} />
-            <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
-          </li>
-        ))
-      }
-    </ul>
+    <Posts posts={posts} />
   </section>
 </Layout>
 

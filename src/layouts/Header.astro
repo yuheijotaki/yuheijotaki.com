@@ -7,8 +7,7 @@ type Props = {
 
 const { isHome = true } = Astro.props;
 
-let Tag: string;
-Tag = isHome ? 'h1' : 'p';
+const Tag = isHome ? 'h1' : 'p';
 ---
 
 <header class="header">

@@ -8,10 +8,8 @@ const { title, publishDate } = Astro.props;
 ---
 
 <article>
-  <header class="title">
-    <div class="date">
-      <FormattedDate date={publishDate} />
-    </div>
+  <header>
+    <FormattedDate date={publishDate} />
     <h1>{title}</h1>
   </header>
   <slot />

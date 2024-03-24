@@ -19,3 +19,8 @@ const formattedDate = `${zoneDate.format('YYYY')}年${zoneDate.format('M')}月${
 <time datetime={zoneDate.toString()}>
   {formattedDate}
 </time>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

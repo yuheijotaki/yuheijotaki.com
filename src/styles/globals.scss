@@ -3,19 +3,19 @@
 @use 'foundation';
 
 body {
-  padding: var(--spacing-lg);
-  margin: 0;
-  color: var(--color-dark-primary);
-  background-color: var(--color-light-primary);
+  // padding: var(--spacing-lg);
+  // margin: 0;
+  // color: var(--color-dark-primary);
+  // background-color: var(--color-light-primary);
 
   @include mq-max(md) {
   }
 }
 
 .main {
-  margin-block-start: var(--spacing-lg);
+  // margin-block-start: var(--spacing-lg);
 }
 
 .section {
-  margin-block-start: var(--spacing-md);
+  // margin-block-start: var(--spacing-md);
 }

@@ -1,0 +1,21 @@
+---
+interface Props {
+  text: string;
+  tag: string;
+  url?: string;
+}
+
+const { text, tag, url } = Astro.props;
+
+const Tag = tag;
+---
+
+<Tag class:list={['heading2']}>
+  {url && <a href={url}>{text}</a>}
+  {!url && text}
+</Tag>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

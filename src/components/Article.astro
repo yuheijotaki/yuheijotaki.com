@@ -1,6 +1,7 @@
 ---
-import FormattedDate from './FormattedDate.astro';
 import type { CollectionEntry } from 'astro:content';
+import Heading1 from '@/components/Heading1.astro';
+import FormattedDate from '@/components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -10,7 +11,12 @@ const { title, publishDate } = Astro.props;
 <article>
   <header>
     <FormattedDate date={publishDate} />
-    <h1>{title}</h1>
+    <Heading1 text={title} tag="h1" />
   </header>
   <slot />
 </article>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

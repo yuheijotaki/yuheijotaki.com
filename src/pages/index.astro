@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
+import Heading2 from '@/components/Heading2.astro';
 import Posts from '@/components/Posts.astro';
 import Layout from '@/layouts/Layout.astro';
 
@@ -14,11 +15,11 @@ const posts = allPosts.slice(0, postsPerPage);
 
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION} isHome={true}>
   <section class="section">
-    <h2>このウェブサイトについて</h2>
+    <Heading2 text="このウェブサイトについて" tag="h2" />
     <p>主にウェブデザインや技術についてのブログサイトです。</p>
   </section>
   <section class="section">
-    <h2>最近のブログ記事</h2>
+    <Heading2 text="最近のブログ記事" tag="h2" />
     <Posts posts={posts} />
   </section>
 </Layout>

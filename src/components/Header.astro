@@ -6,30 +6,18 @@ type Props = {
 };
 
 const { isHome = true } = Astro.props;
+
+let Tag: string;
+Tag = isHome ? 'h1' : 'p';
 ---
 
 <header class="header">
-  {
-    isHome ? (
-      <h1 class="brand">
-        <a href="/">{SITE_TITLE}</a>
-      </h1>
-    ) : (
-      <p class="brand">
-        <a href="/">{SITE_TITLE}</a>
-      </p>
-    )
-  }
+  <Tag class="logo">
+    <a href="/">{SITE_TITLE}</a>
+  </Tag>
 </header>
 
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
-
-  .brand {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: bold;
-    line-height: 1;
-  }
 </style>

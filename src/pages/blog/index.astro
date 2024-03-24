@@ -17,12 +17,8 @@ const posts = (await getCollection('blog')).sort(
     {
       posts.map((post) => (
         <li>
-          <a href={`/blog/${post.slug}/`}>
-            <p class="title">{post.data.title}</p>
-            <p class="date">
-              <FormattedDate date={post.data.publishDate} />
-            </p>
-          </a>
+          <FormattedDate date={post.data.publishDate} />
+          <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
         </li>
       ))
     }
@@ -32,13 +28,4 @@ const posts = (await getCollection('blog')).sort(
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
-
-  ul li {
-    margin-top: 2em;
-  }
-
-  ul li p {
-    margin: 0;
-    line-height: 1.5;
-  }
 </style>

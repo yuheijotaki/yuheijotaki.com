@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "tinacms dev -c \"astro dev\"",
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
@@ -16,10 +16,13 @@
     "@astrojs/sitemap": "^3.1.1",
     "@vercel/speed-insights": "^1.0.10",
     "astro": "^4.5.9",
+    "tinacms": "^1.6.0",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@markuplint/astro-parser": "^4.0.2",
+    "@tinacms/cli": "^1.5.42",
+    "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "dayjs": "^1.11.10",
     "eslint": "^8.56.0",

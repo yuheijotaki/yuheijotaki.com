@@ -8,7 +8,7 @@ type Props = CollectionEntry<'blog'>['data'];
 const { title, publishDate } = Astro.props;
 ---
 
-<article>
+<article data-pagefind-body>
   <header>
     <FormattedDate date={publishDate} />
     <Heading2 text={title} tag="h1" />
@@ -143,7 +143,7 @@ const { title, publishDate } = Astro.props;
       margin-left: 1.4em;
     }
 
-    :global(ol),
+    :global(ol:not(.pagefind-ui__results)),
     :global(ul) {
       margin-left: 1.4em;
       list-style-position: outside;
@@ -211,8 +211,9 @@ const { title, publishDate } = Astro.props;
     :global(samp),
     :global(pre) {
       font-size: 0.9em;
-      color: #333;
-      background-color: #f2f2f2;
+      color: #f2f2f2;
+
+      // background-color: #f2f2f2;
       -moz-osx-font-smoothing: auto;
       -webkit-font-smoothing: auto;
     }

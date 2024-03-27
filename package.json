@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tinacms dev -c \"astro dev\"",
     "start": "astro dev",
-    "build": "tinacms build -c \"astro build\"",
+    "build": "tinacms build -c \"astro build && pagefind --site dist\"",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -14,8 +14,10 @@
     "@astrojs/mdx": "^2.2.1",
     "@astrojs/rss": "^4.0.5",
     "@astrojs/sitemap": "^3.1.1",
+    "@pagefind/default-ui": "^1.0.4",
     "@vercel/speed-insights": "^1.0.10",
     "astro": "^4.5.9",
+    "pagefind": "^1.0.4",
     "tinacms": "^1.6.0",
     "typescript": "^5.3.3"
   },

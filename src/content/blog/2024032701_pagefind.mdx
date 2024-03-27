@@ -29,7 +29,7 @@ import Search from '@/components/Search.astro';
   - Default UIの場合、基本的にカスタムプロパティを上書きするのが基本線とのこと
     - 参考URL:[Using the Default UI](https://pagefind.app/docs/ui-usage/#customising-the-styles)
 - 機能的なカスタマイズ
-  - 例えばデフォルトの検索UIを変更したり、検索結果ページとしてページングを持つなどの要件はAPIに自前でアクセスする。
+  - 例えばデフォルトの検索UI形式を変更したり、検索結果ページとしてページングを持つなどの要件はAPIに自前でアクセスする。
     - 参考URL:[Using the Pagefind search API](https://pagefind.app/docs/api/)
 
 ### よいと思った
@@ -40,7 +40,7 @@ import Search from '@/components/Search.astro';
 
 ### もう少しと思った
 
-- 検索精度が完璧というわけではない
+- 検索精度が完璧というわけではない（けど最低限はカバーという印象）
   - 参考URL:[静的サイトに特化した検索ライブラリ Pagefind を試す | grip on minds](https://griponminds.jp/blog/try-pagefind/#pagefind-%E3%81%AE%E5%95%8F%E9%A1%8C%E7%82%B9)
 - Default UIはかゆい所に手が届かない感じはするので、あくまでデフォルトでできる範囲で考える
-  - 要件ありきの実装はDefault UIを使わない方が良さそう
+  - 要件ありきの実装はAPIで実装する方向で考えたほうがよさそう

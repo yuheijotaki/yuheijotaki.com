@@ -2,23 +2,22 @@
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 import Layout from '@/layouts/Layout.astro';
-import Heading2 from '@/components/Heading2.astro';
-import Posts from '@/components/Posts.astro';
+import Main from '@/components/Main.astro';
+import Heading from '@/components/Heading.astro';
+import PostList from '@/components/PostList.astro';
 
 const pageTitle = `ブログ記事一覧 | ${SITE_TITLE}`;
 
-const posts = (await getCollection('blog')).sort(
+const postList = (await getCollection('blog')).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
 );
 ---
 
 <Layout title={pageTitle} description={SITE_DESCRIPTION} isHome={false}>
-  <main class="main">
-    <Heading2 text="ブログ記事一覧" tag="h1" />
-    <div>
-      <Posts posts={posts} />
-    </div>
-  </main>
+  <Main>
+    <Heading text="ブログ記事一覧" tag="h1" level={2} />
+    <PostList postList={postList} />
+  </Main>
 </Layout>
 
 <style lang="scss">
@@ -26,8 +25,9 @@ const posts = (await getCollection('blog')).sort(
   @use '@/styles/extension' as *;
 
   .main {
-    display: flex;
+    // display: flex;
     flex-direction: column;
-    row-gap: var(--spacing-sm);
+
+    // row-gap: var(--spacing-sm);
   }
 </style>

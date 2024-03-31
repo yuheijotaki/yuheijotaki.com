@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Heading2 from '@/components/Heading2.astro';
+import Heading from '@/components/Heading.astro';
 import FormattedDate from '@/components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
@@ -11,7 +11,7 @@ const { title, publishDate } = Astro.props;
 <article data-pagefind-body>
   <header>
     <FormattedDate date={publishDate} />
-    <Heading2 text={title} tag="h1" />
+    <Heading text={title} tag="h1" level={2} />
   </header>
   <div class="content">
     <slot />
@@ -23,15 +23,15 @@ const { title, publishDate } = Astro.props;
   @use '@/styles/extension' as *;
 
   article {
-    display: flex;
-    flex-direction: column;
-    row-gap: var(--spacing-sm);
+    // display: flex;
+    // flex-direction: column;
+    // row-gap: var(--spacing-sm);
   }
 
   header {
-    display: flex;
-    flex-direction: column;
-    row-gap: var(--spacing-xxs);
+    // display: flex;
+    // flex-direction: column;
+    // row-gap: var(--spacing-xxs);
   }
 
   .content {

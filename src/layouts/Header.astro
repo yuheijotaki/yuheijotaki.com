@@ -1,6 +1,6 @@
 ---
 import { SITE_TITLE } from '../consts';
-import Heading1 from '@/components/Heading1.astro';
+import Heading from '@/components/Heading.astro';
 
 type Props = {
   isHome: boolean;
@@ -12,7 +12,7 @@ const Tag = isHome ? 'h1' : 'p';
 ---
 
 <header class="header">
-  <Heading1 text={SITE_TITLE} tag={Tag} url="/" bold={false} />
+  <Heading text={SITE_TITLE} tag={Tag} level={1} url="/" bold={false} />
 </header>
 
 <style lang="scss">

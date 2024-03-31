@@ -10,4 +10,4 @@ export type Post = {
   };
 };
 
-export type Posts = Post[];
+export type PostList = Post[];

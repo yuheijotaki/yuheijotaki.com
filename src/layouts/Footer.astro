@@ -1,24 +1,14 @@
 ---
-import Heading2 from '@/components/Heading2.astro';
+import Block from '@/components/Block.astro';
+import Heading from '@/components/Heading.astro';
 ---
 
 <footer class="footer">
-  <nav class="section">
-    <Heading2 text="サイト内リンク" tag="h2" />
-    <ul class="block">
-      <li><a href="/">トップページ</a></li>
-      <li><a href="/blog/">ブログ記事一覧</a></li>
-    </ul>
-  </nav>
-  <!--
-  <nav class="section">
-    <Heading2 text="外部リンク" tag="h2" />
-    <ul class="block">
-      <li><a href="https://github.com/yuheijotaki" target="_blank">GitHub</a></li>
-      <li><a href="https://yuheijotaki.tumblr.com/" target="_blank">Tumblr</a></li>
-    </ul>
-  </nav>
-  -->
+  <Heading text="サイト内リンク" tag="h2" level={2} />
+  <Block tag="ul">
+    <li><a href="/">トップページ</a></li>
+    <li><a href="/blog/">ブログ記事一覧</a></li>
+  </Block>
 </footer>
 
 <style lang="scss">
@@ -26,10 +16,10 @@ import Heading2 from '@/components/Heading2.astro';
   @use '@/styles/extension' as *;
 
   ul {
-    display: flex;
-    flex-direction: column;
-    row-gap: var(--spacing-xxs);
-    padding-inline: 0;
+    // display: flex;
+    // flex-direction: column;
+    // row-gap: var(--spacing-xxs);
+    // padding-inline: 0;
     list-style: none;
   }
 </style>

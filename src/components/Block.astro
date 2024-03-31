@@ -1,0 +1,18 @@
+---
+interface Props {
+  tag?: string;
+}
+
+const { tag = 'div' } = Astro.props;
+
+const Tag = tag;
+---
+
+<Tag class="block">
+  <slot />
+</Tag>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

@@ -1,0 +1,28 @@
+---
+import { type PostList } from '@/types';
+import PostItem from '@/components/PostItem.astro';
+
+interface Props {
+  postList: PostList;
+}
+
+const { postList } = Astro.props;
+---
+
+<ul class="post-list">
+  {
+    postList.map((post) => (
+      <PostItem date={post.data.publishDate} href={`/blog/${post.slug}/`} title={post.data.title} />
+    ))
+  }
+</ul>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  li {
+    a {
+    }
+  }
+</style>

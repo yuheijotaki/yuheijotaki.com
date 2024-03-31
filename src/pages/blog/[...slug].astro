@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 import Layout from '@/layouts/Layout.astro';
+import Main from '@/components/Main.astro';
 import Article from '@/components/Article.astro';
 
 export async function getStaticPaths() {
@@ -21,11 +22,11 @@ const pageDescription = post.data.description || SITE_DESCRIPTION;
 ---
 
 <Layout title={pageTitle} description={pageDescription} isHome={false}>
-  <main class="main">
+  <Main>
     <Article {...post.data}>
       <Content />
     </Article>
-  </main>
+  </Main>
 </Layout>
 
 <style lang="scss">

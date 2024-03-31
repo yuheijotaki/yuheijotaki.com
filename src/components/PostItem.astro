@@ -1,0 +1,26 @@
+---
+import FormattedDate from '@/components/FormattedDate.astro';
+
+interface Props {
+  date: Date;
+  href: string;
+  title: string;
+}
+
+const { date, href, title } = Astro.props;
+---
+
+<li class="post-item">
+  <FormattedDate date={date} />
+  <a href={href}>{title}</a>
+</li>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  li {
+    a {
+    }
+  }
+</style>

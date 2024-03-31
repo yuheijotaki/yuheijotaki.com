@@ -2,27 +2,27 @@
 @use 'extension' as *;
 @use 'foundation';
 
-.header,
-.main,
-.footer {
-  grid-row: auto;
-  grid-column: span 12;
-}
+// .header,
+// .main,
+// .footer {
+//   grid-row: auto;
+//   grid-column: span 12;
+// }
 
-.section {
-  & + .section {
-    margin-block: var(--spacing-sm) 0;
-  }
-}
+// .section {
+//   & + .section {
+//     margin-block: var(--spacing-sm) 0;
+//   }
+// }
 
-.block {
-  margin-block: var(--spacing-xs) 0;
-}
+// .block {
+//   margin-block: var(--spacing-xs) 0;
+// }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--spacing-xs);
-  padding-inline: 0;
-  list-style: none;
-}
+// .list {
+//   display: flex;
+//   flex-direction: column;
+//   row-gap: var(--spacing-xs);
+//   padding-inline: 0;
+//   list-style: none;
+// }

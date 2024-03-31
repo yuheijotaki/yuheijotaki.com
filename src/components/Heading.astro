@@ -2,16 +2,17 @@
 interface Props {
   text: string;
   tag: string;
+  level?: 1 | 2;
   url?: string;
   bold?: boolean;
 }
 
-const { text, tag, url, bold = true } = Astro.props;
+const { text, tag, level = 1, url, bold = true } = Astro.props;
 
 const Tag = tag;
 ---
 
-<Tag class:list={['heading1']}>
+<Tag class:list={['heading', `--level${level}`]}>
   {url ? <a href={url}>{bold ? <b>{text}</b> : text}</a> : bold ? <b>{text}</b> : text}
 </Tag>
 
@@ -19,8 +20,7 @@ const Tag = tag;
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
 
-  .heading1 {
-    font-size: var(--font-size-xl);
+  .heading {
     font-weight: normal;
     font-feature-settings: 'palt';
     line-height: var(--line-height-sm);
@@ -32,6 +32,14 @@ const Tag = tag;
 
     b {
       display: block;
+    }
+
+    &.--level1 {
+      font-size: var(--font-size-xl);
+    }
+
+    &.--level2 {
+      font-size: var(--font-size-lg);
     }
   }
 </style>

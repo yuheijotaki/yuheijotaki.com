@@ -1,36 +1,39 @@
 ---
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
-import Heading2 from '@/components/Heading2.astro';
-import Posts from '@/components/Posts.astro';
 import Layout from '@/layouts/Layout.astro';
+import Main from '@/components/Main.astro';
+import Section from '@/components/Section.astro';
+import Block from '@/components/Block.astro';
+import Heading from '@/components/Heading.astro';
+import PostList from '@/components/PostList.astro';
 
 const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
 );
 
 const postsPerPage = 3;
-const posts = allPosts.slice(0, postsPerPage);
+const postList = allPosts.slice(0, postsPerPage);
 ---
 
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION} isHome={true}>
-  <main class="main">
-    <section class="section">
-      <Heading2 text="このウェブサイトについて" tag="h2" />
-      <div class="block">
+  <Main>
+    <Section>
+      <Heading text="このウェブサイトについて" tag="h2" level={2} />
+      <Block>
         <p>主にウェブデザインや技術についてのブログサイトです。</p>
-      </div>
-    </section>
-    <section class="section">
-      <Heading2 text="最近のブログ記事" tag="h2" />
-      <div class="block">
-        <Posts posts={posts} />
-      </div>
-    </section>
-  </main>
-</Layout>
+      </Block>
+    </Section>
+    <Section>
+      <Heading text="最近のブログ記事" tag="h2" level={2} />
+      <Block>
+        <PostList postList={postList} />
+      </Block>
+    </Section>
+  </Main>
 
-<style lang="scss">
-  @use '@/styles/variables' as var;
-  @use '@/styles/extension' as *;
-</style>
+  <style lang="scss">
+    @use '@/styles/variables' as var;
+    @use '@/styles/extension' as *;
+  </style>
+</Layout>

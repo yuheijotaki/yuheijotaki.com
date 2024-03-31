@@ -150,48 +150,24 @@ const { title, pubDate } = Astro.props;
       list-style-type: decimal;
     }
 
-    :global(ol) ol {
+    :global(ol) :global(ol) {
       list-style-type: lower-alpha;
     }
 
-    :global(ol) ol ol {
+    :global(ol) :global(ol) :global(ol) {
       list-style-type: lower-roman;
-    }
-
-    :global(ol) ol ol ol {
-      list-style-type: lower-greek;
-    }
-
-    :global(ol) ol ol ol ol {
-      list-style-type: decimal;
-    }
-
-    :global(ol) ol ol ol ol ol {
-      list-style-type: lower-alpha;
     }
 
     :global(ul) {
       list-style-type: disc;
     }
 
-    :global(ul) ul {
+    :global(ul) :global(ul) {
       list-style-type: circle;
     }
 
-    :global(ul) ul ul {
+    :global(ul) :global(ul) :global(ul) {
       list-style-type: square;
-    }
-
-    :global(ul) ul ul ul {
-      list-style-type: circle;
-    }
-
-    :global(ul) ul ul ul ul {
-      list-style-type: disc;
-    }
-
-    :global(ul) ul ul ul ul ul {
-      list-style-type: circle;
     }
 
     :global(blockquote) {
@@ -199,7 +175,7 @@ const { title, pubDate } = Astro.props;
       border-left: 0.04rem solid var(--color-gray);
     }
 
-    :global(blockquote) p {
+    :global(blockquote) :global(p) {
       margin-bottom: 0;
     }
 
@@ -246,7 +222,7 @@ const { title, pubDate } = Astro.props;
       width: 100%;
     }
 
-    :global(table) pre {
+    :global(table) :global(pre) {
       white-space: pre-wrap;
     }
 
@@ -258,20 +234,20 @@ const { title, pubDate } = Astro.props;
       border: 1px solid var(--color-gray);
     }
 
-    :global(thead) tr,
-    :global(tfoot) tr {
+    :global(thead) :global(tr),
+    :global(tfoot) :global(tr) {
       background-color: var(--color-gray);
     }
 
-    :global(thead) th,
-    :global(thead) td,
-    :global(tfoot) th,
-    :global(tfoot) td {
+    :global(thead) :global(th),
+    :global(thead) :global(td),
+    :global(tfoot) :global(th),
+    :global(tfoot) :global(td) {
       padding: 0.75em;
       font-size: 1em;
     }
 
-    :global(tbody) tr {
+    :global(tbody) :global(tr) {
       background-color: var(--color-light);
     }
   }

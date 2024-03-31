@@ -3,13 +3,6 @@
 @use 'foundation';
 
 .wrapper {
-  // display: flex;
-  // flex-direction: column;
-  // row-gap: var(--spacing-sm);
-
-  // grid-template-rows: repeat(3, min-content);
-  // grid-template-columns: repeat(12, 1fr);
-  // gap: var(--spacing-lg) var(--spacing-xxs);
   max-width: var(--container-width);
   padding-block: var(--spacing-sm);
   padding-inline: var(--spacing-xs);
@@ -20,28 +13,3 @@ ul,
 ol {
   padding-left: 1em;
 }
-
-// .header,
-// .main,
-// .footer {
-//   grid-row: auto;
-//   grid-column: span 12;
-// }
-
-// .section {
-//   & + .section {
-//     margin-block: var(--spacing-sm) 0;
-//   }
-// }
-
-// .block {
-//   margin-block: var(--spacing-xs) 0;
-// }
-
-// .list {
-//   display: flex;
-//   flex-direction: column;
-//   row-gap: var(--spacing-xs);
-//   padding-inline: 0;
-//   list-style: none;
-// }

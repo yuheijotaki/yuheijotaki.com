@@ -22,19 +22,15 @@ const { title, publishDate } = Astro.props;
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
 
-  article {
-    // display: flex;
-    // flex-direction: column;
-    // row-gap: var(--spacing-sm);
-  }
-
   header {
-    // display: flex;
-    // flex-direction: column;
-    // row-gap: var(--spacing-xxs);
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing-xxs);
   }
 
   .content {
+    margin-block-start: var(--spacing-sm);
+
     :global(img) {
       vertical-align: text-bottom;
     }
@@ -67,7 +63,7 @@ const { title, publishDate } = Astro.props;
     :global(blockquote),
     :global(pre),
     :global(table) {
-      margin-bottom: 1.4em;
+      margin-bottom: 1.5em;
     }
 
     :global(p):last-child,
@@ -91,7 +87,7 @@ const { title, publishDate } = Astro.props;
     :global(h5),
     :global(h6) {
       font-weight: bold;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     :global(h1):first-child,
@@ -104,48 +100,49 @@ const { title, publishDate } = Astro.props;
     }
 
     :global(h1) {
-      margin-top: 0.58333em;
-      margin-bottom: 0.58333em;
-      font-size: 2rem;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      font-size: 2.6rem;
     }
 
     :global(h2) {
-      margin-top: 1.75em;
+      margin-top: 2em;
       margin-bottom: 0.875em;
-      font-size: 1.8rem;
+      font-size: 2.4rem;
     }
 
     :global(h3) {
-      margin-top: 1.07692em;
-      margin-bottom: 1.07692em;
-      font-size: 1.6rem;
+      margin-top: 1.75em;
+      margin-bottom: 0.875em;
+      font-size: 2rem;
+      color: var(--color-dark-sub);
     }
 
     :global(h4) {
-      margin-top: 1.16667em;
-      margin-bottom: 1.16667em;
-      font-size: 1.5rem;
+      margin-top: 1.2em;
+      margin-bottom: 1.2em;
+      font-size: 1.6rem;
     }
 
     :global(h5) {
-      margin-top: 1.27273em;
-      margin-bottom: 1.27273em;
-      font-size: 1.4rem;
+      margin-top: 1.2em;
+      margin-bottom: 1.2em;
+      font-size: 1.5rem;
     }
 
     :global(h6) {
-      margin-top: 1.4em;
-      margin-bottom: 1.4em;
+      margin-top: 1.2em;
+      margin-bottom: 1.2em;
       font-size: 1.4rem;
     }
 
     :global(dd) {
-      margin-left: 1.4em;
+      margin-left: 1em;
     }
 
     :global(ol:not(.pagefind-ui__results)),
     :global(ul) {
-      margin-left: 1.4em;
+      padding-left: 1em;
       list-style-position: outside;
     }
 
@@ -199,43 +196,33 @@ const { title, publishDate } = Astro.props;
 
     :global(blockquote) {
       padding: 0.6em 1.2em;
-      border-left: 4px solid #e6e6e6;
+      border-left: 0.04rem solid var(--color-gray);
     }
 
     :global(blockquote) p {
       margin-bottom: 0;
     }
 
-    // :global(code),
-    // :global(kbd),
-    // :global(samp),
-    // :global(pre) {
-    //   font-size: 0.9em;
-    //   color: #333;
-    //   background-color: #f2f2f2;
-    //   -moz-osx-font-smoothing: auto;
-    //   -webkit-font-smoothing: auto;
-    // }
+    :global(code),
+    :global(kbd),
+    :global(samp),
+    :global(pre) {
+      font-size: 1.4rem;
+    }
 
-    // :global(code),
-    // :global(kbd),
-    // :global(samp) {
-    //   padding: 0.1em 0.4em 0.2em;
-    //   line-height: 1.77778;
-    //   vertical-align: baseline;
-    //   border-radius: 3px;
-    // }
+    :global(p) {
+      :global(code) {
+        padding: 0.1em 0.4em 0.2em;
+        background-color: var(--color-gray);
+      }
+    }
 
-    // :global(pre) {
-    //   padding: 1em 1.2em;
-    //   overflow: auto;
-    // }
-
-    // :global(pre) code {
-    //   font-size: 1em;
-    //   line-height: 1em;
-    //   background: none;
-    // }
+    :global(pre) {
+      &:has(code) {
+        padding: 1rem 2rem;
+        line-height: 1.6;
+      }
+    }
 
     :global(figure) {
       margin-bottom: 2.8em;
@@ -251,7 +238,7 @@ const { title, publishDate } = Astro.props;
     }
 
     :global(figcaption) {
-      margin-top: 0.875em;
+      margin-top: 0.8em;
       font-size: 0.8em;
     }
 
@@ -268,31 +255,24 @@ const { title, publishDate } = Astro.props;
       padding: 0.7em;
       font-size: 1em;
       line-height: 1.4;
-      border: 1px solid #e6e6e6;
+      border: 1px solid var(--color-gray);
     }
 
     :global(thead) tr,
     :global(tfoot) tr {
-      background-color: #f5f5f5;
+      background-color: var(--color-gray);
     }
 
     :global(thead) th,
     :global(thead) td,
     :global(tfoot) th,
     :global(tfoot) td {
-      padding: 0.77778em;
-      font-size: 0.9em;
+      padding: 0.75em;
+      font-size: 1em;
     }
 
-    // :global(thead) th code,
-    // :global(thead) td code,
-    // :global(tfoot) th code,
-    // :global(tfoot) td code {
-    //   background-color: #fff;
-    // }
-
     :global(tbody) tr {
-      background-color: #fff;
+      background-color: var(--color-light);
     }
   }
 </style>

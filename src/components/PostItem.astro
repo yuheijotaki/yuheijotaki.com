@@ -20,7 +20,10 @@ const { date, href, title } = Astro.props;
   @use '@/styles/extension' as *;
 
   li {
-    a {
+    line-height: var(--line-height-sm);
+
+    & + li {
+      margin-block-start: var(--spacing-xs);
     }
   }
 </style>

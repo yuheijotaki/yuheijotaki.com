@@ -3,13 +3,15 @@
 
 :root {
   // color
-  --color-dark: #0a0a0a;
-  --color-light: #fafafa;
+  --color-dark: #100f0f;
+  --color-dark-sub: #40403d;
+  --color-light: #fffcf0;
+  --color-gray: #ececec;
   --color-link: #0018ee;
   --color-link-visited: #6f0878;
 
   // spacing
-  --container-width: 768px;
+  --container-width: 720px;
   --spacing-xxs: #{spacing(1)};
   --spacing-xs: #{spacing(2)};
   --spacing-sm: #{spacing(10)};
@@ -20,8 +22,8 @@
   // font
   --font-size-sm: 1.4rem;
   --font-size-md: 1.6rem;
-  --font-size-lg: 2rem;
-  --font-size-xl: 2.4rem;
+  --font-size-lg: 2.6rem;
+  --font-size-xl: 2.6rem;
   --line-height-sm: 1.6;
   --line-height-md: 2;
 }

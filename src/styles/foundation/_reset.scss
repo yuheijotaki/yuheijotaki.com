@@ -28,14 +28,19 @@ dd {
   margin: 0;
 }
 
+ul,
+ol {
+  padding-left: 1.2em;
+}
+
 ul[role='list'],
 ol[role='list'] {
   list-style: none;
 }
 
 body {
-  min-height: 100vh;
-  line-height: 1.5;
+  // min-height: 100vh;
+  line-height: 1.6;
 }
 
 h1,

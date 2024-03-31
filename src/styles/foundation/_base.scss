@@ -2,13 +2,8 @@
 @use '../variables' as var;
 
 body {
-  // display: grid;
-  // grid-template-rows: repeat(3, min-content);
-  // grid-template-columns: repeat(12, 1fr);
-  // gap: var(--spacing-lg) var(--spacing-xxs);
-  // max-width: var(--container-width);
-  // padding-inline: var(--spacing-xs);
-  // margin: var(--spacing-lg) auto var(--spacing-xl);
+  padding: 0;
+  margin: 0;
   font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo,
     sans-serif;
   line-height: 2;
@@ -25,6 +20,12 @@ a {
 
   &:visited {
     color: var(--color-link-visited);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgb(0 0 0 / 7.5%);
+    }
   }
 }
 

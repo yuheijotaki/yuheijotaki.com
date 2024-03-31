@@ -2,6 +2,25 @@
 @use 'extension' as *;
 @use 'foundation';
 
+.wrapper {
+  // display: flex;
+  // flex-direction: column;
+  // row-gap: var(--spacing-sm);
+
+  // grid-template-rows: repeat(3, min-content);
+  // grid-template-columns: repeat(12, 1fr);
+  // gap: var(--spacing-lg) var(--spacing-xxs);
+  max-width: var(--container-width);
+  padding-block: var(--spacing-sm);
+  padding-inline: var(--spacing-xs);
+  margin-inline: auto;
+}
+
+ul,
+ol {
+  padding-left: 1em;
+}
+
 // .header,
 // .main,
 // .footer {

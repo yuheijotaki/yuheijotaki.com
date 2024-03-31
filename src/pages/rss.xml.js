@@ -2,15 +2,16 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import sanitizeHtml from 'sanitize-html';
 import MarkdownIt from 'markdown-it';
+import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 const parser = new MarkdownIt();
 
-export function GET(context) {
+export async function GET(context) {
   const blog = await getCollection('blog');
   return rss({
     // 出力されるXMLの`<title>`フィールド
-    title: 'Buzz’s Blog',
+    title: SITE_TITLE,
     // 出力されるXMLの`<description>`フィールド
-    description: 'A humble Astronaut’s guide to the stars',
+    description: SITE_DESCRIPTION,
     // エンドポイントのコンテキストからプロジェクトの"site"を取得
     // https://docs.astro.build/ja/reference/api-reference/#contextsite
     site: context.site,

@@ -5,12 +5,12 @@ import FormattedDate from '@/components/FormattedDate.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, publishDate } = Astro.props;
+const { title, pubDate } = Astro.props;
 ---
 
 <article data-pagefind-body>
   <header>
-    <FormattedDate date={publishDate} />
+    <FormattedDate date={pubDate} />
     <Heading text={title} tag="h1" level={2} />
   </header>
   <div class="content">

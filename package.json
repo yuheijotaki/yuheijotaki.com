@@ -19,7 +19,9 @@
     "@vercel/speed-insights": "^1.0.10",
     "astro": "^4.5.9",
     "astro-icon": "^1.1.0",
+    "markdown-it": "^14.1.0",
     "pagefind": "^1.0.4",
+    "sanitize-html": "^2.13.0",
     "tinacms": "^1.6.0",
     "typescript": "^5.3.3"
   },

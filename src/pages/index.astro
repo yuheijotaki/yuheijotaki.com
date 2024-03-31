@@ -9,7 +9,7 @@ import Heading from '@/components/Heading.astro';
 import PostList from '@/components/PostList.astro';
 
 const allPosts = (await getCollection('blog')).sort(
-  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 const postsPerPage = 3;

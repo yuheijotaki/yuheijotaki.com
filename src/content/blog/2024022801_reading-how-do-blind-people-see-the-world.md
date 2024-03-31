@@ -1,7 +1,7 @@
 ---
 title: 書籍『目の見えない人は世界をどう見ているのか』を読んだ
 description: ''
-publishDate: 2024-02-28T00:00:00.000Z
+pubDate: 2024-02-28T00:00:00.000Z
 ---
 
 [目の見えない人は世界をどう見ているのか](https://www.kobunsha.com/shelf/book/isbn/9784334038540)を読んだ。

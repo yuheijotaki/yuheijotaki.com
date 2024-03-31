@@ -6,7 +6,7 @@ export type Post = {
   data: {
     title: string;
     description: string;
-    publishDate: Date;
+    pubDate: Date;
   };
 };
 

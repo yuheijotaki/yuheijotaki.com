@@ -12,7 +12,7 @@ const { postList } = Astro.props;
 <ul class="post-list">
   {
     postList.map((post) => (
-      <PostItem date={post.data.publishDate} href={`/blog/${post.slug}/`} title={post.data.title} />
+      <PostItem date={post.data.pubDate} href={`/blog/${post.slug}/`} title={post.data.title} />
     ))
   }
 </ul>

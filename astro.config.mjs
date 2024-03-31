@@ -11,6 +11,13 @@ export default defineConfig({
   },
   site: 'https://yuheijotaki.com',
   integrations: [
+    (await import('astro-compress')).default({
+      CSS: true,
+      HTML: true,
+      Image: false,
+      JavaScript: true,
+      SVG: false,
+    }),
     mdx(),
     sitemap(),
     icon({

@@ -26,7 +26,7 @@ export default defineConfig({
       iconDir: 'src/icons',
     }),
   ],
-  experimental: {
-    contentCollectionCache: true,
-  },
+  // experimental: {
+  //   contentCollectionCache: true,
+  // },
 });

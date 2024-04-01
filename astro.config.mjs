@@ -5,11 +5,11 @@ import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://yuheijotaki.com',
   server: {
     host: true,
     open: true,
   },
-  site: 'https://yuheijotaki.com',
   integrations: [
     (await import('astro-compress')).default({
       CSS: true,
@@ -24,4 +24,7 @@ export default defineConfig({
       iconDir: 'src/icons',
     }),
   ],
+  experimental: {
+    contentCollectionCache: true,
+  },
 });

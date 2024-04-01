@@ -1,14 +1,13 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    // "importsNotUsedAsValues": "error",
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
-    "baseUrl": "/Users/jotaki/git/yuheijotaki.com",
+    "baseUrl": ".",
     "jsx": "react-jsx",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "jsxImportSource": "react"
   }

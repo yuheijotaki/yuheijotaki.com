@@ -21,7 +21,11 @@ const pageTitle = `${post.data.title} | ${SITE_TITLE}`;
 const pageDescription = post.data.description || SITE_DESCRIPTION;
 ---
 
-<Layout title={pageTitle} description={pageDescription} isHome={false}>
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  isHome={false}
+  image={new URL(`/og/${post.slug}.png`, Astro.url.origin).toString()}>
   <Main>
     <Article {...post.data}>
       <Content />

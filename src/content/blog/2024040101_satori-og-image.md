@@ -1,7 +1,7 @@
 ---
 title: satoriとsharpでog:imageを生成する
 description: satoriとsharpを使ってog:imageを生成したメモです。
-pubDate: 2024-03-31T15:00:00.000Z
+pubDate: 2024-04-01T15:00:00.000Z
 ---
 
 ## はじめに

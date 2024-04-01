@@ -33,6 +33,7 @@ const { title, pubDate } = Astro.props;
 
     :global(img) {
       vertical-align: text-bottom;
+      border: var(--color-gray) 1px solid;
     }
 
     :global(small) {
@@ -144,6 +145,11 @@ const { title, pubDate } = Astro.props;
     :global(ul) {
       padding-left: 1em;
       list-style-position: outside;
+
+      :global(li) {
+        margin-block: 0.25em;
+        line-height: var(--line-height-sm);
+      }
     }
 
     :global(ol) {

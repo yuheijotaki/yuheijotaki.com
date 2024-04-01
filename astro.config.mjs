@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
@@ -18,6 +19,7 @@ export default defineConfig({
       JavaScript: true,
       SVG: false,
     }),
+    react(),
     mdx(),
     sitemap(),
     icon({

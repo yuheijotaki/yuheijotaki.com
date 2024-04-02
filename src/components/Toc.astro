@@ -21,33 +21,41 @@ const groupedHeadings = headings.reduce((array, heading) => {
 }, [] as HeadingWithSubheadings[]);
 ---
 
-<details>
-  <summary>目次</summary>
-  <nav aria-label="目次">
-    <ol>
-      {
-        groupedHeadings.map((h) => (
-          <li>
-            <a href={`#${h.slug}`}>{h.text}</a>
-            {h.subheadings.length > 0 && (
-              <ol>
-                {h.subheadings.map((sub) => (
-                  <li>
-                    <a href={`#${sub.slug}`}>{sub.text}</a>
-                  </li>
-                ))}
-              </ol>
-            )}
-          </li>
-        ))
-      }
-    </ol>
-  </nav>
-</details>
+{
+  groupedHeadings.length > 0 && (
+    <details>
+      <summary>目次</summary>
+      <nav aria-label="目次">
+        <ol>
+          {groupedHeadings.map((h) => (
+            <li>
+              <a href={`#${h.slug}`}>{h.text}</a>
+              {h.subheadings.length > 0 && (
+                <ol>
+                  {h.subheadings.map((sub) => (
+                    <li>
+                      <a href={`#${sub.slug}`}>{sub.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </details>
+  )
+}
 
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
+
+  summary {
+    cursor: pointer;
+
+    @include hover;
+  }
 
   li {
     list-style-type: disc;

@@ -1,11 +1,10 @@
 import satori from 'satori';
 import sharp from 'sharp';
-import { SITE_TITLE } from '@/consts';
 
 export async function getOgImage(title: string) {
   const fontData = (await getFontData()) as ArrayBuffer;
 
-  const titleMaxNum = 50;
+  const titleMaxNum = 38;
   const titleLength = title.length;
 
   if (titleLength >= titleMaxNum) {
@@ -17,34 +16,24 @@ export async function getOgImage(title: string) {
     <main
       style={{
         position: 'relative',
-        width: '100%',
         height: '100%',
-        padding: '20px 40px',
+        width: '100%',
         backgroundColor: '#fffcf0',
         color: '#100f0f',
+        border: '#100f0f 2rem solid',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '4rem',
       }}>
-      <section
+      <h1
         style={{
-          width: '100%',
-          height: '100%',
+          fontSize: '5rem',
+          lineHeight: '1.3em',
         }}>
-        <h1
-          style={{
-            fontSize: '80px',
-            lineHeight: '1.3em',
-          }}>
-          {title}
-        </h1>
-        <p
-          style={{
-            position: 'absolute',
-            bottom: '0',
-            right: '0',
-            fontSize: '40px',
-          }}>
-          {SITE_TITLE}
-        </p>
-      </section>
+        {title}
+      </h1>
     </main>,
     {
       width: 1200,

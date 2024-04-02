@@ -6,13 +6,18 @@ body {
   margin: 0;
   font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo,
     sans-serif;
-  line-height: 2;
+  line-height: var(--line-height-md);
   color: var(--color-dark);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--letter-spacing-md);
   background-color: var(--color-light);
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
 }
 
 a {
@@ -22,14 +27,5 @@ a {
     color: var(--color-link-visited);
   }
 
-  @media (hover: hover) {
-    &:hover {
-      background-color: rgb(0 0 0 / 7.5%);
-    }
-  }
-}
-
-:focus-visible {
-  outline: 2px solid var(--color-link);
-  outline-offset: 2px;
+  @include hover;
 }

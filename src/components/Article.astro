@@ -57,23 +57,11 @@ const { title, pubDate } = Astro.props;
       vertical-align: super;
     }
 
-    :global(p),
-    :global(dl),
-    :global(ol),
-    :global(ul),
-    :global(blockquote),
-    :global(pre),
-    :global(table) {
+    :global(:where(p, dl, ol, ul, blockquote, pre, table)) {
       margin-bottom: 1.5em;
     }
 
-    :global(p):last-child,
-    :global(dl):last-child,
-    :global(ol):last-child,
-    :global(ul):last-child,
-    :global(blockquote):last-child,
-    :global(pre):last-child,
-    :global(table):last-child {
+    :global(:where(p, dl, ol, ul, blockquote, pre, table):last-child) {
       margin-bottom: 0;
     }
 
@@ -81,22 +69,12 @@ const { title, pubDate } = Astro.props;
       display: none;
     }
 
-    :global(h1),
-    :global(h2),
-    :global(h3),
-    :global(h4),
-    :global(h5),
-    :global(h6) {
+    :global(:where(h1, h2, h3, h4, h5, h6)) {
       font-weight: bold;
       line-height: 1.6;
     }
 
-    :global(h1):first-child,
-    :global(h2):first-child,
-    :global(h3):first-child,
-    :global(h4):first-child,
-    :global(h5):first-child,
-    :global(h6):first-child {
+    :global(:where(h1, h2, h3, h4, h5, h6):first-child) {
       margin-top: 0;
     }
 
@@ -154,26 +132,26 @@ const { title, pubDate } = Astro.props;
 
     :global(ol) {
       list-style-type: decimal;
-    }
 
-    :global(ol) :global(ol) {
-      list-style-type: lower-alpha;
-    }
+      :global(ol) {
+        list-style-type: lower-alpha;
 
-    :global(ol) :global(ol) :global(ol) {
-      list-style-type: lower-roman;
+        :global(ol) {
+          list-style-type: lower-roman;
+        }
+      }
     }
 
     :global(ul) {
       list-style-type: disc;
-    }
 
-    :global(ul) :global(ul) {
-      list-style-type: circle;
-    }
+      :global(ul) {
+        list-style-type: circle;
 
-    :global(ul) :global(ul) :global(ul) {
-      list-style-type: square;
+        :global(ul) {
+          list-style-type: square;
+        }
+      }
     }
 
     :global(blockquote) {
@@ -185,15 +163,11 @@ const { title, pubDate } = Astro.props;
       margin-bottom: 0;
     }
 
-    :global(code),
-    :global(kbd),
-    :global(samp),
-    :global(pre) {
+    :global(:where(code, kbd, samp, pre)) {
       font-size: 1.4rem;
     }
 
-    :global(p),
-    :global(li) {
+    :global(:where(p, li)) {
       :global(code) {
         padding: 0.1em 0.4em 0.2em;
         background-color: var(--color-gray);
@@ -201,6 +175,8 @@ const { title, pubDate } = Astro.props;
     }
 
     :global(pre) {
+      overflow-x: auto;
+
       &:has(code) {
         padding: 1rem 2rem;
         line-height: 1.6;

@@ -1,0 +1,27 @@
+---
+title: Astroで記事の目次を生成する
+description: Content Collenction管理のAstroで記事の目次を生成するメモです。
+pubDate: 2024-04-02T00:00:00.000Z
+---
+
+## はじめに
+
+Content Collenction管理のAstroで記事の目次を生成するメモ。
+
+## 手順
+
+### 見出しのリストを取得
+
+[src/pages/blog/[...slug].astro](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/blog/%5B...slug%5D.astro)  
+`const { headings } = await post.render();` でheadingsに見出しのリストが返ってくる。
+
+### 目次コンポーネントを作成
+
+[src/components/Toc.astro](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/components/Toc.astro)
+
+## 所感
+
+- Content Collenction向けに用意されている機能を使うことで、便利だがとっても楽をしている気がしてくる
+  - 公式ドキュメントでは [remark-toc](https://docs.astro.build/ja/guides/markdown-content/#markdown%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3) を使う方法など紹介されていたが色々やり方がある模様
+  - AstroのMarkdownサポートでは[GitHub-flavored Markdown](https://github.com/remarkjs/remark-gfm)プラグインをデフォルトで適用しており、これもremarkを使っている
+  - unified, remark, rehype あたりを触って抵抗がないようにしておきたい

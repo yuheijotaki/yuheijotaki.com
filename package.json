@@ -8,6 +8,14 @@
     "build": "tinacms build -c \"astro build && pagefind --site dist\"",
     "preview": "astro preview",
     "astro": "astro",
+    "lint:ts": "eslint src --ext .tsx,.ts,.astro",
+    "lint:style": "stylelint --ignore-path .gitignore './src/**/*.{css,scss}'",
+    "lint:prettier": "prettier --config .prettierrc.json './src/**/*.{astro,js,jsx,ts,tsx,css,scss}'",
+    "lint": "npm run lint:ts && npm run lint:style && npm run lint:prettier",
+    "fix:ts": "eslint src --ext .tsx,.ts --fix",
+    "fix:style": "stylelint --ignore-path .gitignore './src/**/*.{css,scss}' --fix",
+    "fix:prettier": "prettier --config .prettierrc.json './src/**/*.{astro,js,jsx,ts,tsx,css,scss}' --write",
+    "fix": "npm run fix:ts && npm run fix:style && npm run fix:prettier",
     "test:e2e": "playwright test"
   },
   "dependencies": {

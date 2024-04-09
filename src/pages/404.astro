@@ -1,0 +1,24 @@
+---
+import { SITE_DESCRIPTION } from '@/consts';
+import Layout from '@/layouts/Layout.astro';
+import Main from '@/components/Main.astro';
+import Section from '@/components/Section.astro';
+import Block from '@/components/Block.astro';
+import Heading from '@/components/Heading.astro';
+---
+
+<Layout title="ページが見つかりません" description={SITE_DESCRIPTION} isHome={true}>
+  <Main>
+    <Section>
+      <Heading text="ページが見つかりません" tag="h2" level={1} />
+      <Block>
+        <p>一時的にアクセスできない、あるいは移動または削除した可能性があります。</p>
+      </Block>
+    </Section>
+  </Main>
+</Layout>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

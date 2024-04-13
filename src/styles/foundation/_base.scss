@@ -9,10 +9,13 @@ body {
   line-height: var(--line-height-md);
   color: var(--color-dark);
   letter-spacing: var(--letter-spacing-md);
+  word-break: normal;
+  overflow-wrap: anywhere;
   background-color: var(--color-light);
   text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-break: strict;
 }
 
 :focus-visible {

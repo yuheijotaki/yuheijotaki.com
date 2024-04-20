@@ -3,9 +3,12 @@ import { getCollection } from 'astro:content';
 import { getOgImage } from '@/components/OgImage';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const allPosts = await getCollection('blog');
+  const recentPosts = allPosts.filter(
+    (entry) => entry.data.pubDate && new Date(entry.data.pubDate) >= new Date('2024-01-01'),
+  );
 
-  return posts.map((entry) => ({
+  return recentPosts.map((entry) => ({
     params: { slug: entry.slug },
     props: { title: entry.data.title },
   }));

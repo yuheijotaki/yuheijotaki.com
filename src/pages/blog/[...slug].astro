@@ -20,13 +20,13 @@ const { Content, headings } = await post.render();
 
 const pageTitle = `${post.data.title} | ${SITE_TITLE}`;
 const pageDescription = post.data.description || SITE_DESCRIPTION;
+const ogImage =
+  new Date(post.data.pubDate) >= new Date('2024-01-01')
+    ? new URL(`/og/${post.slug}.png`, Astro.url.origin).toString()
+    : new URL('/og.jpg', Astro.url.origin).toString();
 ---
 
-<Layout
-  title={pageTitle}
-  description={pageDescription}
-  isHome={false}
-  image={new URL(`/og/${post.slug}.png`, Astro.url.origin).toString()}>
+<Layout title={pageTitle} description={pageDescription} isHome={false} image={ogImage}>
   <Main>
     <Article {...post.data}>
       <Toc headings={headings} />

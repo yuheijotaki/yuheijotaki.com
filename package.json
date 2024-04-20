@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "tinacms dev -c \"astro dev\"",
+    "dev": "astro dev",
     "start": "astro dev",
-    "build": "tinacms build -c \"astro build && pagefind --site dist\"",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "lint:ts": "eslint src --ext .tsx,.ts,.astro",

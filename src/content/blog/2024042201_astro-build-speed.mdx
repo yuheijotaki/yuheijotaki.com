@@ -1,16 +1,16 @@
 ---
-title: Astro(SSG)のビルドはどのサーバーが早いのか
-description: Cloudflare, Vercel, Netlify, AWS Amplify(Hosting) にてAstroのビルド時間を計測してみたメモです。
+title: 各ホスティングサービスでAstro（SSG）のビルド時間を測ってみる
+description: Cloudflare, Vercel, Netlify, AWS Amplify（Hosting） にてAstro（SSG）のビルド時間を計測してみたメモです。
 pubDate: 2024-04-22T00:00:00.000Z
 ---
 
 ## 概要
 
-Cloudflare, Vercel, Netlify, AWS Amplify(Hosting) にてAstroのビルド時間を計測してみる
+Cloudflare, Vercel, Netlify, AWS Amplify（Hosting） にてAstro（SSG）のビルド時間を計測してみた。
 
 ## 結論
 
-Amplify 以外は早い
+Amplify（Hosting）以外は早い。
 
 ## 検証内容
 
@@ -63,7 +63,7 @@ Amplify 以外は早い
 5回目：23s
 ```
 
-### AWS Amplify
+### AWS Amplify（Hosting）
 
 ![](/images/2024042201_astro-build-speed_amplify.png)
 
@@ -79,21 +79,22 @@ Amplify 以外は早い
 
 ## Amplifyのビルドはなぜ早くないのか
 
-構築イメージ(Amazon Linux:2023)以外を選択、Node.jsのバージョン変更してもビルド時間は変わらず。
+構築イメージ(Amazon Linux:2023)以外を選択、Node.jsのバージョン変更などをしてもビルド時間は差がない。
 
-- デフォルトのDockerイメージが汎用的に作られているためカスタムイメージ作ればいけるかも
-  - [Amplifyのデプロイを高速化する試行錯誤(nodejs, react)](https://zenn.dev/2357gi/scraps/78b6f921fc652d)
-- CloudFrontディストリビューションへの伝播がそもそもVercelなどと違う仕組み？構成？のため
-  - [Very slow build time to a NextJS app with only 2 pages with SSR · Issue #2127 · aws-amplify/amplify-hosting](https://github.com/aws-amplify/amplify-hosting/issues/2127)
+- デフォルトのDockerイメージが汎用的に作られているため冗長な構成になっている説。カスタムイメージ作ればそれなりに早くなりそう
+- CloudFrontディストリビューションへの伝播がそもそもVercelなどと違う仕組み？構成？のため説。これはSSRの場合のみ？
 
 公式のissuesで結構避難が強そうな感じに受け取ったが、まあまあ前からある問題で根深そうだなと思った。
 
 ## まとめ
 
-- Amplify 以外は早い
-- Netlify は久しぶりに触ったが頑張っていそう
+- Amplify以外は早い
+- Netlifyは久しぶりに触ったが元気そう
 
-## ほか参考資料
+## 参考資料
 
-- [フロントエンドエンジニアに捧げるAWS Amplify Console | DevelopersIO](https://dev.classmethod.jp/articles/aws-amplify-console-guide-lines-for-frontend-engineer/)
+- [Amplifyのデプロイを高速化する試行錯誤(nodejs, react)](https://zenn.dev/2357gi/scraps/78b6f921fc652d)
+- [AWS Amplifyでカスタムビルドイメージを使う（2023年以降版）](https://rkd3.dev/post/amplifycustomimage/)
+- [Very slow build time to a NextJS app with only 2 pages with SSR · Issue #2127 · aws-amplify/amplify-hosting](https://github.com/aws-amplify/amplify-hosting/issues/2127)
 - [AWS Amplify hostingを利用したNext.jsのSSG #Next.js - Qiita](https://qiita.com/ssugimoto/items/f8d7d3a293dcf66890e5)
+- [フロントエンドエンジニアに捧げるAWS Amplify Console | DevelopersIO](https://dev.classmethod.jp/articles/aws-amplify-console-guide-lines-for-frontend-engineer/)

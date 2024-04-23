@@ -1,0 +1,119 @@
+---
+title: ポップオーバーAPIを試してみた
+description: ポップオーバーAPIの検証や所感を記したブログ記事です。
+pubDate: 2024-04-23T00:00:00.000Z
+---
+
+## はじめに
+
+アクションメニュー、トーストなどの非モーダルな覆い被さる系のUIを表現する [ポップオーバーAPI](https://developer.mozilla.org/ja/docs/Web/API/Popover_API) についての検証記事。
+
+## サポート状況
+
+最新版のFireFox125でサポートされ、各モダンブラウザの最新版ではサポート済み。  
+参考： [HTMLElement API: popover | Can I use...](https://caniuse.com/mdn-api_htmlelement_popover)
+
+## 概要
+
+MDNのサンプル（[Popover API examples](https://mdn.github.io/dom-examples/popover-api/)）を見ると挙動が分かりやすい。
+使い方としては主に2種類ある。
+
+1. HTML属性によって宣言的に作成する
+2. JavaScript APIからコントロールする
+
+1のHTMLのみでもUI実装が可能ということも特長のひとつのようで、この記事でもHTMLを中心に見ていきたい。
+
+## 基本
+
+ポップオーバーを作成する場合、次のHTMLで実現できる。
+
+```html
+<button popovertarget="mypopover">ポップオーバーの切り替え</button>
+<div id="mypopover" popover>ポップオーバーコンテンツ</div>
+```
+
+3つのHTML属性が使用できる。
+
+### 属性 `popover`
+
+ポップオーバー要素として扱う要素に付与する。
+付与された要素は、デフォルトで非表示（display: none状態）となり展開された場合にはトップレイヤーに表示される。
+
+| 値         | 同時に表示 | 他の開閉 | 簡単な解除 | その他              |
+| ---------- | ---------- | -------- | ---------- | ------------------- |
+| `"auto"`   | 不可       | 閉じる   | 有効       | 空の場合は `"auto"` |
+| `"manual"` | 可         | 閉じない | 無効       | &nbsp;              |
+
+- 同時に表示
+  - 独立した複数のポップオーバーを同時に表示するか否か
+- 他の開閉
+  - 開いたときに他のポップオーバーUIを閉じるか否か
+- 簡単な解除
+  - Light Dismissと言われるもので、ESCキー/ポップオーバー外側をクリックで閉じるなどが有効か否か
+
+### 属性 `popovertarget`
+
+`<button>`（または `<input>` の `type="button"`）に制御するポップオーバーのIDを値として設定する。
+
+### 属性 `popovertargetaction`
+
+ポップオーバーの表示と非表示動作を値として設定する。
+
+| 値         | 動作                                                                                     | その他                |
+| ---------- | ---------------------------------------------------------------------------------------- | --------------------- |
+| `"toggle"` | ポップオーバーが非表示の場合は表示され、ポップオーバーが表示されている場合は非表示にする | 空の場合は `"toggle"` |
+| `"show"`   | 非表示のポップオーバーを表示する                                                         | &nbsp;                |
+| `"hide"`   | 表示されているポップオーバーを非表示にする                                               | &nbsp;                |
+
+## 使い所
+
+モードレスで重要な情報や導くべき操作の詳細を示すものに使用する、と定義してみる。  
+[MDN](https://developer.mozilla.org/ja/docs/Web/API/Popover_API)では下記の説明がある。
+
+> オーバーレイ、ポップアップ、ポップオーバー、ダイアログなど、さまざまな名称で呼ばれます。
+> ...
+> ポップオーバー API を使用して作成されたポップオーバーは常に非モーダルです。
+> ...
+> ポップオーバー API のよくある用途は、アクションメニュー、独自の「トースト」通知、フォーム要素のサジェスト、コンテンツピッカー、チュートリアル UI などのユーザーと対話する要素があります。
+
+Webサイトではポップオーバーが頻出するイメージはあまり湧かないが、クリックすると展開されるメニューやツールチップが該当しそう。  
+例えばAPGで例が掲載されている [Actions Menu Button Example](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/examples/menu-button-actions-active-descendant/) はpopoverの使い所に近いのではと感じた。
+
+## スタイリング
+
+次の擬似クラス、要素に対してスタイリングを行う。  
+だいたいアニメーションさせるのに一癖あるのもdialog要素と似ている。
+
+### `:popover-open`
+
+ポップオーバーが開いている状態で付与される疑似クラス
+
+### `::backdrop`
+
+ポップオーバーの背景として付与される疑似要素
+
+### 位置調整
+
+いじっていて気付いたが最上位レイヤーに配置されるため、トリガーとなるボタンなどが配置されている要素起点の位置指定はCSSのみだと難しい認識。
+[CSS Anchor Positioning](https://drafts.csswg.org/css-anchor-position-1/) がいつの日かサポートされればツールチップなども手軽に実現できそう。
+
+## キーボード移動
+
+`popover` 属性が `"auto"` の場合、 `popovertarget` 属性が付いたトリガーをクリックした後ポップオーバー要素内にフォーカスは移動しない。  
+これを実現するために最初のリンク要素に `autofocus` を付与しておくなどの対応が必要。  
+またポップオーバー表示中は背後のコンテンツへもフォーカス移動が可能。
+
+### まとめ
+
+できるなら使いたいと思ったが、位置調整が難しそうでそこが解消しないとなという感想。  
+期待はしていないがモードレスな被さるUIはちょくちょく実装することがあるため引き続き追っていきたい。
+
+## 参考資料
+
+- [ポップオーバー API - Web API | MDN](https://developer.mozilla.org/ja/docs/Web/API/Popover_API)
+- [ポップオーバー API の使用 - Web API | MDN](https://developer.mozilla.org/ja/docs/Web/API/Popover_API/Using)
+- [階層メニューやトーストUIが簡単に作れる新技術！　JavaScriptで利用するポップオーバーAPI - ICS MEDIA](https://ics.media/entry/230530/)
+- [Popover API - JavaScript不要、HTMLのみでポップオーバーUI](https://zenn.dev/yusukehirao/articles/popover-api-and-attributes)
+- [2024年はHTMLのみでモーダルが作れそう。popover属性を試してみる。 ++ Gaji-Laboブログ](https://www.gaji.jp/blog/2024/01/23/18229/)
+- [実践 popover 属性 〜HTMLのみのモーダルで実案件に使えるのか確認〜 ++ Gaji-Laboブログ](https://www.gaji.jp/blog/2024/02/16/18434/)
+- [ポップアップが画面内に収まらない場合に自動的に表示位置を調整する CSS Anchor Positioning](https://azukiazusa.dev/blog/css-anchor-positioning/)

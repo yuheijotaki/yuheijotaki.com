@@ -28,4 +28,12 @@
   --line-height-md: 2;
   --letter-spacing-md: 0.02em;
   --letter-spacing-lg: 0.04em;
+
+  // animation
+  --transition-duration: 0.2s;
+  --transition-easing: cubic-bezier(0.18, 0.06, 0.23, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    --transition-duration: 0s;
+  }
 }

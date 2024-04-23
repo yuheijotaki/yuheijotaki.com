@@ -2,6 +2,25 @@
 @use 'extension' as *;
 @use 'foundation';
 
+html {
+  &.is-changing {
+    .transition-fade {
+      opacity: 1;
+      transition:
+        opacity var(--transition-duration) var(--transition-easing),
+        transform var(--transition-duration) var(--transition-easing);
+      transform: translateY(0);
+    }
+  }
+
+  &.is-animating {
+    .transition-fade {
+      opacity: 0;
+      transform: translateY(0.25rem);
+    }
+  }
+}
+
 .wrapper {
   max-width: var(--container-width);
   padding-block: var(--spacing-sm);

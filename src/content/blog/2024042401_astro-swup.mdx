@@ -1,0 +1,66 @@
+---
+title: swup/astroを試してみた
+description: Astroのサイトでスムーズなページ遷移を実現するswupを試した雑感です。
+pubDate: 2024-04-24T00:00:00.000Z
+---
+
+## はじめに
+
+Astroのインテグレーションとして提供されている [swup](https://github.com/swup/astro) を本サイトで試してみたので雑感
+
+## 導入
+
+`@swup/astro` のパッケージをインストールして `astro.config.*` に `integrations: [swup()]` とする。  
+デフォルトでは `<main>` タグを対象としてフェードイン/アウトのアニメーションが適用される。
+
+## 設定、オプションやカスタマイズ
+
+今回の適用内容：  
+https://github.com/yuheijotaki/yuheijotaki.com/commit/88f60bccfd4690da5563c8fdb0e6f576f7dbe308
+
+### 設定
+
+気になった2つのみ抜粋
+
+#### `theme`
+
+デフォルトでは `'fade'` だが、CSSアニメーションで指定する場合は `false` とする。
+
+#### `accessibility`
+
+`true` （デフォルト）でトランジション対象のセレクタに遷移ごとに `tabindex="-1"` が付与される。  
+また遷移ごとに下記のようなライブリージョンが挿入される。
+
+```html
+<span
+  id="live-region-xxxx"
+  aria-live="polite"
+  role="status"
+  style="clip: rect(1px, 1px, 1px, 1px); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px">
+  Navigated to: このウェブサイトについて</span
+>
+```
+
+トップページ遷移時にロゴにフォーカス移動するのがいいなど、そういう調整は個別に対応が必要そう。
+
+### その他
+
+ページ内遷移だがトランジションさせたくない場合はリンクや親要素に属性 `data-no-swup` を付与する。
+
+```html
+<a href="/feed.xml" data-no-swup>RSSフィード</a>
+```
+
+## 雑感
+
+案件レベルだといろいろな発見がありそうだが現状での感想
+
+- 基本的には使えそうと思った。フォームとの連携だとか複雑なものは分からない
+- プリロードが効くためアニメーションなしにしてもページの表示が速くなった体感はあり
+- Lighthouseなどのスコアには影響なかった
+- `data-no-swup` 然り、swupオリジナルのオプションも効く感じなのでいろいろ見たらもっといろいろできそう
+- swupが悪いわけではないが、根本的な基盤みたいなところで癖あることを1つ追加する感じなのでやっていくうちに辛いこともあるかもしれない
+
+## 参考資料
+
+- [swup — Versatile and extensible page transition library for server-rendered websites](https://swup.js.org/)

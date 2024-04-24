@@ -23,6 +23,10 @@ body {
   outline-offset: 2px;
 }
 
+:focus:not(.focus-visible) {
+  outline: none;
+}
+
 a {
   color: var(--color-link);
 

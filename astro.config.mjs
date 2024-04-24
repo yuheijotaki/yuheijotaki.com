@@ -23,7 +23,7 @@ export default defineConfig({
     react(),
     swup({
       theme: false,
-      animationClass: 'transition-',
+      // animationClass: 'transition-',
       // containers: ['main'] // セレクタ選択できるが指定すると動かなかったためHTML要素 `.transition-fade` を指定
       cache: true,
       preload: {
@@ -32,7 +32,9 @@ export default defineConfig({
       },
       accessibility: true, // フォーカスが移動しないためtrueにするが、トップではロゴにフォーカス移動したほうがよさげなので要調整？
       progress: false,
+      smoothScrolling: false,
       // debug: true,
+      globalInstance: true,
     }),
     mdx(),
     sitemap(),

@@ -15,6 +15,18 @@ const Tag = isHome ? 'h1' : 'p';
   <Heading text={SITE_TITLE} tag={Tag} level={1} url="/" bold={false} />
 </header>
 
+<script is:inline>
+  window.swup.hooks.on(
+    'page:view',
+    (visit) => {
+      // console.log(visit);
+      console.log(`from: "${visit.from.url}"`);
+      console.log(`to: "${visit.to.url}"`);
+    },
+    { once: true },
+  );
+</script>
+
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;

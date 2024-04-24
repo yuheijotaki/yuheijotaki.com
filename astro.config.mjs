@@ -1,8 +1,8 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
-import swup from '@swup/astro';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import swup from '@swup/astro';
 import icon from 'astro-icon';
 
 // https://astro.build/config
@@ -21,6 +21,8 @@ export default defineConfig({
       SVG: false,
     }),
     react(),
+    mdx(),
+    sitemap(),
     swup({
       theme: false,
       // animationClass: 'transition-',
@@ -33,11 +35,9 @@ export default defineConfig({
       accessibility: true, // フォーカスが移動しないためtrueにするが、トップではロゴにフォーカス移動したほうがよさげなので要調整？
       progress: false,
       smoothScrolling: false,
-      // debug: true,
       globalInstance: true,
+      // debug: true,
     }),
-    mdx(),
-    sitemap(),
     icon({
       iconDir: 'src/icons',
     }),

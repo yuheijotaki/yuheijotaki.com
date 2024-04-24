@@ -156,7 +156,7 @@ const { title, pubDate } = Astro.props;
 
     :global(blockquote) {
       padding: 0.6em 1.2em;
-      border-left: 0.04rem solid var(--color-gray);
+      border-left: 0.75rem solid var(--color-gray);
     }
 
     :global(blockquote) :global(p) {
@@ -167,7 +167,7 @@ const { title, pubDate } = Astro.props;
       font-size: 1.4rem;
     }
 
-    :global(:where(p, li)) {
+    :global(:where(h1, h2, h3, h4, h5, h6, p, li, th, td)) {
       :global(code) {
         padding: 0.1em 0.4em 0.2em;
         background-color: var(--color-gray);
@@ -203,6 +203,7 @@ const { title, pubDate } = Astro.props;
 
     :global(table) {
       width: 100%;
+      border-collapse: collapse;
     }
 
     :global(table) :global(pre) {
@@ -212,14 +213,14 @@ const { title, pubDate } = Astro.props;
     :global(th),
     :global(td) {
       padding: 0.7em;
-      font-size: 1em;
+      font-size: 0.9em;
       line-height: 1.4;
       border: 1px solid var(--color-gray);
     }
 
     :global(thead) :global(tr),
     :global(tfoot) :global(tr) {
-      background-color: var(--color-gray);
+      background-color: var(--color-light);
     }
 
     :global(thead) :global(th),

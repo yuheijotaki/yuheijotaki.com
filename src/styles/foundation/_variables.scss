@@ -6,7 +6,7 @@
   --color-dark: #100f0f;
   --color-dark-sub: #40403d;
   --color-light: #fffcf0;
-  --color-gray: #ececec;
+  --color-gray: #e5e3da;
   --color-link: #0018ee;
   --color-link-visited: #6f0878;
 
@@ -30,7 +30,7 @@
   --letter-spacing-lg: 0.04em;
 
   // animation
-  --transition-duration: 0.2s;
+  --transition-duration: 0.15s;
   --transition-easing: cubic-bezier(0.18, 0.06, 0.23, 1);
 
   @media (prefers-reduced-motion: reduce) {

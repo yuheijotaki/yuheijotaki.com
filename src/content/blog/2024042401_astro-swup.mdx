@@ -11,37 +11,34 @@ Astroのインテグレーションとして提供されている [swup](https:/
 ## 導入
 
 `@swup/astro` のパッケージをインストールして `astro.config.*` に `integrations: [swup()]` とする。  
-デフォルトでは `<main>` タグを対象としてフェードイン/アウトのアニメーションが適用される。
+デフォルトでは `<main>` タグを対象としてフェードイン/アウトのアニメーションが適用される。  
+今回は `<main>` と `<footer>` に適用してみた。
 
-## 設定、オプションやカスタマイズ
+## オプション
 
 今回の適用内容：  
 https://github.com/yuheijotaki/yuheijotaki.com/commit/88f60bccfd4690da5563c8fdb0e6f576f7dbe308
 
 ### 設定
 
-気になった2つのみ抜粋
+2つのみ抜粋
 
 #### `theme`
 
-デフォルトでは `'fade'` だが、CSSアニメーションで指定する場合は `false` とする。
+デフォルトでは `'fade'` だがCSSアニメーションで指定する場合は `false` とする。
 
 #### `accessibility`
 
-`true` （デフォルト）でトランジション対象のセレクタに遷移ごとに `tabindex="-1"` が付与される。  
+`true` （デフォルト）でトランジション対象のセレクタ（の一番上の要素？）に遷移ごとに `tabindex="-1"` が付与される。  
 また遷移ごとに下記のようなライブリージョンが挿入される。
 
 ```html
-<span
-  id="live-region-xxxx"
-  aria-live="polite"
-  role="status"
-  style="clip: rect(1px, 1px, 1px, 1px); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px">
-  Navigated to: このウェブサイトについて</span
->
+<span id="live-region-xxxxx" aria-live="polite" role="status" style="xxxxx">
+  Navigated to: このウェブサイトについて
+</span>
 ```
 
-トップページ遷移時にロゴにフォーカス移動するのがいいなど、そういう調整は個別に対応が必要そう。
+トップページ遷移時にロゴにフォーカス移動するのがいいなど、そのような調整は個別に対応が必要そう。
 
 ### その他
 
@@ -57,8 +54,8 @@ https://github.com/yuheijotaki/yuheijotaki.com/commit/88f60bccfd4690da5563c8fdb0
 
 - 基本的には使えそうと思った。フォームとの連携だとか複雑なものは分からない
 - プリロードが効くためアニメーションなしにしてもページの表示が速くなった体感はあり
-- Lighthouseなどのスコアには影響なかった
-- `data-no-swup` 然り、swupオリジナルのオプションも効く感じなのでいろいろ見たらもっといろいろできそう
+- Lighthouse、axeのスコアには影響なかった
+- `data-no-swup` 然り、swupオリジナルのオプションもいろいろ見たらもっといろいろできそう
 - swupが悪いわけではないが、根本的な基盤みたいなところで癖あることを1つ追加する感じなのでやっていくうちに辛いこともあるかもしれない
 
 ## 参考資料

@@ -36,6 +36,7 @@ export default defineConfig({
       progress: false,
       smoothScrolling: false,
       globalInstance: true,
+      // updateBodyClass: true,
       // debug: true,
     }),
     icon({

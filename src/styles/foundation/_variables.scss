@@ -3,10 +3,10 @@
 
 :root {
   // color
-  --color-dark: #100f0f;
-  --color-dark-sub: #40403d;
-  --color-light: #fffcf0;
-  --color-gray: #e5e3da;
+  --color-primary: #100f0f;
+  --color-primary-sub: #40403d;
+  --color-secondary: #fffcf0;
+  --color-subtle: #e5e3da;
   --color-link: #0018ee;
   --color-link-visited: #6f0878;
 
@@ -20,6 +20,9 @@
   --spacing-xl: #{spacing(30)};
 
   // font
+  --font-family-sans-serif: 'Helvetica Neue', arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+    meiryo, sans-serif;
+  --font-family-mono: menlo, monaco, consolas, 'Liberation Mono', 'Courier New', monospace;
   --font-size-sm: 1.4rem;
   --font-size-md: 1.6rem;
   --font-size-lg: 2.6rem;

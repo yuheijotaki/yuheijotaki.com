@@ -65,8 +65,10 @@
 
 @mixin hover {
   @media (hover: hover) {
+    transition: background-color var(--transition-duration) var(--transition-easing);
+
     &:hover {
-      background-color: rgb(0 0 0 / 7.5%);
+      background-color: var(--color-subtle);
     }
   }
 }

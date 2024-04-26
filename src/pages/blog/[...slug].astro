@@ -18,8 +18,6 @@ type Props = CollectionEntry<'blog'>;
 const post = Astro.props;
 const { Content, headings } = await post.render();
 
-console.log(Content);
-
 const pageTitle = `${post.data.title} | ${SITE_TITLE}`;
 const pageDescription = post.data.description || SITE_DESCRIPTION;
 const ogImage =

@@ -33,7 +33,7 @@ const { title, pubDate } = Astro.props;
 
     :global(img) {
       vertical-align: text-bottom;
-      border: var(--color-gray) 1px solid;
+      border: var(--color-subtle) 1px solid;
     }
 
     :global(small) {
@@ -94,7 +94,7 @@ const { title, pubDate } = Astro.props;
       margin-top: 1.75em;
       margin-bottom: 0.875em;
       font-size: 2rem;
-      color: var(--color-dark-sub);
+      color: var(--color-primary-sub);
     }
 
     :global(h4) {
@@ -156,7 +156,7 @@ const { title, pubDate } = Astro.props;
 
     :global(blockquote) {
       padding: 0.6em 1.2em;
-      border-left: 0.75rem solid var(--color-gray);
+      border-left: 0.75rem solid var(--color-subtle);
     }
 
     :global(blockquote) :global(p) {
@@ -164,13 +164,15 @@ const { title, pubDate } = Astro.props;
     }
 
     :global(:where(code, kbd, samp, pre)) {
+      font-family: var(--font-family-mono);
       font-size: 1.4rem;
+      border-radius: 0.25rem;
     }
 
     :global(:where(h1, h2, h3, h4, h5, h6, p, li, th, td)) {
       :global(code) {
         padding: 0.1em 0.4em 0.2em;
-        background-color: var(--color-gray);
+        background-color: var(--color-subtle);
       }
     }
 
@@ -215,12 +217,12 @@ const { title, pubDate } = Astro.props;
       padding: 0.7em;
       font-size: 0.9em;
       line-height: 1.4;
-      border: 1px solid var(--color-gray);
+      border: 1px solid var(--color-subtle);
     }
 
     :global(thead) :global(tr),
     :global(tfoot) :global(tr) {
-      background-color: var(--color-light);
+      background-color: var(--color-secondary);
     }
 
     :global(thead) :global(th),
@@ -232,7 +234,7 @@ const { title, pubDate } = Astro.props;
     }
 
     :global(tbody) :global(tr) {
-      background-color: var(--color-light);
+      background-color: var(--color-secondary);
     }
   }
 </style>

@@ -1,0 +1,43 @@
+---
+title: Resendを試してみた
+description: メール配信サービスであるResendを試してみたので雑感です。
+pubDate: 2024-04-29T00:00:00.000Z
+---
+
+## はじめに
+
+メール配信サービスである [Resend](https://resend.com/) を試してみたので雑感
+
+## 概要
+
+Astro（VercelアダプターのSSR）でResend経由でメールを送信する。  
+ユーザー名、メールアドレス、メッセージを入力して送信ボタンクリックでメールが送信される。
+
+リポジトリ： [yuheijotaki/astro-resend](https://github.com/yuheijotaki/astro-resend)
+
+## 設定など
+
+### Resend
+
+- Resendでアカウント登録
+- APIキー作成
+- ドメイン登録
+  - 提示されるMX, TXTレコードを自身のドメインのDNSレコードに追加
+  - 約1時間後にVerifiedになった
+
+### Astro、Vercel
+
+- 新規リポジトリ作成
+  - `npm create astro@latest -- --template minimal` で作った
+- `output: 'server'` を設定
+- `adapter: vercel()` を設定
+- [公式のフォーム作成レシピ](https://docs.astro.build/ja/recipes/build-forms/) を参考にフォームを作成
+- 今回はおまじない程度のバリデーションに [Zod](https://zod.dev/) も入れてみた
+- Vercelとデプロイ連携してプッシュ
+
+## 所感など
+
+- ドメイン周りを除いて送るだけであれば最初のチュートリアルの内容ですぐに使えてよい
+- 無料プランは1ドメインや配信リージョンはUSになるが、3,000/月、100/日まで送信可能
+- 2023年開始のサービスで管理画面UIが今っぽい（Vercel風）
+- ReactコンポーネントでHTMLメールが書ける [React Email](https://react.email/) というライブラリもResendチームの人がやっているようで一緒に使ってねということみたい

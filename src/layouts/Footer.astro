@@ -44,6 +44,7 @@ import Button from '@/components/Button.astro';
   function toggleColorMode() {
     const toggleButton = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
     toggleButton?.addEventListener('click', () => {
+      alert('clicked');
       const currentMode = getColorMode();
       const newMode = currentMode === 'dark' ? 'light' : 'dark';
       localStorage.setItem('color-mode', newMode);

@@ -1,5 +1,5 @@
 ---
-// import SpeedInsights from '@vercel/speed-insights/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import Head from '@/layouts/Head.astro';
 import Header from '@/layouts/Header.astro';
 import Footer from '@/layouts/Footer.astro';
@@ -24,7 +24,7 @@ const { title, description, image, isHome } = Astro.props;
       <Header isHome={isHome} />
       <slot />
       <Footer />
-      <!-- <SpeedInsights /> -->
+      <SpeedInsights />
     </div>
   </body>
 </html>

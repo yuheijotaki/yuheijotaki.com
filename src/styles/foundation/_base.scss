@@ -19,7 +19,7 @@ body {
 
 :focus-visible {
   outline: 3px solid var(--color-link);
-  outline-offset: 4px;
+  outline-offset: 2px;
 }
 
 :focus:not(.focus-visible) {

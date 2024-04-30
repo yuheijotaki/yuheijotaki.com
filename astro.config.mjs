@@ -44,6 +44,9 @@ export default defineConfig({
       iconDir: 'src/icons',
     }),
   ],
+  devToolbar: {
+    enabled: false,
+  },
   // experimental: {
   //   contentCollectionCache: true,
   // },

@@ -14,8 +14,8 @@ const { type = 'button', text, ...rest } = Astro.props;
   @use '@/styles/extension' as *;
 
   .button {
-    padding: 0.5rem 1.25rem;
-    font-size: 1.4rem;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
     color: var(--color-primary);
     cursor: pointer;
@@ -26,7 +26,7 @@ const { type = 'button', text, ...rest } = Astro.props;
 
     @media (hover: hover) {
       &:hover {
-        background-color: color-mix(in srgb, currentcolor 25%, transparent);
+        background-color: color-mix(in srgb, currentcolor 20%, transparent);
       }
     }
   }

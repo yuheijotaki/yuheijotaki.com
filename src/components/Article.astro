@@ -156,7 +156,7 @@ const { title, pubDate } = Astro.props;
 
     :global(blockquote) {
       padding: 0.6em 1.2em;
-      border-left: 0.75rem solid var(--color-subtle);
+      border-left: 1rem solid var(--color-subtle);
     }
 
     :global(blockquote) :global(p) {
@@ -215,9 +215,14 @@ const { title, pubDate } = Astro.props;
     :global(th),
     :global(td) {
       padding: 0.7em;
-      font-size: 0.9em;
-      line-height: 1.4;
+      font-size: 1.4rem;
+      line-height: 1.5;
+      overflow-wrap: normal;
       border: 1px solid var(--color-subtle);
+    }
+
+    :global(th) {
+      background-color: color-mix(in srgb, currentcolor 5%, transparent);
     }
 
     :global(thead) :global(tr),
@@ -230,7 +235,7 @@ const { title, pubDate } = Astro.props;
     :global(tfoot) :global(th),
     :global(tfoot) :global(td) {
       padding: 0.75em;
-      font-size: 1em;
+      font-size: 1.4rem;
     }
 
     :global(tbody) :global(tr) {

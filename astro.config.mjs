@@ -38,6 +38,7 @@ export default defineConfig({
       globalInstance: true,
       // updateBodyClass: true,
       // debug: true,
+      reloadScripts: false,
     }),
     icon({
       iconDir: 'src/icons',

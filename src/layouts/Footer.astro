@@ -1,6 +1,7 @@
 ---
 import Block from '@/components/Block.astro';
 import Heading from '@/components/Heading.astro';
+import Button from '@/components/Button.astro';
 ---
 
 <footer class="footer transition-fade">
@@ -10,7 +11,54 @@ import Heading from '@/components/Heading.astro';
     <li><a href="/blog/">ブログ記事一覧</a></li>
     <li><a href="/feed.xml" data-no-swup>RSSフィード</a></li>
   </Block>
+  <Button type="button" text="色をダークモードに切り替える" data-toggle-theme />
 </footer>
+
+<script>
+  function setRootColorMode(mode: string) {
+    const root = document.querySelector(':root') as HTMLElement;
+    root?.style.setProperty('--color-mode', mode);
+  }
+
+  function updateToggleButton(mode: string) {
+    const button = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
+    button.innerHTML =
+      mode === 'dark' ? '色をライトモードに切り替える' : '色をダークモードに切り替える';
+  }
+
+  function setColorMode(mode: string) {
+    setRootColorMode(mode);
+    updateToggleButton(mode);
+  }
+
+  function getColorMode(): string {
+    const storedMode = localStorage.getItem('color-mode');
+    if (storedMode) {
+      return storedMode;
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  }
+
+  function toggleColorMode() {
+    const toggleButton = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
+    toggleButton?.addEventListener('click', () => {
+      const currentMode = getColorMode();
+      const newMode = currentMode === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('color-mode', newMode);
+      setColorMode(newMode);
+    });
+  }
+
+  function initColorMode() {
+    const initialColorMode = getColorMode();
+    setColorMode(initialColorMode);
+    toggleColorMode();
+  }
+
+  initColorMode();
+</script>
 
 <style lang="scss">
   @use '@/styles/variables' as var;
@@ -18,5 +66,9 @@ import Heading from '@/components/Heading.astro';
 
   .footer {
     margin-block-start: var(--spacing-sm);
+
+    &:global(.button) {
+      margin-block-start: var(--spacing-sm);
+    }
   }
 </style>

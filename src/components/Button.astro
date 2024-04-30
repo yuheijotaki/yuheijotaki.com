@@ -1,0 +1,33 @@
+---
+interface Props {
+  type?: 'button' | 'submit' | 'reset';
+  text?: string;
+}
+
+const { type = 'button', text, ...rest } = Astro.props;
+---
+
+<button class="button" type={type} {...rest}>{text}</button>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  .button {
+    padding: 0.5rem 1.25rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    cursor: pointer;
+    background-color: color-mix(in srgb, currentcolor 15%, transparent);
+    border: none;
+    border-radius: 0.5rem;
+    transition: background-color var(--transition-duration) var(--transition-easing);
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: color-mix(in srgb, currentcolor 25%, transparent);
+      }
+    }
+  }
+</style>

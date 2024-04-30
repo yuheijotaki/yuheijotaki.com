@@ -2,6 +2,8 @@
 @use '../variables' as var;
 
 :root {
+  --color-mode: light;
+
   // color
   --color-primary: #100f0f;
   --color-primary-sub: #40403d;
@@ -39,4 +41,13 @@
   @media (prefers-reduced-motion: reduce) {
     --transition-duration: 0s;
   }
+}
+
+:root[style*='--color-mode: dark'] {
+  --color-primary: #fffcf0;
+  --color-primary-sub: #dcd9ce;
+  --color-secondary: #1c1a1a;
+  --color-subtle: #40403d;
+  --color-link: #0018ee;
+  --color-link-visited: #7573ff;
 }

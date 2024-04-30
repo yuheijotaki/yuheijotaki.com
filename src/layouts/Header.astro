@@ -16,16 +16,16 @@ const Tag = isHome ? 'h1' : 'p';
 </header>
 
 <script>
-  // const setup = () => {
-  //   window.swup.hooks.on('page:view', (visit) => {
-  //     console.log(`${visit.to.url}`);
-  //   });
-  // };
-  // if (window.swup) {
-  //   setup();
-  // } else {
-  //   document.addEventListener('swup:enable', setup);
-  // }
+  const setup = () => {
+    window.swup.hooks.on('page:view', (visit) => {
+      console.log('setup');
+    });
+  };
+  if (window.swup) {
+    setup();
+  } else {
+    document.addEventListener('swup:enable', setup);
+  }
 
   // window.swup?.hooks.on(
   //   'page:view',

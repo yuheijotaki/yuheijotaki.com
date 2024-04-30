@@ -66,17 +66,21 @@ import Button from '@/components/Button.astro';
 
   initColorMode();
 
-  const setup = () => {
-    window.swup.hooks.on('content:replace', () => {
-      console.log('setup() content:replace');
-      initColorMode();
-    });
-  };
-  if (window.swup) {
-    setup();
-  } else {
-    document.addEventListener('swup:enable', setup);
-  }
+  // const setup = () => {
+  //   window.swup.hooks.on(
+  //     'content:replace',
+  //     () => {
+  //       console.log('setup() content:replace');
+  //       initColorMode();
+  //     },
+  //     { once: true },
+  //   );
+  // };
+  // if (window.swup) {
+  //   setup();
+  // } else {
+  //   document.addEventListener('swup:enable', setup);
+  // }
 </script>
 
 <script is:inline>

@@ -27,6 +27,7 @@ import Button from '@/components/Button.astro';
   }
 
   function setColorMode(mode: string) {
+    console.log('setColorMode()');
     setRootColorMode(mode);
     updateToggleButton(mode);
   }
@@ -45,7 +46,7 @@ import Button from '@/components/Button.astro';
     const toggleButton = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
     toggleButton?.addEventListener('click', (event) => {
       event.preventDefault();
-      // console.log('clicked');
+      console.log('data-toggle-theme clicked');
       const currentMode = getColorMode();
       const newMode = currentMode === 'dark' ? 'light' : 'dark';
       localStorage.setItem('color-mode', newMode);
@@ -54,10 +55,11 @@ import Button from '@/components/Button.astro';
   }
 
   function initColorMode() {
-    // console.log('initColorMode');
+    console.log('initColorMode() start');
     const initialColorMode = getColorMode();
     setColorMode(initialColorMode);
     toggleColorMode();
+    console.log('initColorMode() end');
   }
 
   initColorMode();

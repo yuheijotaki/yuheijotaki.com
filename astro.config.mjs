@@ -38,7 +38,7 @@ export default defineConfig({
       globalInstance: true,
       // updateBodyClass: true,
       // debug: true,
-      reloadScripts: false,
+      // reloadScripts: false, // 遷移時にscriptを再読み込みさせない
     }),
     icon({
       iconDir: 'src/icons',

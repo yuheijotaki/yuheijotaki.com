@@ -16,38 +16,38 @@ const Tag = isHome ? 'h1' : 'p';
 </header>
 
 <script is:inline>
-  // window.swup?.hooks.on(
-  //   'page:view',
-  //   (visit) => {
-  //     console.log(`from: "${visit.from.url}"`);
-  //     console.log(`to: "${visit.to.url}"`);
-  //     const body = document.querySelector('body');
-  //     body.classList.add('hoge');
-  //   },
-  //   { once: true },
-  // );
+  window.swup?.hooks.on(
+    'page:view',
+    (visit) => {
+      console.log(`from: "${visit.from.url}"`);
+      console.log(`to: "${visit.to.url}"`);
+      const body = document.querySelector('body');
+      body.classList.add('hoge');
+    },
+    { once: true },
+  );
 
-  // window.swup?.hooks.on(
-  //   'animation:in:start',
-  //   () => {
-  //     console.log('animation:in:start');
-  //   },
-  //   { once: true },
-  // );
-  // window.swup?.hooks.on(
-  //   'animation:out:end',
-  //   () => {
-  //     console.log('animation:out:end');
-  //   },
-  //   { once: true },
-  // );
-  // window.swup?.hooks.on(
-  //   'history:popstate',
-  //   () => {
-  //     console.log('history:popstate');
-  //   },
-  //   { once: true },
-  // );
+  window.swup?.hooks.on(
+    'animation:in:start',
+    () => {
+      console.log('animation:in:start');
+    },
+    { once: true },
+  );
+  window.swup?.hooks.on(
+    'animation:out:end',
+    () => {
+      console.log('animation:out:end');
+    },
+    { once: true },
+  );
+  window.swup?.hooks.on(
+    'history:popstate',
+    () => {
+      console.log('history:popstate');
+    },
+    { once: true },
+  );
 </script>
 
 <style lang="scss">

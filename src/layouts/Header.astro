@@ -16,24 +16,24 @@ const Tag = isHome ? 'h1' : 'p';
 </header>
 
 <script>
-  const setup = () => {
-    (window as any).swup.hooks.on('page:view', (visit: any) => {
-      console.log(`from: "${visit.from.url}"`);
-      console.log(`to: "${visit.to.url}"`);
-      const body = document.querySelector('body');
-      body?.classList.add('hoge');
-    });
-    (window as any).swup.hooks.on('content:replace', () => {
-      console.log('content:replace');
-      const body = document.querySelector('body');
-      body?.classList.add('fuga');
-    });
-  };
-  if ((window as any).swup) {
-    setup();
-  } else {
-    document.addEventListener('swup:enable', setup);
-  }
+  // const setup = () => {
+  //   (window as any).swup.hooks.on('page:view', (visit: any) => {
+  //     console.log(`from: "${visit.from.url}"`);
+  //     console.log(`to: "${visit.to.url}"`);
+  //     const body = document.querySelector('body');
+  //     body?.classList.add('hoge');
+  //   });
+  //   (window as any).swup.hooks.on('content:replace', () => {
+  //     console.log('content:replace');
+  //     const body = document.querySelector('body');
+  //     body?.classList.add('fuga');
+  //   });
+  // };
+  // if ((window as any).swup) {
+  //   setup();
+  // } else {
+  //   document.addEventListener('swup:enable', setup);
+  // }
 </script>
 
 <style lang="scss">

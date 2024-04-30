@@ -66,11 +66,27 @@ import Button from '@/components/Button.astro';
 
   initColorMode();
 
-  // Swupの遷移が完了した後にinitColorModeを再実行
-  document.addEventListener('swup:contentReplaced', () => {
-    console.log('swup:contentReplaced');
-    initColorMode();
-  });
+  const setup = () => {
+    window.swup.hooks.on('content:replace', () => {
+      console.log('setup() content:replace');
+      initColorMode();
+    });
+  };
+  if (window.swup) {
+    setup();
+  } else {
+    document.addEventListener('swup:enable', setup);
+  }
+</script>
+
+<script is:inline>
+  // window.swup?.hooks.on(
+  //   'content:replace',
+  //   () => {
+  //     console.log('content:replace');
+  //   },
+  //   { once: true },
+  // );
 </script>
 
 <style lang="scss">

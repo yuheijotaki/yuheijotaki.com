@@ -15,7 +15,18 @@ const Tag = isHome ? 'h1' : 'p';
   <Heading text={SITE_TITLE} tag={Tag} level={1} url="/" bold={false} />
 </header>
 
-<script is:inline>
+<script>
+  // const setup = () => {
+  //   window.swup.hooks.on('page:view', (visit) => {
+  //     console.log(`${visit.to.url}`);
+  //   });
+  // };
+  // if (window.swup) {
+  //   setup();
+  // } else {
+  //   document.addEventListener('swup:enable', setup);
+  // }
+
   // window.swup?.hooks.on(
   //   'page:view',
   //   (visit) => {

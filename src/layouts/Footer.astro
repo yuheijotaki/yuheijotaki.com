@@ -27,10 +27,8 @@ import Button from '@/components/Button.astro';
   }
 
   function setColorMode(mode: string) {
-    console.log('setColorMode() start');
     setRootColorMode(mode);
     updateToggleButton(mode);
-    console.log('setColorMode() end');
   }
 
   function getColorMode(): string {
@@ -47,7 +45,6 @@ import Button from '@/components/Button.astro';
     const toggleButton = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
     toggleButton?.addEventListener('click', (event) => {
       event.preventDefault();
-      console.log('data-toggle-theme clicked');
       const currentMode = getColorMode();
       const newMode = currentMode === 'dark' ? 'light' : 'dark';
       localStorage.setItem('color-mode', newMode);
@@ -56,25 +53,12 @@ import Button from '@/components/Button.astro';
   }
 
   function initColorMode() {
-    console.log('initColorMode() start');
     const initialColorMode = getColorMode();
     setColorMode(initialColorMode);
     toggleColorMode();
-    console.log('initColorMode() end');
-    console.log('---');
   }
 
   initColorMode();
-</script>
-
-<script is:inline>
-  // window.swup?.hooks.on(
-  //   'content:replace',
-  //   () => {
-  //     console.log('content:replace');
-  //   },
-  //   { once: true },
-  // );
 </script>
 
 <style lang="scss">

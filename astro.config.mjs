@@ -47,9 +47,9 @@ export default defineConfig({
   ],
   image: {
     service: imageService({
-      fallbackService: 'vercel',
-      placeholder: 'dominantColor',
-      layout: 'constrained',
+      // fallbackService: 'vercel',
+      // placeholder: 'dominantColor',
+      // layout: 'constrained',
     }),
   },
   devToolbar: {

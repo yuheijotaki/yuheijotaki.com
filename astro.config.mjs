@@ -42,7 +42,7 @@ export default defineConfig({
       globalInstance: true,
       // updateBodyClass: true,
       // debug: true,
-      reloadScripts: false, // 遷移時にscriptを再読み込みさせない
+      // reloadScripts: false, // 遷移時にscriptを再読み込みさせない
     }),
   ],
   image: {

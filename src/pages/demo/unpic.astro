@@ -6,18 +6,26 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
 
 <LayoutDemo title="unpic">
   <div class="wrapper">
-    <h1>unpic demo</h1>
+    <h1>unpic Demo</h1>
     <section>
-      <h2>placeholder</h2>
+      <h2>Placeholder</h2>
       <ul class="placeholder">
         <li>
           <p>placeholder="dominantColor"</p>
           <Image
             src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
             alt=""
-            width={400}
-            height={300}
+            width={200}
+            height={160}
             placeholder="dominantColor"
+          />
+          <Image
+            src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
+            alt=""
+            width={200}
+            height={160}
+            placeholder="dominantColor"
+            class="is-placehold"
           />
         </li>
         <li>
@@ -25,9 +33,17 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
           <Image
             src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
             alt=""
-            width={400}
-            height={300}
+            width={200}
+            height={160}
             placeholder="blurhash"
+          />
+          <Image
+            src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
+            alt=""
+            width={200}
+            height={160}
+            placeholder="blurhash"
+            class="is-placehold"
           />
         </li>
         <li>
@@ -35,9 +51,17 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
           <Image
             src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
             alt=""
-            width={400}
-            height={300}
+            width={200}
+            height={160}
             placeholder="lqip"
+          />
+          <Image
+            src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
+            alt=""
+            width={200}
+            height={160}
+            placeholder="lqip"
+            class="is-placehold"
           />
         </li>
         <li>
@@ -45,9 +69,17 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
           <Image
             src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
             alt=""
-            width={400}
-            height={300}
+            width={200}
+            height={160}
             placeholder="dominantColor"
+          />
+          <Image
+            src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
+            alt=""
+            width={200}
+            height={160}
+            placeholder="dominantColor"
+            class="is-placehold"
           />
         </li>
         <li>
@@ -55,9 +87,17 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
           <Image
             src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
             alt=""
-            width={400}
-            height={300}
+            width={200}
+            height={160}
             placeholder="blurhash"
+          />
+          <Image
+            src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
+            alt=""
+            width={200}
+            height={160}
+            placeholder="blurhash"
+            class="is-placehold"
           />
         </li>
         <li>
@@ -65,9 +105,17 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
           <Image
             src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
             alt=""
-            width={400}
-            height={300}
+            width={200}
+            height={160}
             placeholder="lqip"
+          />
+          <Image
+            src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
+            alt=""
+            width={200}
+            height={160}
+            placeholder="lqip"
+            class="is-placehold"
           />
         </li>
         <li>
@@ -75,16 +123,24 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
           <Image
             src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
             alt=""
-            width={400}
-            height={300}
+            width={200}
+            height={160}
             background={'red'}
+          />
+          <Image
+            src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
+            alt=""
+            width={200}
+            height={160}
+            background={'red'}
+            class="is-placehold"
           />
         </li>
       </ul>
     </section>
 
     <section>
-      <h2>layout</h2>
+      <h2>Layout</h2>
       <ul class="layout">
         <li>
           <p>layout="constrained"</p>
@@ -138,27 +194,55 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
     </section>
 
     <section>
-      <h2>picture</h2>
-      <picture class="picture">
-        <Source
-          src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
-          media="(min-width: 601px)"
-          layout="fullWidth"
-        />
-        <Source
-          src="https://images.unsplash.com/photo-1693711942336-f4f9963bd364"
-          media="(max-width: 600px)"
-          width={600}
-          height={600}
-        />
-        <Image
-          src="https://images.unsplash.com/photo-1693711942336-f4f9963bd364"
-          width={200}
-          height={200}
-          alt="Aurora"
-          unstyled
-        />
-      </picture>
+      <h2>Picture</h2>
+      <ul>
+        <li>
+          <p>avif, webp</p>
+          <picture>
+            <Source
+              src={'https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6'}
+              type="image/avif"
+              width={800}
+              height={600}
+            />
+            <Source
+              src={'https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6'}
+              type="image/webp"
+              width={800}
+              height={600}
+            />
+            <Image
+              src={'https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6'}
+              width={800}
+              height={600}
+              alt=""
+            />
+          </picture>
+        </li>
+        <li>
+          <picture class="picture">
+            <p>@media</p>
+            <Source
+              src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
+              media="(min-width: 601px)"
+              layout="fullWidth"
+            />
+            <Source
+              src="https://images.unsplash.com/photo-1693711942336-f4f9963bd364"
+              media="(max-width: 600px)"
+              width={600}
+              height={600}
+            />
+            <Image
+              src="https://images.unsplash.com/photo-1693711942336-f4f9963bd364"
+              width={200}
+              height={200}
+              alt="Aurora"
+              unstyled
+            />
+          </picture>
+        </li>
+      </ul>
     </section>
   </div>
 </LayoutDemo>
@@ -167,20 +251,24 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
   const placeholderElement = document.querySelector('.placeholder');
 
   if (placeholderElement) {
-    const img = placeholderElement.querySelectorAll('img');
+    const images = placeholderElement.querySelectorAll('.is-placehold');
 
-    img.forEach((img) => {
-      img.addEventListener('mouseover', () => {
-        img.setAttribute('data-src', img.src);
-        img.setAttribute('data-srcset', img.srcset);
-        img.src =
-          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3C/svg%3E";
-        img.removeAttribute('srcset');
-      });
-      img.addEventListener('mouseout', () => {
-        img.src = img.getAttribute('data-src')!;
-        img.srcset = img.getAttribute('data-srcset')!;
-      });
+    images.forEach((img) => {
+      img.src =
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3C/svg%3E";
+      img.removeAttribute('srcset');
+
+      // img.addEventListener('mouseover', () => {
+      //   img.setAttribute('data-src', img.src);
+      //   img.setAttribute('data-srcset', img.srcset);
+      //   img.src =
+      //     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3C/svg%3E";
+      //   img.removeAttribute('srcset');
+      // });
+      // img.addEventListener('mouseout', () => {
+      //   img.src = img.getAttribute('data-src')!;
+      //   img.srcset = img.getAttribute('data-srcset')!;
+      // });
     });
   }
 </script>

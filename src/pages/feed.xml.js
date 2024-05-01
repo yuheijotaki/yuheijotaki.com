@@ -7,9 +7,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 const parser = new MarkdownIt();
 
 export async function GET(context) {
-  const allPosts = (await getCollection('blog')).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-  );
+  const allPosts = (await getCollection('blog'))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   const feedPosts = allPosts.slice(0, 10);
   return rss({
     title: SITE_TITLE,

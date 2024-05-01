@@ -48,24 +48,20 @@ const groupedHeadings = headings.reduce((array, heading) => {
 }
 
 <script>
-  function focusTargetSection() {
-    const tocLinks = document.querySelectorAll('nav[aria-label="目次"] a');
-    tocLinks.forEach((link) => {
-      link.addEventListener('click', function (event: any) {
-        event.preventDefault();
-        const targetId = event.target?.getAttribute('href').slice(1);
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          targetElement.setAttribute('tabindex', '-1');
-          targetElement.focus();
-        }
-      });
-    });
-  }
-
   const setup = () => {
     (window as any).swup.hooks.on('page:view', () => {
-      focusTargetSection();
+      const tocLinks = document.querySelectorAll('nav[aria-label="目次"] a');
+      tocLinks.forEach((link) => {
+        link.addEventListener('click', function (event: any) {
+          event.preventDefault();
+          const targetId = event.target?.getAttribute('href').slice(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            targetElement.setAttribute('tabindex', '-1');
+            targetElement.focus();
+          }
+        });
+      });
     });
   };
   if ((window as any).swup) {

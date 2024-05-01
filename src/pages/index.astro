@@ -8,9 +8,9 @@ import Block from '@/components/Block.astro';
 import Heading from '@/components/Heading.astro';
 import PostList from '@/components/PostList.astro';
 
-const allPosts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const allPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const postsPerPage = 3;
 const postList = allPosts.slice(0, postsPerPage);

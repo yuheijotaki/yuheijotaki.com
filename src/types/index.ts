@@ -7,6 +7,7 @@ export type Post = {
     title: string;
     description: string;
     pubDate: Date;
+    draft?: boolean;
   };
 };
 

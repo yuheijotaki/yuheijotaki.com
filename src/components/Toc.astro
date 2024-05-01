@@ -71,6 +71,8 @@ const groupedHeadings = headings.reduce((array, heading) => {
   @use '@/styles/extension' as *;
 
   details {
+    margin-block-end: var(--spacing-xs);
+
     a,
     a:visited {
       color: var(--color-primary);
@@ -79,6 +81,7 @@ const groupedHeadings = headings.reduce((array, heading) => {
 
   summary {
     padding: 0.25rem;
+    text-decoration: underline;
     cursor: pointer;
     border-radius: 0.25rem;
 

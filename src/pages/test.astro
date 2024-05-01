@@ -1,24 +1,13 @@
 ---
 import { Image } from '@unpic/astro';
 import { Source } from '@unpic/astro';
-// import bath from '../../public/bath.jpeg';
-import _test1 from '../_test1.jpeg';
-import _test2 from '@/_test2.jpg';
 import Layout from '@/layouts/Layout.astro';
 import Main from '@/components/Main.astro';
-
-// import bath from '@/images/bath.jpeg';
-console.log(_test2.src);
 ---
 
 <Layout title="test" description="test" isHome={false}>
   <Main>
     <div>
-      <p>local</p>
-      <Image src={_test1.src} width={800} height={600} alt="" placeholder="blurhash" />
-      <Image src={_test2.src} width={400} height={300} alt="" />
-      <Image src={_test1} width={800} height={600} alt="" placeholder="blurhash" />
-      <Image src={_test2} width={400} height={300} alt="" />
       <p>cdn</p>
       <Image
         src="https://cdn.shopify.com/static/sample-images/bath.jpeg"

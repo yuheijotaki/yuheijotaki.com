@@ -7,12 +7,12 @@ interface Props {
   bold?: boolean;
 }
 
-const { text, tag, level = 1, url, bold = true } = Astro.props;
+const { text, tag, level = 1, url, bold = true, ...rest } = Astro.props;
 
 const Tag = tag;
 ---
 
-<Tag class:list={['heading', `--level${level}`]}>
+<Tag class:list={['heading', `--level${level}`]} {...rest}>
   {url ? <a href={url}>{bold ? <b>{text}</b> : text}</a> : bold ? <b>{text}</b> : text}
 </Tag>
 

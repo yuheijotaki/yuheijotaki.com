@@ -12,28 +12,28 @@ const Tag = isHome ? 'h1' : 'p';
 ---
 
 <header class="header">
-  <Heading text={SITE_TITLE} tag={Tag} level={1} url="/" bold={false} />
+  <Heading text={SITE_TITLE} tag={Tag} level={1} url="/" bold={false} data-heading />
 </header>
 
 <script>
-  // const setup = () => {
-  //   (window as any).swup.hooks.on('page:view', (visit: any) => {
-  //     console.log(`from: "${visit.from.url}"`);
-  //     console.log(`to: "${visit.to.url}"`);
-  //     const body = document.querySelector('body');
-  //     body?.classList.add('hoge');
-  //   });
-  //   (window as any).swup.hooks.on('content:replace', () => {
-  //     console.log('content:replace');
-  //     const body = document.querySelector('body');
-  //     body?.classList.add('fuga');
-  //   });
-  // };
-  // if ((window as any).swup) {
-  //   setup();
-  // } else {
-  //   document.addEventListener('swup:enable', setup);
-  // }
+  function focusHeader() {
+    const headingLink = document.querySelector('[data-heading] a') as HTMLAnchorElement | null;
+    headingLink?.focus();
+  }
+
+  const setup = () => {
+    (window as any).swup.hooks.on('visit:end', (visit: any) => {
+      if (visit.to.url === '/') {
+        focusHeader();
+        console.log('focusHeader');
+      }
+    });
+  };
+  if ((window as any).swup) {
+    setup();
+  } else {
+    document.addEventListener('swup:enable', setup);
+  }
 </script>
 
 <style lang="scss">

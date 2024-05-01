@@ -25,7 +25,6 @@ const Tag = isHome ? 'h1' : 'p';
     (window as any).swup.hooks.on('visit:end', (visit: any) => {
       if (visit.to.url === '/') {
         focusHeader();
-        console.log('focusHeader');
       }
     });
   };

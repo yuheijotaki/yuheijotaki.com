@@ -57,10 +57,8 @@ const groupedHeadings = headings.reduce((array, heading) => {
         event.preventDefault();
         const targetId = event.target?.getAttribute('href').slice(1);
         const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          targetElement.setAttribute('tabindex', '-1');
-          targetElement.focus();
-        }
+        targetElement?.setAttribute('tabindex', '-1');
+        targetElement?.focus();
       });
     });
   }

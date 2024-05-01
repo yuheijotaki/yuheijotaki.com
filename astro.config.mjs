@@ -2,8 +2,9 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import swup from '@swup/astro';
 import icon from 'astro-icon';
+import swup from '@swup/astro';
+import { imageService } from '@unpic/astro/service';
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,6 +24,9 @@ export default defineConfig({
     react(),
     mdx(),
     sitemap(),
+    icon({
+      iconDir: 'src/icons',
+    }),
     swup({
       theme: false,
       // animationClass: 'transition-',
@@ -40,10 +44,16 @@ export default defineConfig({
       // debug: true,
       reloadScripts: false, // 遷移時にscriptを再読み込みさせない
     }),
-    icon({
-      iconDir: 'src/icons',
-    }),
   ],
+  image: {
+    service: imageService({
+      // This can usually be auto-detected
+      // fallbackService: 'netlify',
+      placeholder: 'dominantColor',
+      // This is the default
+      layout: 'constrained',
+    }),
+  },
   devToolbar: {
     enabled: false,
   },

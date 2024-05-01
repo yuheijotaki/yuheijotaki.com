@@ -1,0 +1,78 @@
+---
+import { Image } from '@unpic/astro';
+import { Source } from '@unpic/astro';
+import Layout from '@/layouts/Layout.astro';
+import Main from '@/components/Main.astro';
+
+import bath from '@/images/bath.jpeg';
+---
+
+<Layout title="test" description="test" isHome={false}>
+  <Main>
+    <div>
+      <p>local</p>
+      <Image src={bath} width={800} height={600} alt="" placeholder="blurhash" />
+      <p>cdn</p>
+      <Image
+        src="https://cdn.shopify.com/static/sample-images/bath.jpeg"
+        layout="constrained"
+        width={800}
+        height={600}
+        alt=""
+        placeholder="blurhash"
+      />
+      <p>picture</p>
+      <picture class="hero">
+        <!-- Large screens get a full-width hero image -->
+        <Source
+          src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6"
+          media="(min-width: 601px)"
+          layout="fullWidth"
+        />
+        <!-- Small screens get a constrained square image -->
+        <Source
+          src="https://images.unsplash.com/photo-1693711942336-f4f9963bd364"
+          media="(max-width: 600px)"
+          width={600}
+          height={600}
+        />
+        <!-- Always include an Image as the final element -->
+        <Image
+          src="https://images.unsplash.com/photo-1693711942336-f4f9963bd364"
+          width={600}
+          height={600}
+          alt="Aurora"
+          unstyled
+        />
+      </picture>
+    </div>
+  </Main>
+</Layout>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  /* Style for all layouts */
+  .hero img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  @media (width >= 601px) {
+    /* Style for full-width layout */
+    .hero img {
+      height: 600px;
+    }
+  }
+
+  @media (width <= 600px) {
+    /* Style for constrained layout */
+    .hero img {
+      max-width: 600px;
+
+      /* Set the image aspect-ratio */
+      aspect-ratio: 1/1;
+    }
+  }
+</style>

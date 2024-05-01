@@ -29,6 +29,8 @@
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "@unpic/astro": "^0.0.46",
+    "@unpic/pixels": "^1.2.2",
+    "@unpic/placeholder": "^0.1.2",
     "@vercel/speed-insights": "^1.0.10",
     "astro": "^4.5.9",
     "astro-icon": "^1.1.0",

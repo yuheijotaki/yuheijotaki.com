@@ -47,10 +47,8 @@ export default defineConfig({
   ],
   image: {
     service: imageService({
-      // This can usually be auto-detected
-      // fallbackService: 'netlify',
+      // fallbackService: 'vercel',
       placeholder: 'dominantColor',
-      // This is the default
       layout: 'constrained',
     }),
   },

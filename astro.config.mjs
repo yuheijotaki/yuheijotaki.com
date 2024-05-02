@@ -46,6 +46,9 @@ export default defineConfig({
       // reloadScripts: false, // 遷移時にscriptを再読み込みさせない
     }),
   ],
+  prefetch: {
+    defaultStrategy: 'hover',
+  },
   image: {
     service: imageService({
       // fallbackService: 'vercel',

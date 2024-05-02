@@ -22,7 +22,8 @@
   --spacing-xl: #{spacing(30)};
 
   // font
-  --font-family-sans-serif: 'UniversLTPro-55Roman', 'TazuganeGothicStdN-Regular', sans-serif;
+  --font-family-sans-serif: 'Helvetica Neue', arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+    meiryo, sans-serif;
   --font-family-mono: menlo, monaco, consolas, 'Liberation Mono', 'Courier New', monospace;
   --font-size-sm: 1.4rem;
   --font-size-md: 1.6rem;
@@ -34,8 +35,7 @@
   --letter-spacing-lg: 0.04em;
 
   // animation
-  // --transition-duration: 0.15s;
-  --transition-duration: 0.25s;
+  --transition-duration: 0.15s;
   --transition-easing: cubic-bezier(0.18, 0.06, 0.23, 1);
 
   @media (prefers-reduced-motion: reduce) {

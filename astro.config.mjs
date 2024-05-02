@@ -40,6 +40,7 @@ export default defineConfig({
       progress: false,
       smoothScrolling: false,
       globalInstance: true,
+      // updateHead: true,
       // updateBodyClass: true,
       // debug: true,
       // reloadScripts: false, // 遷移時にscriptを再読み込みさせない

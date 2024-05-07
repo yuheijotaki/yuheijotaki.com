@@ -1,0 +1,34 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="GSAP">
+  <div class="wrapper">
+    <div id="animate-anything-css"></div>
+  </div>
+</LayoutDemo>
+
+<script>
+  import { gsap } from 'gsap';
+  gsap.to('#animate-anything-css', {
+    duration: 10,
+    ease: 'none',
+    repeat: -1,
+    rotation: 360,
+  });
+</script>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  .wrapper {
+    margin: 2rem;
+  }
+
+  #animate-anything-css {
+    width: 100px;
+    height: 100px;
+    background-color: tomato;
+  }
+</style>

@@ -1,0 +1,156 @@
+---
+import { Image } from '@unpic/astro';
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="easing">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; easing</h1>
+    <section class="ease-soft-start">
+      <h2>ease-soft-start</h2>
+      <code>cubic-bezier(0.18, 0.06, 0.23, 1)</code>
+      <p>ソフトな開始と急な終了の特性を持つ。アニメーションがゆっくり始まり、急速に終わる。</p>
+      <ul class="card">
+        <li>
+          <a href="#">
+            <Image
+              src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8"
+              alt=""
+              width={640}
+              height={420}
+              placeholder="blurhash"
+            />
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <Image
+              src="https://images.unsplash.com/photo-1557409518-691ebcd96038"
+              alt=""
+              width={640}
+              height={420}
+              placeholder="blurhash"
+            />
+          </a>
+        </li>
+      </ul>
+    </section>
+    <section class="ease-sharp-start">
+      <h2>ease-sharp-start</h2>
+      <code>cubic-bezier(0.43, 0.05, 0.17, 1)</code>
+      <p>鋭い開始と急な終了の特性を持つ。アニメーションが急に始まり、急速に終わる。</p>
+      <ul class="card">
+        <li>
+          <a href="#">
+            <Image
+              src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8"
+              alt=""
+              width={640}
+              height={420}
+              placeholder="blurhash"
+            />
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <Image
+              src="https://images.unsplash.com/photo-1557409518-691ebcd96038"
+              alt=""
+              width={640}
+              height={420}
+              placeholder="blurhash"
+            />
+          </a>
+        </li>
+      </ul>
+    </section>
+    <section class="ease-overshoot">
+      <h2>ease-overshoot</h2>
+      <code>cubic-bezier(0.33, 1, 0.68, 1)</code>
+      <p>オーバーシュートする特性を持つ。アニメーションが目標値を超えてから落ち着く。</p>
+      <ul class="card">
+        <li>
+          <a href="#">
+            <Image
+              src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8"
+              alt=""
+              width={640}
+              height={420}
+              placeholder="blurhash"
+            />
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <Image
+              src="https://images.unsplash.com/photo-1557409518-691ebcd96038"
+              alt=""
+              width={640}
+              height={420}
+              placeholder="blurhash"
+            />
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
+</LayoutDemo>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  :root {
+    --ease-soft-start: cubic-bezier(0.18, 0.06, 0.23, 1);
+    --ease-overshoot: cubic-bezier(0.33, 1, 0.68, 1);
+    --ease-sharp-start: cubic-bezier(0.43, 0.05, 0.17, 1);
+  }
+
+  .wrapper {
+    margin: 2rem;
+  }
+
+  section {
+    margin-top: 4rem;
+  }
+
+  .card {
+    display: flex;
+    gap: 0 20px;
+
+    li {
+      width: 640px;
+      height: 420px;
+      overflow: hidden;
+      font-size: 0;
+      line-height: 0;
+      border-radius: 0.25rem;
+
+      a {
+        &:hover {
+          img {
+            scale: 1.05;
+          }
+        }
+      }
+    }
+  }
+
+  .ease-soft-start {
+    img {
+      transition: scale 0.5s var(--ease-soft-start);
+    }
+  }
+
+  .ease-sharp-start {
+    img {
+      transition: scale 0.5s var(--ease-sharp-start);
+    }
+  }
+
+  .ease-overshoot {
+    img {
+      transition: scale 0.5s var(--ease-overshoot);
+    }
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="outline">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; outline</h1>
+    <section class="solid">
+      <p>solid</p>
+      <h2>Heading</h2>
+      <h3>Heading</h3>
+      <span>Lorem Ipsum</span>
+    </section>
+    <section class="dashed">
+      <p>dashed</p>
+      <h2>Heading</h2>
+      <h3>Heading</h3>
+      <span>Lorem Ipsum</span>
+    </section>
+    <section class="dotted">
+      <p>dotted</p>
+      <h2>Heading</h2>
+      <h3>Heading</h3>
+      <span>Lorem Ipsum</span>
+    </section>
+  </div>
+</LayoutDemo>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  .wrapper {
+    margin: 2rem;
+  }
+
+  section {
+    margin-top: 4rem;
+
+    h2,
+    h3,
+    span {
+      display: inline-block;
+      margin: 0 40px;
+    }
+  }
+
+  .solid {
+    h2,
+    h3,
+    span {
+      outline: 5px solid currentcolor;
+      outline-offset: 5px;
+    }
+  }
+
+  .dashed {
+    h2,
+    h3,
+    span {
+      outline: 5px dashed currentcolor;
+      outline-offset: 5px;
+    }
+  }
+
+  .dotted {
+    h2,
+    h3,
+    span {
+      outline: 5px dotted currentcolor;
+      outline-offset: 5px;
+    }
+  }
+</style>

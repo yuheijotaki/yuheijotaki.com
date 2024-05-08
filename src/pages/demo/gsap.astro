@@ -1,34 +1,232 @@
 ---
+import { Image } from '@unpic/astro';
 import LayoutDemo from '@/layouts/LayoutDemo.astro';
 ---
 
-<LayoutDemo title="GSAP">
-  <div class="wrapper">
-    <div id="animate-anything-css"></div>
+<LayoutDemo title="gsap">
+  <div class="hero">
+    <Image
+      src="https://images.unsplash.com/photo-1557409518-691ebcd96038"
+      alt=""
+      width={2400}
+      height={1480}
+      placeholder="blurhash"
+    />
+    <span class="hero-overlay"></span>
+    <div class="hero-progress"></div>
+    <p class="hero-copy">コピーが入ります。</p>
+  </div>
+
+  <div class="animate-wrapper">
+    <div class="animate-rotate-bar"></div>
+    <div class="animate-trans-obj"></div>
+    <div class="animate-trans-obj"></div>
+    <div class="animate-trans-obj"></div>
+    <div class="animate-x-obj"></div>
+    <div class="animate-turning-circle"></div>
+    <div class="animate-img -img01">
+      <Image
+        src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8"
+        alt=""
+        width={240}
+        height={120}
+        placeholder="blurhash"
+      />
+    </div>
+    <div class="animate-img -img02">
+      <Image
+        src="https://images.unsplash.com/photo-1557409518-691ebcd96038"
+        alt=""
+        width={240}
+        height={120}
+        placeholder="blurhash"
+      />
+    </div>
   </div>
 </LayoutDemo>
 
 <script>
   import { gsap } from 'gsap';
-  gsap.to('#animate-anything-css', {
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const heroTimeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.hero',
+      start: 'top top',
+      end: '+=1200px',
+      scrub: true,
+    },
+  });
+  heroTimeline.fromTo('.hero-progress', { width: 0 }, { width: '100vw', y: '0' });
+  heroTimeline.fromTo('.hero-overlay', { opacity: '1' }, { opacity: '0' });
+  heroTimeline.fromTo('.hero-copy', { opacity: '1' }, { opacity: '0' });
+
+  gsap.to('.animate-rotate-bar', {
     duration: 10,
     ease: 'none',
     repeat: -1,
     rotation: 360,
   });
+
+  gsap.fromTo(
+    '.animate-trans-obj',
+    { x: 20 },
+    {
+      x: 200,
+      y: 10,
+      // xPercent: 50,
+      // yPercent: 50,
+      rotate: 360,
+      scale: 1.2,
+      backgroundColor: '#0000ff',
+      autoAlpha: 0.5,
+      duration: 1,
+      ease: 'power4.out',
+      delay: 1,
+      repeat: -1,
+      repeatDelay: 0.5,
+      yoyo: true,
+      // paused: true,
+      overwrite: true,
+      // stagger: 0.5,
+      stagger: {
+        each: 0.25, // ばらす間隔（秒）
+        from: 'random', // ランダムに開始
+      },
+      // onStart: () => {
+      //   console.log('start');
+      // },
+      // onUpdate: () => {
+      //   console.log('update');
+      // },
+      // onComplete: () => {
+      //   console.log('complete');
+      // },
+    },
+  );
+
+  const params = { radian: 0 };
+
+  gsap.to(params, {
+    radian: Math.PI * 2,
+    duration: 4,
+    ease: 'none',
+    backgroundColor: '#0000ff',
+    onUpdate: () => {
+      const { radian } = params;
+      const x = Math.cos(radian) * 20;
+      const y = Math.sin(radian) * 20;
+      gsap.set('.animate-turning-circle', { x, y }); // 座標を適用
+    },
+    repeat: -1,
+  });
+
+  gsap.to('.animate-x-obj', { x: 400, repeat: -1, backgroundColor: 'gray', duration: 3 });
+
+  gsap
+    .timeline({ repeat: 3, repeatDelay: 0.05 })
+    .to('.-img01', { x: 100, duration: 0.5 })
+    .to('.-img02', { y: -200, scale: 1.2, duration: 0.75 })
+    .to('.-img01', { x: 0, duration: 0.25 })
+    .to('.-img02', { y: 0, scale: 1, duration: 0.5 });
 </script>
 
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;
 
-  .wrapper {
-    margin: 2rem;
+  // hero
+  .hero {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100svh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    :global(img) {
+      min-width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
-  #animate-anything-css {
-    width: 100px;
-    height: 100px;
+  .hero-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #1e86a9b4;
+  }
+
+  .hero-copy {
+    position: absolute;
+    right: 4rem;
+    bottom: 2rem;
+    font-size: 4vw;
+    font-weight: bold;
+    line-height: 1.5;
+    color: #fff;
+    text-shadow: 0 0 10px 10px rgb(0 0 0 / 75%);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, rgb(0 0 0 / 100%), rgb(0 0 0 / 0%));
+  }
+
+  // animate
+  .animate-wrapper {
+    position: relative;
+    z-index: 2;
+    padding: 10rem;
+    margin: 0 10rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .animate-rotate-bar {
+    width: 420px;
+    height: 20px;
     background-color: tomato;
+  }
+
+  .animate-trans-obj {
+    width: 120px;
+    height: 160px;
+    margin-top: 2rem;
+    background-color: lime;
+    border-radius: 40px 100px 20px 30px;
+    box-shadow: 0 0 50px 20px rgb(0 0 0 / 50%);
+  }
+
+  .animate-x-obj {
+    width: 120px;
+    height: 80px;
+    background-color: rgb(159 255 253);
+    box-shadow: 0 0 50px 20px rgb(0 0 0 / 25%);
+  }
+
+  .animate-turning-circle {
+    width: 80px;
+    height: 80px;
+    background-color: red;
+    border-radius: 50%;
+    box-shadow: 0 0 50px 20px rgb(0 0 0 / 25%);
+    opacity: 0.9;
+  }
+
+  .animate-img {
+    margin-top: 2rem;
+
+    :global(img) {
+      box-shadow: 0 0 50px 20px rgb(0 0 0 / 25%);
+    }
   }
 </style>

@@ -1,0 +1,26 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="demo">
+  <div class="wrapper">
+    <h1>demo</h1>
+    <ul data-no-swup>
+      <li><a href="/demo/unpic/">2024.05.01: unpic</a></li>
+      <li><a href="/demo/easing/">2024.05.08: easing</a></li>
+      <li><a href="/demo/outline/">2024.05.08: outline</a></li>
+      <li><a href="/demo/gsap/">2024.05.08: gsap</a></li>
+    </ul>
+  </div>
+</LayoutDemo>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  .wrapper {
+    margin: 2rem;
+    font-family: monospace;
+    font-weight: normal;
+  }
+</style>

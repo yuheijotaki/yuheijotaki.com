@@ -1,0 +1,151 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="hover">
+  <div class="wrapper">
+    <h1><a href="/demo/" data-no-swup>demo</a> &raquo; hover</h1>
+    <section>
+      <h2>テキスト</h2>
+      <p>参考： <a href="https://www.malvah.co/">https://www.malvah.co/</a></p>
+      <ul>
+        <li><a href="#" class="text-animation-01">Text Link 01</a></li>
+        <li><a href="#" class="text-animation-01">Text Link Text Link 02</a></li>
+        <li><a href="#" class="text-animation-01">Text Link Text Link Text Link 03</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2>ボタン</h2>
+      <p>参考： <a href="https://akaru.fr/">https://akaru.fr/</a></p>
+      <a href="#" class="button-animation-01">
+        <span class="button-animation-01_label">Button Link 01</span>
+        <span class="button-animation-01_arrow"></span>
+      </a>
+      <a href="#" class="button-animation-01">
+        <span class="button-animation-01_label">Button Link Button Link 02</span>
+        <span class="button-animation-01_arrow"></span>
+      </a>
+      <a href="#" class="button-animation-01">
+        <span class="button-animation-01_label">Button Link Button Link Button Link 03</span>
+        <span class="button-animation-01_arrow"></span>
+      </a>
+    </section>
+  </div>
+
+  <style lang="scss">
+    @use '@/styles/variables' as var;
+    @use '@/styles/extension' as *;
+
+    :root {
+      --ease-soft-start: cubic-bezier(0.18, 0.06, 0.23, 1);
+    }
+
+    @mixin hoverText {
+      @media (hover: hover) {
+        background: linear-gradient(rgba(#000, 1), rgba(#000, 1)) 0% 100% / 0 100% no-repeat;
+        transition:
+          color 0.25s var(--ease-soft-start),
+          background-size 0.25s var(--ease-soft-start);
+
+        &:hover {
+          color: #fff;
+          background-position: 0 100%;
+          background-size: 100% 100%;
+          transition: none;
+        }
+      }
+    }
+
+    .wrapper {
+      margin: 2rem;
+    }
+
+    section {
+      font-family: 'Helvetica Neue', arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', meiryo,
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: 0.0025em;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+
+      li {
+        margin-top: 0.75rem;
+        font-size: 16px;
+      }
+    }
+
+    .text-animation-01 {
+      padding: 0.25rem;
+      color: #000;
+      text-decoration: none;
+
+      @include hoverText;
+    }
+
+    .button-animation-01 {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1.25rem 0.5rem 1.5rem;
+      text-decoration: none;
+      background-color: #fff;
+      border: #000 2px solid;
+      border-radius: 9999px;
+      transition: background-color 0.25s var(--ease-soft-start);
+
+      &::after {
+        position: absolute;
+        top: 50%;
+        right: 1.85rem;
+        display: block;
+        width: 6px;
+        height: 6px;
+        content: '';
+        border: 1px solid #fff;
+        border-bottom: 0;
+        border-left: 0;
+        opacity: 0;
+        transition: opacity 0.25s var(--ease-soft-start);
+        rotate: 45deg;
+        translate: -50% -50%;
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: lime;
+
+          &::after {
+            opacity: 1;
+          }
+
+          .button-animation-01_arrow {
+            scale: 1;
+          }
+        }
+      }
+    }
+
+    .button-animation-01_label {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1;
+      color: #000;
+    }
+
+    .button-animation-01_arrow {
+      width: 30px;
+      height: 30px;
+      margin-left: 8px;
+      background-color: #000;
+      border-radius: 9999px;
+      transition: scale 0.2s var(--ease-soft-start);
+      scale: 0.2;
+    }
+  </style>
+</LayoutDemo>

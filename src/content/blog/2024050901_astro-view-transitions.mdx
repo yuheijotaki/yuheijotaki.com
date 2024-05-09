@@ -1,0 +1,63 @@
+---
+title: AstroのView Transitionsを試してみる
+description: AstroのView Transitions機能を試した雑感です。
+pubDate: 2024-05-09T00:00:00.000Z
+---
+
+## はじめに
+
+Astroのビルトインとして提供されている [View Transitions](https://docs.astro.build/ja/guides/view-transitions/) を試してみたので雑感  
+リポジトリ: https://github.com/yuheijotaki/astro-view-transitions  
+GitHub Pages: https://yuheijotaki.github.io/astro-view-transitions/
+
+## 導入
+
+`<ViewTransitions />` をインポートして `<head>` 内へ追加。  
+デフォルトはこれのみだが、個別に指定する場合はディレクティブを使っていく。
+
+## トランジションディレクティブ
+
+### `transition:name`
+
+ページ内でユニークな名前を付与することで前後ページでの置き換え要素を特定する。（前後ページのHTMLで共通の名前を与える）
+
+```html
+<img transition:name="image01" />
+```
+
+投稿などの動的要素はindexやslugをを使ってユニークにする。  
+例えば記事ページ下部に表示する「最新の投稿」などは自身を外す等、何かしら工夫が必要。
+
+### `transition:animate`
+
+`'fade'`, `'initial'`, `'slide'`, `'none'` が指定可能。  
+[アニメーションのカスタマイズ](https://docs.astro.build/ja/guides/view-transitions/#%E3%82%A2%E3%83%8B%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B) も可能。
+
+### `transition:persist`
+
+ページ間でコンポーネントとHTML要素を保持するために指定する。
+
+```html
+<video autoplay transition:persist></video>
+```
+
+この場合ナビゲーションが発生しても video は再生が継続される。
+
+## 雑感
+
+- 現状でChromiumでサポートのためあまり現実的ではないかもと思いつつ、フォールバックはきちんと整備されている印象。
+  - 例えばSafariやFireFoxでもアニメーションがそれっぽくなったり、videoの再生がナビゲーションが発生した時点から継続される。
+- headの書き換えなど動き以外のところはよい感じに行ってくれてよい。
+- なんでもかんでもView Transitions APIでアニメーションができるわけではない。
+  - 例えばテキストが小さいサイズから大きいサイズへ変更される場合は荒ぶってしまった。（指定の問題？）
+- Astroの組み込み機能が分かっていないのか、View Transitions APIそのものが分かっていないのか分からなくなる。
+
+## 参考資料
+
+- ドキュメント類
+  - [ビュートランジション | Docs](https://docs.astro.build/ja/guides/view-transitions/)
+  - [Astroのビュートランジション機能 | ビュートランジションで遷移アニメーション](https://www.codegrid.net/articles/2023-astro-view-transitions-1/)
+  - [`<script>` を含む Astro 製サイトで View Transitions を使う](https://zenn.dev/chot/articles/48a58019f246bd)
+- デモ
+  - [View Transitions Demo](https://live-transitions.pages.dev/)
+  - [Astro Records](https://astro-records.pages.dev/)

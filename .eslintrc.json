@@ -6,6 +6,10 @@
     "prettier"
   ],
   "plugins": ["import"],
+  "env": {
+    "node": true,
+    "es2021": true
+  },
   "rules": {
     "require-jsdoc": ["off"],
     "import/order": [
@@ -36,7 +40,9 @@
         ]
       }
     ],
-    "@typescript-eslint/no-explicit-any": 0
+    "@typescript-eslint/no-explicit-any": 0,
+    "no-console": "off", // consoleの使用を許可
+    "no-undef": "off" // globalThisの使用を許可
   },
   "overrides": [
     {

@@ -31,6 +31,20 @@ const { title, pubDate } = Astro.props;
   .content {
     margin-block-start: var(--spacing-sm);
 
+    :global(a) {
+      :global(.feather) {
+        display: inline-block;
+        width: 1.25em;
+        height: 1.25em;
+        vertical-align: middle;
+        fill: none;
+        stroke: currentcolor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2;
+      }
+    }
+
     :global(img) {
       vertical-align: text-bottom;
       border: var(--color-subtle) 1px solid;
@@ -70,8 +84,18 @@ const { title, pubDate } = Astro.props;
     }
 
     :global(:where(h1, h2, h3, h4, h5, h6)) {
+      position: relative;
       font-weight: bold;
       line-height: 1.6;
+
+      :global(.heading-link) {
+        color: var(--color-primary);
+        text-decoration: none;
+
+        &:visited {
+          color: var(--color-primary);
+        }
+      }
     }
 
     :global(:where(h1, h2, h3, h4, h5, h6):first-child) {

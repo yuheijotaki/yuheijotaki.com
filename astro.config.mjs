@@ -5,6 +5,8 @@ import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import swup from '@swup/astro';
 import { imageService } from '@unpic/astro/service';
+import externalLinks from './src/rehype-plugins/external-links';
+import addHeadingLinks from './src/rehype-plugins/add-heading-links';
 
 // https://astro.build/config
 export default defineConfig({
@@ -58,6 +60,9 @@ export default defineConfig({
   },
   devToolbar: {
     enabled: false,
+  },
+  markdown: {
+    rehypePlugins: [externalLinks, addHeadingLinks],
   },
   // experimental: {
   //   contentCollectionCache: true,

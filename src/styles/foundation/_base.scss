@@ -29,6 +29,7 @@ body {
 a {
   padding: 0.25rem;
   color: var(--color-link);
+  text-underline-offset: 0.25em;
   border-radius: 0.25rem;
 
   &:visited {

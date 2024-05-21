@@ -31,7 +31,13 @@ import Button from '@/components/Button.astro';
   }
 
   function getColorMode(): string {
-    const storedMode = localStorage.getItem('color-mode');
+    let storedMode: string | null = null;
+    try {
+      storedMode = localStorage.getItem('color-mode');
+    } catch (error) {
+      // Web Storage が使えない場合のフォールバック処理
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
     if (storedMode) {
       return storedMode;
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -46,7 +52,11 @@ import Button from '@/components/Button.astro';
       event.preventDefault();
       const currentMode = getColorMode();
       const newMode = currentMode === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('color-mode', newMode);
+      try {
+        localStorage.setItem('color-mode', newMode);
+      } catch (error) {
+        console.log(error);
+      }
       setColorMode(newMode);
     });
   }

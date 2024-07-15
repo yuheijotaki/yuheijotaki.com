@@ -1,0 +1,120 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="@property">
+  <div class="wrapper">
+    <h1><a href="/demo/" data-no-swup>demo</a> &raquo; @property</h1>
+
+    <h2>1. initial-value:</h2>
+    <div class="section initial-value"></div>
+
+    <h2>2. override:</h2>
+    <div class="section override"></div>
+
+    <h2>3. inherits:</h2>
+    <div class="section inherits">
+      <div class="child"></div>
+    </div>
+
+    <h2>4. angle animation:</h2>
+    <div class="section angle"></div>
+  </div>
+</LayoutDemo>
+
+<style>
+  /* stylelint-disable custom-property-pattern */
+  .wrapper {
+    margin: 2rem;
+  }
+
+  h2 {
+    margin-top: 5rem;
+  }
+
+  .section {
+    width: 32rem;
+    height: 32rem;
+  }
+
+  /********************
+  * 1. initial-value
+  ********************/
+  @property --initial {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: tomato;
+  }
+
+  .initial-value {
+    --initial: 9999;
+
+    background-color: var(--initial);
+  }
+
+  /********************
+  * 2. override
+  ********************/
+  @property --override {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: tomato;
+  }
+
+  .override {
+    --override: blue;
+
+    background-color: var(--override);
+  }
+
+  /********************
+  * 3. inherits
+  ********************/
+  @property --inherits {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: tomato;
+  }
+
+  .inherits {
+    --inherits: blue;
+
+    display: grid;
+    place-content: center;
+    background-color: var(--inherits);
+  }
+
+  .inherits .child {
+    width: 8rem;
+    height: 8rem;
+    background-color: var(--inherits);
+    border: 10px solid black;
+  }
+
+  /********************
+  * 4. angle animation
+  ********************/
+
+  @property --angle {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 0deg;
+  }
+
+  .angle {
+    --angle: 0deg;
+
+    background: linear-gradient(var(--angle), lime, pink);
+    animation: angle-animation 4s infinite;
+  }
+
+  @keyframes angle-animation {
+    0% {
+      --angle: 0deg;
+    }
+
+    100% {
+      --angle: 360deg;
+    }
+  }
+</style>

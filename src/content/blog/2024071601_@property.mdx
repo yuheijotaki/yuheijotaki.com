@@ -1,0 +1,104 @@
+---
+title: CSS @property を試してみる
+description: CSSの `@property` を試した雑感です。
+pubDate: 2024-07-16T00:00:00.000Z
+---
+
+## はじめに
+
+CSSのアットルールである `@property` を試してみた。
+
+## CSS のアットルールとは
+
+よく使うものだと次のものもアットルールに属する。
+
+- `@media {...}`
+- `@supports {...}`
+- `@keyframes {...}`
+
+[MDN](https://developer.mozilla.org/ja/docs/Web/CSS/At-rule)では
+
+> CSS の動作を既定するもの
+
+と説明されている。
+
+## `@property` の概要
+
+CSSカスタムプロパティ（変数）の
+
+- プロパティ型のチェック
+- 既定値の設定
+- プロパティが値を継承するかどうか
+
+の定義ができる。
+
+使い方の簡単なデモは次の通り。
+
+```css
+root {
+  --example-name: #c0ffee;
+}
+
+@property --example-name {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #c0ffee;
+}
+
+.hoge {
+  color: var(--example-name);
+}
+```
+
+## ブラウザ対応状況
+
+2024年7月9日にFireFox 128にてサポートされ、各モダンブラウザ最新版でサポートされたばかりの状況。  
+https://caniuse.com/mdn-css_at-rules_property
+
+## 使い方の例
+
+```css
+@property --example-name {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #c0ffee;
+}
+```
+
+### `syntax:`
+
+プロパティに許容される構文を記述する。  
+`<length>`, `<number>`, `<percentage>`, `<color>`, `<integer>`, `<angle>`...  
+`+` （スペース区切り）や `#` （カンマ区切り）で値のリストも定義できる。
+
+### `inherits:`
+
+子要素で継承するかどうかを制御する。  
+`true` or `false`
+
+### `initial-value:`
+
+プロパティの初期値を設定する。
+
+デモ：[https://yuheijotaki.com/demo/@property/](https://yuheijotaki.com/demo/@property/)
+
+## さいごに
+
+グラデーションのアニメーションが簡単にできる、というよりカスタムプロパティの値に型を定義でき、その型を含めた定義をCSSが読み取ってくれるようになるのが `@property` を利用する理由という解釈になった。  
+またCSSのデータ型についてはあまり意識してこなかったが、意識できると（知識が増えると）うまく動かないときの理由などが根拠を持って言える気がしてくる。
+
+## 参考にした記事や関連資料
+
+- MDN、web.dev
+  - [CSS データ型 - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_Types)
+  - [@property - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/@property)
+  - [@property: 次世代の CSS 変数にユニバーサル ブラウザのサポートを追加 | Blog | web.dev](https://web.dev/blog/at-property-baseline?hl=ja)
+- 記事
+  - [CSS の `@property` ルールでカスタムプロパティを定義する](https://azukiazusa.dev/blog/define-custom-properties-with-css-property-rule/)
+  - [【CSS】いろんな値をカスタムプロパティに定義できる「@property」とは？ #HTML - Qiita](https://qiita.com/degudegu2510/items/91d29ae81dc740676a24)
+  - [【CSS】カスタムプロパティ(変数)に型定義をする](https://zenn.dev/tentel/articles/e1c50d9a836ac4)
+  - [CSS変数もtransitionしたい！ | ジャーナル | トライベック](https://www.tribeck.jp/column/opinion/production/20240422/)
+- こんなこともできる
+  - [Animating Number Counters | CSS-Tricks](https://css-tricks.com/animating-number-counters/)
+- `#c0ffee` について
+  - https://gigazine.net/news/20121122-blue-drink-not-coffee/

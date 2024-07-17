@@ -1,0 +1,83 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="@starting-style">
+  <div class="wrapper">
+    <h1><a href="/demo/" data-no-swup>demo</a> &raquo; @starting-style</h1>
+
+    <h2>1. box:</h2>
+    <div class="box"></div>
+
+    <h2>2. dialog:</h2>
+    <button type="button" data-dialog-trigger>dialog trigger</button>
+    <dialog class="dialog" aria-label="dialog" data-dialog-target>
+      <h3>dialog</h3>
+      <button type="button" data-dialog-trigger>dialog close</button>
+    </dialog>
+  </div>
+</LayoutDemo>
+
+<script>
+  const dialogTrigger = document.querySelector('[data-dialog-trigger]') as HTMLButtonElement;
+  const dialogTarget = document.querySelector('[data-dialog-target]') as HTMLDialogElement;
+
+  dialogTrigger?.addEventListener('click', () => {
+    dialogTarget?.showModal();
+  });
+
+  dialogTarget?.addEventListener('click', (event: any) => {
+    if (event.target === dialogTarget || event.target.getAttribute('data-dialog-trigger') === '') {
+      dialogTarget.close();
+    }
+  });
+</script>
+
+<style>
+  /* stylelint-disable custom-property-pattern */
+  .wrapper {
+    margin: 2rem;
+  }
+
+  h2 {
+    margin-top: 5rem;
+  }
+
+  /********************
+  * 1. box
+  ********************/
+
+  .box {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    opacity: 1;
+    transition: opacity 1s;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  /********************
+  * 2. dialog
+  ********************/
+
+  .dialog {
+    opacity: 0;
+    transition:
+      opacity 1s,
+      display 1s allow-discrete,
+      overlay 1s allow-discrete;
+  }
+
+  .dialog[open] {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .dialog[open] {
+      opacity: 0;
+    }
+  }
+</style>

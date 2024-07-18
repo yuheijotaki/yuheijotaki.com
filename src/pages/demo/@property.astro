@@ -17,13 +17,22 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
       <div class="child"></div>
     </div>
 
-    <h2>4. animation:</h2> angle
+    <h2>4. animation angle:</h2>
     <div class="section angle"></div>
 
-    <h2>5. animation:</h2> gradient
+    <h2>5. animation gradient:</h2>
     <div class="section gradient"></div>
   </div>
 </LayoutDemo>
+
+<script>
+  // window.CSS.registerProperty({
+  //   name: '--initial',
+  //   syntax: '<color>',
+  //   inherits: true,
+  //   initialValue: 'aqua',
+  // });
+</script>
 
 <style>
   /* stylelint-disable custom-property-pattern */
@@ -43,6 +52,7 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
   /********************
   * 1. initial-value
   ********************/
+
   @property --initial {
     syntax: '<color>';
     inherits: true;
@@ -142,19 +152,12 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
     --gradient-color-02: black;
 
     background: linear-gradient(to right, var(--gradient-color-01), var(--gradient-color-02));
-    animation:
-      animate-gradient-01 2s infinite alternate,
-      animate-gradient-02 2s infinite alternate;
+    animation: animate-gradient 2s infinite alternate;
   }
 
-  @keyframes animate-gradient-01 {
+  @keyframes animate-gradient {
     to {
       --gradient-color-01: lime;
-    }
-  }
-
-  @keyframes animate-gradient-02 {
-    to {
       --gradient-color-02: pink;
     }
   }

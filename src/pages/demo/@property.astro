@@ -17,8 +17,11 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
       <div class="child"></div>
     </div>
 
-    <h2>4. angle animation:</h2>
+    <h2>4. animation:</h2> angle
     <div class="section angle"></div>
+
+    <h2>5. animation:</h2> gradient
+    <div class="section gradient"></div>
   </div>
 </LayoutDemo>
 
@@ -92,7 +95,7 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
   }
 
   /********************
-  * 4. angle animation
+  * 4. animation angle
   ********************/
 
   @property --angle {
@@ -105,16 +108,54 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
     --angle: 0deg;
 
     background: linear-gradient(var(--angle), lime, pink);
-    animation: angle-animation 4s infinite;
+    animation: animate-angle 2s infinite;
   }
 
-  @keyframes angle-animation {
+  @keyframes animate-angle {
     0% {
       --angle: 0deg;
     }
 
     100% {
       --angle: 360deg;
+    }
+  }
+
+  /********************
+  * 5. animation gradient
+  ********************/
+
+  @property --gradient-color-01 {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: white;
+  }
+
+  @property --gradient-color-02 {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: black;
+  }
+
+  .gradient {
+    --gradient-color-01: white;
+    --gradient-color-02: black;
+
+    background: linear-gradient(to right, var(--gradient-color-01), var(--gradient-color-02));
+    animation:
+      animate-gradient-01 2s infinite alternate,
+      animate-gradient-02 2s infinite alternate;
+  }
+
+  @keyframes animate-gradient-01 {
+    to {
+      --gradient-color-01: lime;
+    }
+  }
+
+  @keyframes animate-gradient-02 {
+    to {
+      --gradient-color-02: pink;
     }
   }
 </style>

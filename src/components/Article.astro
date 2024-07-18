@@ -189,7 +189,6 @@ const { title, pubDate } = Astro.props;
 
     :global(:where(code, kbd, samp, pre)) {
       font-family: var(--font-family-mono);
-      font-size: 1.4rem;
       border-radius: 0.25rem;
     }
 
@@ -197,6 +196,12 @@ const { title, pubDate } = Astro.props;
       :global(code) {
         padding: 0.1em 0.4em 0.2em;
         background-color: var(--color-subtle);
+      }
+    }
+
+    :global(:where(p, li, th, td, pre)) {
+      :global(code) {
+        font-size: 1.4rem;
       }
     }
 

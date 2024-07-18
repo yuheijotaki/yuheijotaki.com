@@ -10,17 +10,17 @@ CSSのアットルールである `@property` を試してみた。
 
 ## CSS のアットルールとは
 
-よく使うものだと次のものもアットルールに属する。
-
-- `@media {...}`
-- `@supports {...}`
-- `@keyframes {...}`
-
 [MDN](https://developer.mozilla.org/ja/docs/Web/CSS/At-rule)では
 
 > CSS の動作を既定するもの
 
 と説明されている。
+
+よく使うものだと次のものもアットルールに属する。
+
+- `@media {...}`
+- `@supports {...}`
+- `@keyframes {...}`
 
 ## `@property` の概要
 
@@ -35,18 +35,18 @@ CSSカスタムプロパティ（変数）の
 使い方の簡単なデモは次の通り。
 
 ```css
-root {
-  --example-name: #c0ffee;
+:root {
+  --example-color: #c0ffee;
 }
 
-@property --example-name {
+@property --example-color {
   syntax: '<color>';
   inherits: false;
   initial-value: #c0ffee;
 }
 
 .hoge {
-  color: var(--example-name);
+  color: var(--example-color);
 }
 ```
 
@@ -58,7 +58,7 @@ https://caniuse.com/mdn-css_at-rules_property
 ## 使い方の例
 
 ```css
-@property --example-name {
+@property --example-color {
   syntax: '<color>';
   inherits: false;
   initial-value: #c0ffee;

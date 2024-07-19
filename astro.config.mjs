@@ -15,14 +15,15 @@ export default defineConfig({
     host: true,
     open: true,
   },
+  compressHTML: true,
   integrations: [
-    (await import('astro-compress')).default({
-      CSS: true,
-      HTML: true,
-      Image: false,
-      JavaScript: true,
-      SVG: false,
-    }),
+    // (await import('astro-compress')).default({
+    //   CSS: true,
+    //   HTML: true,
+    //   Image: false,
+    //   JavaScript: true,
+    //   SVG: false,
+    // }),
     react(),
     mdx(),
     sitemap(),

@@ -17,13 +17,6 @@ export default defineConfig({
   },
   compressHTML: true,
   integrations: [
-    // (await import('astro-compress')).default({
-    //   CSS: true,
-    //   HTML: true,
-    //   Image: false,
-    //   JavaScript: true,
-    //   SVG: false,
-    // }),
     react(),
     mdx(),
     sitemap(),

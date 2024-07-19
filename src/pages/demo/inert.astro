@@ -1,0 +1,68 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="inert">
+  <div class="wrapper">
+    <h1><a href="/demo/" data-no-swup>demo</a> &raquo; inert</h1>
+
+    <h2>focusable</h2>
+    <div>
+      <label for="test-none">label:</label>
+      <input id="test-none" value="" />
+      <button type="button">button</button>
+      <a href="#">link</a>
+    </div>
+
+    <h2>inert</h2>
+    <div inert>
+      <label for="test-inert">label:</label>
+      <input id="test-inert" value="" />
+      <button type="button">button</button>
+      <a href="#">link</a>
+    </div>
+
+    <h2>disabled</h2>
+    <div aria-disabled="true">
+      <label for="test-disabled">label:</label>
+      <input id="test-disabled" value="" disabled />
+      <button type="button" disabled>button</button>
+      <a href="#">link</a>
+    </div>
+
+    <h2>aria-hidden: true + tabindex="-1" + css</h2>
+    <div class="custom" aria-hidden="true">
+      <label for="test-custom">label:</label>
+      <input id="test-custom" value="" tabindex="-1" />
+      <button type="button" tabindex="-1">button</button>
+      <a href="#" tabindex="-1">link</a>
+    </div>
+  </div>
+</LayoutDemo>
+
+<script>
+  // document.getElementById('test-none')?.focus();     // 当たる
+  // document.getElementById('test-inert')?.focus();    // 当たらない
+  // document.getElementById('test-disabled')?.focus(); // 当たらない
+  // document.getElementById('test-custom')?.focus();   // 当たる
+</script>
+
+<style>
+  .wrapper {
+    margin: 2rem;
+  }
+
+  h2 {
+    margin-top: 5rem;
+  }
+
+  .custom {
+    label,
+    input,
+    button,
+    a {
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+</style>

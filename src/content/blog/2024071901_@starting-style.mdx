@@ -1,0 +1,64 @@
+---
+title: CSS @starting-style を試してみる
+description: CSSの `@starting-style` を試した雑感です。
+pubDate: 2024-07-19T00:00:00.000Z
+---
+
+## はじめに
+
+CSSのアットルールである `@starting-style` を試してみた。
+
+## `@starting-style` の概要
+
+トランジションの開始時のスタイルを定義するために使用する。  
+アットルールなので `@media{...}` などと同様にルールセットに記述する or 入れ子にできる。
+
+```css
+.hoge {
+  background-color: red;
+  transition: background-color 1s;
+}
+
+@starting-style {
+  .hoge {
+    background-color: transparent;
+  }
+}
+
+/* or */
+
+.hoge {
+  background-color: red;
+  transition: background-color 1s;
+
+  @starting-style {
+    background-color: transparent;
+  }
+}
+```
+
+## ブラウザ対応状況
+
+[Can I use...](https://caniuse.com/mdn-css_at-rules_starting-style) によると Chrome, Edge, Safari 最新版でサポート済み。
+
+関連としてデモに使用するプロパティ値のサポート状況は次の通り
+
+- [CSS property: display: Transitionable when setting transition-behavior: allow-discrete](https://caniuse.com/mdn-css_properties_display_is_transitionable)
+- [CSS property: overlay](https://caniuse.com/mdn-css_properties_overlay)
+
+## デモ
+
+- [デモ](https://yuheijotaki.com/demo/@starting-style/)
+- [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/%40starting-style.astro)
+
+## 所感
+
+- `<dialog>` 要素と `::backdrop` のアニメーションは `allow-discrete` と `overlay` がサポートされているブラウザでのみ動作するため、MacではChromeでのみ動作を確認
+- 今時点の対応状況だと手を出しづらいかと思うが、将来的に `<dialog>` のアニメーションの記述がシンプルになると思うのでサポート状況を追っていきたい。
+
+## 参考にした記事や関連資料
+
+- [@starting-style - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/@starting-style)
+- [transition-behavior - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/transition-behavior)
+- [overlay - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/overlay)
+- [【CSS】Chrome 117でリリースされるCSSプロパティ #HTML - Qiita](https://qiita.com/degudegu2510/items/0b180e795ace402fbb36)

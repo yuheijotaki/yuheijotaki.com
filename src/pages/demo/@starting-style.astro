@@ -10,31 +10,28 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
     <div class="box"></div>
 
     <h2>2. dialog:</h2>
-    <button type="button" data-dialog-trigger>dialog trigger</button>
-    <dialog class="dialog" aria-label="dialog" data-dialog-target>
-      <h3>dialog</h3>
-      <button type="button" data-dialog-trigger>dialog close</button>
+    <button type="button" data-open-button>dialog open</button>
+    <dialog class="dialog" aria-label="dialog" data-dialog>
+      <p>dialog</p>
+      <p><a href="#">text link 1</a></p>
+      <p><a href="#">text link 2</a></p>
+      <button type="button">button 1</button>
+      <button type="button">button 2</button>
+      <button type="button" data-close-button>button 3 (dialog close)</button>
     </dialog>
   </div>
 </LayoutDemo>
 
 <script>
-  const dialogTrigger = document.querySelector('[data-dialog-trigger]') as HTMLButtonElement;
-  const dialogTarget = document.querySelector('[data-dialog-target]') as HTMLDialogElement;
+  const openButton = document.querySelector<HTMLButtonElement>('[data-open-button]');
+  const closeButton = document.querySelector<HTMLButtonElement>('[data-close-button]');
+  const dialog = document.querySelector<HTMLDialogElement>('[data-dialog]');
 
-  dialogTrigger?.addEventListener('click', () => {
-    dialogTarget?.showModal();
-  });
-
-  dialogTarget?.addEventListener('click', (event: any) => {
-    if (event.target === dialogTarget || event.target.getAttribute('data-dialog-trigger') === '') {
-      dialogTarget.close();
-    }
-  });
+  openButton?.addEventListener('click', () => dialog?.showModal());
+  closeButton?.addEventListener('click', () => dialog?.close());
 </script>
 
 <style>
-  /* stylelint-disable custom-property-pattern */
   .wrapper {
     margin: 2rem;
   }
@@ -46,37 +43,40 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
   /********************
   * 1. box
   ********************/
-
   .box {
     width: 100px;
     height: 100px;
     background-color: red;
-    opacity: 1;
-    transition: opacity 1s;
+    transition: background-color 2s;
 
     @starting-style {
-      opacity: 0;
+      background-color: transparent;
     }
   }
 
   /********************
   * 2. dialog
   ********************/
-
-  .dialog {
+  .dialog,
+  .dialog::backdrop {
     opacity: 0;
     transition:
-      opacity 1s,
-      display 1s allow-discrete,
-      overlay 1s allow-discrete;
+      opacity 0.5s,
+      display 0.5s allow-discrete;
   }
 
-  .dialog[open] {
+  .dialog::backdrop {
+    background-color: rgb(0 0 0 / 75%);
+  }
+
+  .dialog[open],
+  .dialog[open]::backdrop {
     opacity: 1;
   }
 
   @starting-style {
-    .dialog[open] {
+    .dialog[open],
+    .dialog[open]::backdrop {
       opacity: 0;
     }
   }

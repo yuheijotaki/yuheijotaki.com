@@ -15,8 +15,7 @@
     "fix:ts": "eslint src --ext .tsx,.ts --fix",
     "fix:style": "stylelint --ignore-path .gitignore './src/**/*.{css,scss}' --fix",
     "fix:prettier": "prettier --config .prettierrc.json './src/**/*.{astro,js,jsx,ts,tsx,css,scss}' --write",
-    "fix": "npm run fix:ts && npm run fix:style && npm run fix:prettier",
-    "test:e2e": "playwright test"
+    "fix": "npm run fix:ts && npm run fix:style && npm run fix:prettier"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -49,9 +48,7 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.8.5",
     "@markuplint/astro-parser": "^4.0.2",
-    "@playwright/test": "^1.42.1",
     "@tinacms/cli": "^1.5.42",
     "@types/hast": "^3.0.4",
     "@types/node": "^20.11.30",

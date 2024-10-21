@@ -48,8 +48,6 @@ const groupedHeadings = headings.reduce((array, heading) => {
 }
 
 <script>
-  import { setupSwup } from '@/utils/swupSetup';
-
   function focusSection() {
     const tocLinks = document.querySelectorAll('nav[aria-label="目次"] a');
     tocLinks.forEach((link) => {
@@ -63,7 +61,7 @@ const groupedHeadings = headings.reduce((array, heading) => {
     });
   }
 
-  setupSwup(focusSection);
+  focusSection();
 </script>
 
 <style lang="scss">

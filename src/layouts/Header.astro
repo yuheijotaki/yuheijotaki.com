@@ -15,26 +15,6 @@ const Tag = isHome ? 'h1' : 'p';
   <Heading text={SITE_TITLE} tag={Tag} level={1} url="/" bold={false} data-heading translate="no" />
 </header>
 
-<script>
-  function focusHeader() {
-    const headingLink = document.querySelector('[data-heading] a') as HTMLAnchorElement | null;
-    headingLink?.focus();
-  }
-
-  const setup = () => {
-    (window as any).swup.hooks.on('visit:end', (visit: any) => {
-      if (visit.to.url === '/') {
-        focusHeader();
-      }
-    });
-  };
-  if ((window as any).swup) {
-    setup();
-  } else {
-    document.addEventListener('swup:enable', setup);
-  }
-</script>
-
 <style lang="scss">
   @use '@/styles/variables' as var;
   @use '@/styles/extension' as *;

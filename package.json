@@ -42,14 +42,12 @@
     "sanitize-html": "^2.13.0",
     "satori": "^0.10.13",
     "sharp": "^0.33.3",
-    "tinacms": "^1.6.0",
     "typescript": "^5.3.3",
     "unified": "^11.0.4",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@markuplint/astro-parser": "^4.0.2",
-    "@tinacms/cli": "^1.5.42",
     "@types/hast": "^3.0.4",
     "@types/node": "^20.11.30",
     "@types/sharp": "^0.32.0",

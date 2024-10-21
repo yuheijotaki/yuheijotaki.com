@@ -4,7 +4,6 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import swup from '@swup/astro';
-import { imageService } from '@unpic/astro/service';
 import externalLinks from './src/rehype-plugins/external-links';
 import addHeadingLinks from './src/rehype-plugins/add-heading-links';
 
@@ -45,20 +44,19 @@ export default defineConfig({
   prefetch: {
     defaultStrategy: 'hover',
   },
-  image: {
-    service: imageService({
-      // fallbackService: 'vercel',
-      // placeholder: 'dominantColor',
-      // layout: 'constrained',
-    }),
-  },
   devToolbar: {
     enabled: false,
   },
   markdown: {
     rehypePlugins: [externalLinks, addHeadingLinks],
   },
-  // experimental: {
-  //   contentCollectionCache: true,
-  // },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
+  },
 });

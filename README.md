@@ -32,4 +32,12 @@ All commands are run from the root of the project, from a terminal:
 
 Created based on [Astro Blog](https://astro.build/themes/details/blog/) theme.
 
+<<<<<<< HEAD
 test3
+=======
+<<<<<<< HEAD
+test3
+=======
+fugafuga
+>>>>>>> 7c8c855 (fuga)
+>>>>>>> 021ed76 (test3)

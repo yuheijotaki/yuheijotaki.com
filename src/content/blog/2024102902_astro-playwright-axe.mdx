@@ -1,0 +1,46 @@
+---
+title: Playwright / axe-core PC・モバイル各ページの自動テスト
+description: Astro 環境で Playwright / axe-core を試した雑感です。
+pubDate: 2024-10-29T00:01:00.000Z
+---
+
+## 概要
+
+Astro環境でPlaywrightを導入してPC、モバイルサイズに対応したaxeの自動テストを行ってみた。
+
+## 目的
+
+- Google Chrome拡張の[axe DevTools](https://chromewebstore.google.com/detail/axe-devtools-web-accessib/lhdoppojpmngadmnindnejefpokejbdd)でアクセシビリティテストを行う際、PCサイズ、モバイルサイズそれぞれ切り替えてScanする必要がある
+  - 例えばモバイルサイズではテキストが小さくなりがちなので、コントラスト比がPCはOKだけどSPは違反というパターンもあるため
+  - また各ページ毎にScanを走らせる必要もある
+- サイトのページ数にもよるが、Webサイトの構築時にこれらのことを行うのはなかなか手間がかかる
+- Playwrightにaxe-coreの組み合わせが用意されているので、作成ページを一気にテスト自動化できたら楽になるのでは？
+
+## リポジトリ
+
+- [yuheijotaki/astro-axe-playwright](https://github.com/yuheijotaki/astro-axe-playwright)
+
+## 導入方法
+
+- 必要なパッケージをインストール
+  - `npm i -d @playwright/test @axe-core/playwright`
+- [playwright.config.ts](https://github.com/yuheijotaki/astro-axe-playwright/blob/main/playwright.config.ts) を編集
+  - 現状は 1440x900px、375x667px で設定
+- [tests/axe.spec.ts](https://github.com/yuheijotaki/astro-axe-playwright/blob/main/tests/axe.spec.ts) にテストコードを記述
+  - テスト対象のページ一覧はsitemap的な一覧から持ってきてもいいかも
+  - `AxeBuilder.withTags()` 内にテスト基準のタグを設定する
+- `npx playwright test` でテスト実行
+
+## 分かったこと、所感など
+
+- [axe-html-reporter](https://www.npmjs.com/package/axe-html-reporter) というのも用意されているが、1ページ毎のレポートHTML生成なため今回は使用なし
+  - そもそもめちゃめちゃ違反数が多い前提ではない
+- Astro環境に限らずローカルにも同じ環境を作っておけば普段のaxeテストが捗りそう
+- axe DevToolsは無料版だとAAレベルのみのテストしかできないが、axe-coreは基準設定できるためそういう観点での使い道としてもいいのでは
+- axe関係ないがPlaywrightで[ドラッグ&ドロップ](https://playwright.dev/docs/input#drag-and-drop)もテストできると知りすごいなと思った
+
+## 参考記事
+
+- [Accessibility testing | Playwright](https://playwright.dev/docs/accessibility-testing)
+- [axe-core/playwrightとmarkuplintを導入しアクセシビリティの自動テストをできるようにした | Hirotaka Miyagi](https://mh4gf.dev/articles/axe-core-playwright-and-markuplint)
+- [@axe-core/playwright によるアクセシビリティテストの自動化](https://azukiazusa.dev/blog/axe-core-playwright/)

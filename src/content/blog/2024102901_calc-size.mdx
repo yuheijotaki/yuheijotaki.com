@@ -6,41 +6,34 @@ pubDate: 2024-10-29T00:00:00.000Z
 
 ## 概要
 
-なんとなく使ったけどあまり分かっていないシリーズ `inert` 属性について調べながら改めて使ってみた。
+CSSの `auto` などキーワード値を補間計算する `calc-size()` 関数を試してみた。
 
-## `inert` 属性とは
+## `calc-size()` とは
 
-ブラウザーがその要素を無視することを示すためのHTMLの論理属性  
-`inert` は配下の各要素の不活性化を行う
+`calc-size()` を使うと、 `width` や `height` に設定される `auto`, `min-content`, `max-content`, `fit-content` などの値を補間計算することができる。
 
-- フォーカス移動
-- クリックイベント
-- アクセシビリティツリーからの除外
+現状Chromeでのみサポート済み。（[Can I use](https://caniuse.com/mdn-css_types_calc-size)）
 
 ## デモ
 
 - [デモ](https://yuheijotaki.com/demo/calc-size/)
-- [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/inert.astro)
+- [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/calc-size.astro)
 
-## 分かったこと
+## 分かったこと、所感
 
-- `inert` 配下の特定要素を活性化することはできない
-- `inert` 要素は見た目が変化しない（不活性/活性の見た目をCSSで作る必要がある）
-  - [MDN](https://developer.mozilla.org/ja/docs/Web/HTML/Global_attributes/inert) では考慮点として挙げられている
-- `inert` 要素はページ内テキスト検索に引っかからない（Mac Chromeの場合）
-- `inert` 以外で要素の完全な非活性化を行おうとすると細かい制御が必要
-  - `tabindex="-1"` でも JavaScript の `focus()` ではフォーカス可能など
-- 一般的には `inert` はコンテンツのセクションなどに使用され、フォームコントロールを個別に非活性するには `disabled` 属性を使用するのが望ましい
-
-## 所感
-
-基本的にはケースに応じて使うべきときは有用だが、支援技術利用者と非利用者によって得られる情報にギャップが生じないようにデザイン、実装するといった注意点も把握できた。  
-`<dialog>` のおかげで必要だなと考えるケースも多い訳ではないが、意外となんでも使ってOKではないため考慮点を踏まえながら使用していきたい。
+- なんだかんだ使い所はめっちゃ多くはなさそうだなとは思う
+  - 例えば思いついたのは、アコーディオンや「もっと見る」ボタンで隠していた記事を表示するときくらい？
+  - わざわざ高さを測ったりしているとJSの記述量も多かったので助かるは助かる
+- `calc-size()` は Safari では次の v18.1 からサポートされるようなので実質Firefox待ち
+- `@keyframes` で `calc-size()` を指定しても使えないっぽい
+- `interpolate-size: allow-keywords;` を root に指定すると、 `calc-size()` の指定をせずにアニメーションが動作する
+  - デフォルトでキーワード値がアニメーションする仕様になると、既存のサイトで不整合が起きる可能性を鑑みてとのこと
+    - おそらく `transition-property: all;` にしているサイトがそれらに該当する認識
+- details のデモは現状最新のChrome130ではアニメーションしない
+  - `::details-content` がChrome131からサポートされるため、そこでアニメーションが動作するはず（[Can I use](https://caniuse.com/mdn-css_selectors_details-content)）
 
 ## 参考記事
 
-- [inert - HTML: ハイパーテキストマークアップ言語 | MDN](https://developer.mozilla.org/ja/docs/Web/HTML/Global_attributes/inert)
-- [ユーザー操作の一括無効化で役立つ！ HTMLのinert属性の紹介 - ICS MEDIA](https://ics.media/entry/230406/)
-- [UIにおける見えるけど利用できない非活性な領域の実装とinert属性について - シフトブレイン／スタンダードデザインユニット](https://standard.shiftbrain.com/blog/unavailable-inert-regions-and-inert-attribute)
-- [inert属性の使いどころ | フロントエンドBlog | ミツエーリンクス](https://www.mitsue.co.jp/knowledge/blog/frontend/202206/03_1016.html)
-- [フォーカスの分類 | アクセシビリティBlog | ミツエーリンクス](https://www.mitsue.co.jp/knowledge/blog/a11y/201912/23_0000.html)
+- [calc-size() - CSS: Cascading Style Sheets | MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size)
+- [`calc-size()` や `interpolate-size: allow-keywords;` で `height: auto;` な要素のアニメーションをサポートする](https://azukiazusa.dev/blog/calc-size-animation/)
+- [types: `calc-size()` | Can I use... Support tables for HTML5, CSS3, etc](https://caniuse.com/mdn-css_types_calc-size)

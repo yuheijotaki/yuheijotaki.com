@@ -31,5 +31,3 @@ All commands are run from the root of the project, from a terminal:
 ## Credit
 
 Created based on [Astro Blog](https://astro.build/themes/details/blog/) theme.
-
-test4

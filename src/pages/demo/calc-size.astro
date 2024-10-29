@@ -1,0 +1,141 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="calc-size()">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; calc-size()</h1>
+
+    <h2>1. height auto animation</h2>
+    <div class="section">
+      <div class="accordion">
+        <button class="button" type="button">ボタン1</button>
+        <ul class="list" inert>
+          <li><a href="#1">メニュー名1</a></li>
+          <li><a href="#2">メニュー名2</a></li>
+          <li><a href="#3">メニュー名3</a></li>
+        </ul>
+      </div>
+      <div class="accordion">
+        <button class="button" type="button">ボタン2</button>
+        <ul class="list" inert>
+          <li><a href="#1">メニュー名1</a></li>
+          <li><a href="#2">メニュー名2</a></li>
+          <li><a href="#3">メニュー名3</a></li>
+          <li><a href="#4">メニュー名4</a></li>
+          <li><a href="#5">メニュー名5</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>2. width auto animation</h2>
+    <div class="section">
+      <div class="box -auto">
+        <p>box(auto)</p>
+      </div>
+      <div class="box -min-content">
+        <p>box(min-content)</p>
+      </div>
+      <div class="box -fit-content">
+        <p>box(fit-content)</p>
+      </div>
+    </div>
+
+    <h2>3. details animation(Chrome131~?)</h2>
+    <div class="section">
+      <details>
+        <summary>開閉する</summary>
+        <div class="content">
+          <ul>
+            <li><a href="#1">メニュー名1</a></li>
+            <li><a href="#2">メニュー名2</a></li>
+            <li><a href="#3">メニュー名3</a></li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</LayoutDemo>
+
+<script>
+  const accordion = document.querySelectorAll('.accordion');
+  accordion.forEach((el) => {
+    const button = el.querySelector('.button') as HTMLButtonElement;
+    const list = el.querySelector('.list') as HTMLElement;
+
+    button?.addEventListener('click', () => {
+      list?.classList.toggle('is-open');
+      list.inert = !list.inert;
+    });
+  });
+</script>
+
+<style>
+  :root {
+    /* interpolate-size: allow-keywords; */
+  }
+
+  .wrapper {
+    margin: 2rem;
+  }
+
+  /********************
+  * 1. height
+  ********************/
+  .list {
+    height: 0;
+    overflow: hidden;
+    background-color: lime;
+    transition: height 0.5s;
+
+    &.list.is-open {
+      height: calc-size(auto, size);
+    }
+  }
+
+  /********************
+  * 2. width
+  ********************/
+  .box {
+    width: 0;
+    background-color: tomato;
+    transition: width 0.5s;
+
+    &.-auto {
+      &:hover {
+        width: calc-size(auto, size);
+      }
+    }
+
+    &.-min-content {
+      &:hover {
+        width: calc-size(min-content, size);
+      }
+    }
+
+    &.-fit-content {
+      &:hover {
+        width: calc-size(fit-content, size);
+      }
+    }
+  }
+
+  /********************
+  * 3. details
+  ********************/
+  details {
+    &::details-content {
+      display: block;
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: height 0.5s;
+    }
+
+    &[open]::details-content {
+      height: calc-size(auto, size);
+      overflow: auto;
+      opacity: 1;
+    }
+  }
+</style>

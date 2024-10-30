@@ -1,0 +1,117 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="scroll-driven-animations">
+  <div class="wrapper">
+    <div class="progress-bar"></div>
+    <h1><a href="/demo/">demo</a> &raquo; scroll-driven-animations</h1>
+
+    <div class="images">
+      <div class="image image-01">
+        <img src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8" alt="" />
+      </div>
+      <div class="image image-02">
+        <img src="https://images.unsplash.com/photo-1713560625744-46175f1b4a37" alt="" />
+      </div>
+      <div class="image image-03">
+        <img src="https://images.unsplash.com/photo-1694406805270-f3a93e91f4b6" alt="" />
+      </div>
+      <div class="image image-02">
+        <img src="https://images.unsplash.com/photo-1493514789931-586cb221d7a7" alt="" />
+      </div>
+      <div class="image image-03">
+        <img src="https://images.unsplash.com/photo-1533219534096-bd7e79e0fbc6" alt="" />
+      </div>
+      <div class="image image-01">
+        <img src="https://images.unsplash.com/photo-1483279745275-2a5d5a1074d2" alt="" />
+      </div>
+      <div class="image image-03">
+        <img src="https://images.unsplash.com/photo-1567158166481-b99914e660eb" alt="" />
+      </div>
+      <div class="image image-01">
+        <img src="https://images.unsplash.com/photo-1496503155350-cc3a096b1e9f" alt="" />
+      </div>
+      <div class="image image-02">
+        <img src="https://images.unsplash.com/photo-1493515322954-4fa727e97985" alt="" />
+      </div>
+    </div>
+  </div>
+</LayoutDemo>
+
+<style>
+  .wrapper {
+  }
+
+  h1 {
+    padding: 20px;
+    margin: 0;
+  }
+
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 20px;
+    background: #222;
+    transform-origin: left;
+    animation: scale-progress;
+    animation-timeline: scroll();
+  }
+
+  .images {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 120px 240px;
+    padding-block: 400px 1200px;
+    margin-inline: 80px;
+  }
+
+  .image {
+    margin-inline: auto;
+    font-size: 0;
+    animation: parallax-image;
+    animation-timeline: scroll();
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .image-01 {
+    --_translate-y: 60px;
+
+    width: 100%;
+  }
+
+  .image-02 {
+    --_translate-y: 120px;
+
+    width: 80%;
+  }
+
+  .image-03 {
+    --_translate-y: 180px;
+
+    width: 60%;
+  }
+
+  @keyframes scale-progress {
+    from {
+      scale: 0 1;
+    }
+
+    to {
+      scale: 1 1;
+    }
+  }
+
+  @keyframes parallax-image {
+    to {
+      translate: 0 var(--_translate-y);
+    }
+  }
+</style>

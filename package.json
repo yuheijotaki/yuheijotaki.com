@@ -15,7 +15,8 @@
     "fix:ts": "eslint src --ext .tsx,.ts --fix",
     "fix:style": "stylelint --ignore-path .gitignore './src/**/*.{css,scss}' --fix",
     "fix:prettier": "prettier --config .prettierrc.json './src/**/*.{astro,js,jsx,ts,tsx,css,scss}' --write",
-    "fix": "npm run fix:ts && npm run fix:style && npm run fix:prettier"
+    "fix": "npm run fix:ts && npm run fix:style && npm run fix:prettier",
+    "test:a11y": "playwright test"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -23,6 +24,8 @@
     "@astrojs/react": "^3.6.2",
     "@astrojs/rss": "^4.0.9",
     "@astrojs/sitemap": "^3.2.1",
+    "@axe-core/playwright": "^4.10.0",
+    "@playwright/test": "^1.48.2",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "@unpic/astro": "^0.0.46",

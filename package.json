@@ -33,6 +33,7 @@
     "@unpic/placeholder": "^0.1.2",
     "astro": "^4.16.5",
     "astro-icon": "^1.1.0",
+    "baseline-status": "^1.0.7",
     "feather-icons": "^4.29.2",
     "gsap": "^3.12.5",
     "hast-util-from-html": "^2.0.1",

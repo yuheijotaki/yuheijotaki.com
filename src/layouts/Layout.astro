@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 ---
 import Head from '@/layouts/Head.astro';
 import Header from '@/layouts/Header.astro';
@@ -26,3 +27,12 @@ const { title, description, image, isHome } = Astro.props;
     </div>
   </body>
 </html>
+
+<script>
+  import 'baseline-status/baseline-status.min.js';
+</script>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+</style>

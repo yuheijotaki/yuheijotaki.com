@@ -32,3 +32,19 @@ ul,
 ol {
   padding-left: 1em;
 }
+
+baseline-status {
+  --baseline-status-color-text: #100f0f;
+
+  line-height: 1.6;
+
+  & + * {
+    margin-top: 1.5em;
+  }
+}
+
+:root[style*='--color-mode: dark'] {
+  baseline-status {
+    --baseline-status-color-text: #fffcf0;
+  }
+}

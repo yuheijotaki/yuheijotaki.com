@@ -1,0 +1,35 @@
+---
+title: Baseline Status ウェブコンポーネントを入れてみる
+description: Baseline Status ウェブコンポーネントをこのブログに入れてみた。
+pubDate: 2024-11-01T00:00:00.000Z
+---
+
+## 概要
+
+[web-platform-dx/baseline-status](https://github.com/web-platform-dx/baseline-status) を使って、Baseline Status のバッジを埋め込みできるようにした。
+
+## 結果
+
+[fetchPriority プロパティ - Web API](https://developer.mozilla.org/ja/docs/Web/API/HTMLImageElement/fetchPriority) の例
+
+<baseline-status featureId="fetch-priority"></baseline-status>
+
+## そもそも Baseline とは何なのか
+
+- [Web標準に新たなステータス「Baseline」が登場。変化し続けるWeb標準のうちWeb開発者が安心して使える機能群を示す。MDNドキュメントなどで表示開始 － Publickey](https://www.publickey1.jp/blog/23/webbaselinewebwebmdn.html)
+- [Baseline (互換性) - MDN Web Docs 用語集: ウェブ関連用語の定義 | MDN](https://developer.mozilla.org/ja/docs/Glossary/Baseline/Compatibility)
+
+## 導入（Astro）
+
+- `npm i baseline-status`
+- 任意ファイルで読み込み
+  - `import 'baseline-status/baseline-status.min.js';`
+- .astro や .mdx でコンポーネント埋め込み
+  - `<baseline-status featureId="fetch-priority"></baseline-status>`
+- featureId は下記から探せる
+  - [web-features/features at main · web-platform-dx/web-features](https://github.com/web-platform-dx/web-features/tree/main/features)
+  - MDNに掲載されているAPIの全てが埋め込みでステータス反映される訳ではなさそう
+
+## 参考記事
+
+- [Show Baseline status on your blog posts and presentations  |  Blog  |  web.dev](https://web.dev/blog/show-baseline-status)

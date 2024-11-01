@@ -24,17 +24,17 @@ img要素に対して `loading` と `fetchpriority` 属性値を付与した場�
 | filename | `loading` | `fetchpriority` | 読み込み順 |
 | -------: | :-------- | :-------------- | ---------: |
 |   01.png | `"lazy"`  | `"low"`         |  <b>12</b> |
-|   02.png | `"lazy"`  | `"high"`        |  <b>7</b> |
-|   03.png | `"eager"` | `"low"`         |   <b>11</b> |
+|   02.png | `"lazy"`  | `"high"`        |   <b>7</b> |
+|   03.png | `"eager"` | `"low"`         |  <b>11</b> |
 |   04.png | `"eager"` | `"high"`        |   <b>1</b> |
 |   05.png | `"eager"` | `"high"`        |   <b>2</b> |
 |   06.png | `"eager"` | `"high"`        |   <b>3</b> |
 |   07.png | `"eager"` | `"high"`        |   <b>4</b> |
 |   08.png | `"eager"` | `"high"`        |   <b>5</b> |
-|   09.png | `"eager"` | `"high"`        |  <b>6</b> |
-|   10.png | `"lazy"` | `"high"`        |   <b>8</b> |
-|   11.png | `"lazy"` | `"high"`        |   <b>9</b> |
-|   12.png | `"lazy"` | `"high"`        |   <b>10</b> |
+|   09.png | `"eager"` | `"high"`        |   <b>6</b> |
+|   10.png | `"lazy"`  | `"high"`        |   <b>8</b> |
+|   11.png | `"lazy"`  | `"high"`        |   <b>9</b> |
+|   12.png | `"lazy"`  | `"high"`        |  <b>10</b> |
 
 </div>
 
@@ -44,20 +44,20 @@ img要素に対して `loading` と `fetchpriority` 属性値を付与した場�
 
 <div style="width:75%">
 
-| filename | `loading` | `fetchpriority` | 読み込み順 |
-| -------: | :-------- | :-------------- | ---------: |
-|   01.png | `""(eager)`  | `"low"`         |  <b>11</b> |
-|   02.png | `""(eager)`  | `"high"`        |  <b>1</b> |
-|   03.png | `""(eager)` | `"low"`         |   <b>12</b> |
+| filename | `loading`   | `fetchpriority` | 読み込み順 |
+| -------: | :---------- | :-------------- | ---------: |
+|   01.png | `""(eager)` | `"low"`         |  <b>11</b> |
+|   02.png | `""(eager)` | `"high"`        |   <b>1</b> |
+|   03.png | `""(eager)` | `"low"`         |  <b>12</b> |
 |   04.png | `""(eager)` | `"high"`        |   <b>2</b> |
 |   05.png | `""(eager)` | `"high"`        |   <b>3</b> |
 |   06.png | `""(eager)` | `"high"`        |   <b>4</b> |
 |   07.png | `""(eager)` | `"high"`        |   <b>5</b> |
 |   08.png | `""(eager)` | `"high"`        |   <b>6</b> |
-|   09.png | `""(eager)` | `"high"`        |  <b>7</b> |
+|   09.png | `""(eager)` | `"high"`        |   <b>7</b> |
 |   10.png | `""(eager)` | `"high"`        |   <b>8</b> |
 |   11.png | `""(eager)` | `"high"`        |   <b>9</b> |
-|   12.png | `""(eager)` | `"high"`        |   <b>10</b> |
+|   12.png | `""(eager)` | `"high"`        |  <b>10</b> |
 
 </div>
 
@@ -71,18 +71,18 @@ img要素に対して `loading` と `fetchpriority` 属性値を付与した場�
 
 | filename | `loading` | `fetchpriority` | 読み込み順 |
 | -------: | :-------- | :-------------- | ---------: |
-|   01.png | `"lazy"`   | `""(medium)`         |  <b>8</b> |
-|   02.png | `"lazy"`   | `""(medium)`        |  <b>9</b> |
-|   03.png | `"eager"` | `""(medium)`         |   <b>1</b> |
-|   04.png | `"eager"` | `""(medium)`        |   <b>2</b> |
-|   05.png | `"eager"` | `""(medium)`        |   <b>3</b> |
-|   06.png | `"eager"` | `""(low)`        |   <b>4</b> |
-|   07.png | `"eager"` | `""(low)`        |   <b>5</b> |
-|   08.png | `"eager"` | `""(low)`        |   <b>6</b> |
-|   09.png | `"eager"` | `""(low)`        |  <b>7</b> |
-|   10.png | `"lazy"` | `""(low)`        |   <b>10</b> |
-|   11.png | `"lazy"` | `""(low)`        |   <b>11</b> |
-|   12.png | `"lazy"` | `""(low)`        |   <b>12</b> |
+|   01.png | `"lazy"`  | `""(medium)`    |   <b>8</b> |
+|   02.png | `"lazy"`  | `""(medium)`    |   <b>9</b> |
+|   03.png | `"eager"` | `""(medium)`    |   <b>1</b> |
+|   04.png | `"eager"` | `""(medium)`    |   <b>2</b> |
+|   05.png | `"eager"` | `""(medium)`    |   <b>3</b> |
+|   06.png | `"eager"` | `""(low)`       |   <b>4</b> |
+|   07.png | `"eager"` | `""(low)`       |   <b>5</b> |
+|   08.png | `"eager"` | `""(low)`       |   <b>6</b> |
+|   09.png | `"eager"` | `""(low)`       |   <b>7</b> |
+|   10.png | `"lazy"`  | `""(low)`       |  <b>10</b> |
+|   11.png | `"lazy"`  | `""(low)`       |  <b>11</b> |
+|   12.png | `"lazy"`  | `""(low)`       |  <b>12</b> |
 
 </div>
 

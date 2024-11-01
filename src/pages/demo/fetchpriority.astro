@@ -1,0 +1,105 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="fetchpriority">
+  <div class="wrapper">
+    <div class="progress-bar"></div>
+    <h1><a href="/demo/">demo</a> &raquo; fetchpriority</h1>
+
+    <ul class="images">
+      <li class="item">
+        <p>読み込み順：6<br />01.png<br />loading="lazy"<br />fetchpriority="low"</p>
+        <img
+          src="/images/01.png"
+          alt=""
+          width="1200"
+          height="800"
+          loading="lazy"
+          fetchpriority="low"
+        />
+      </li>
+      <li class="item">
+        <p>読み込み順：5<br />02.png<br />loading="eager"<br />fetchpriority="low"</p>
+        <img
+          src="/images/02.png"
+          alt=""
+          width="1200"
+          height="800"
+          loading="eager"
+          fetchpriority="low"
+        />
+      </li>
+      <li class="item">
+        <p>読み込み順：1<br />03.png<br />loading="eager"<br />fetchpriority="high"</p>
+        <img
+          src="/images/03.png"
+          alt=""
+          width="1200"
+          height="800"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </li>
+      <li class="item">
+        <p>読み込み順：2<br />04.png<br />loading="eager"<br />fetchpriority="high"</p>
+        <img
+          src="/images/04.png"
+          alt=""
+          width="1200"
+          height="800"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </li>
+      <li class="item">
+        <p>読み込み順：3<br />05.png<br />loading="eager"<br />fetchpriority="high"</p>
+        <img
+          src="/images/05.png"
+          alt=""
+          width="1200"
+          height="800"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </li>
+      <li class="item">
+        <p>読み込み順：4<br />06.png<br />loading="eager"<br />fetchpriority="high"</p>
+        <img
+          src="/images/06.png"
+          alt=""
+          width="1200"
+          height="800"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </li>
+    </ul>
+  </div>
+</LayoutDemo>
+
+<style>
+  .wrapper {
+    margin: 2rem;
+  }
+
+  .images {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding-left: 0;
+    margin-top: 1000px;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .item {
+    font-size: 0;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+</style>

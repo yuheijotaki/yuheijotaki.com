@@ -1,0 +1,109 @@
+---
+title: img要素に対しての loading と fetchpriority 属性
+description: img要素に対して loading と fetchpriority 属性値を付与した場合の読み込み優先度を検証してみた。
+pubDate: 2024-11-01T01:00:00.000Z
+---
+
+## 概要
+
+img要素に対して `loading` と `fetchpriority` 属性値を付与した場合の読み込み優先度を検証してみた。
+
+- Chrome v130
+- 約10MBの画像を12枚を3カラムで並べる
+  - 10〜12枚目は読み込み（計測）時ビューポート外にあるように
+- Network > Disabled cache でのネットワークリソースの読み込み順
+
+## 結果
+
+### loading:あり fetchpriority:あり
+
+デモ：[/img-loading-fetchpriority/01/](/demo/img-loading-fetchpriority/01/)
+
+<div style="width:75%">
+
+| filename | `loading` | `fetchpriority` | 読み込み順 |
+| -------: | :-------- | :-------------- | ---------: |
+|   01.png | `"lazy"`  | `"low"`         |  <b>12</b> |
+|   02.png | `"lazy"`  | `"high"`        |  <b>7</b> |
+|   03.png | `"eager"` | `"low"`         |   <b>11</b> |
+|   04.png | `"eager"` | `"high"`        |   <b>1</b> |
+|   05.png | `"eager"` | `"high"`        |   <b>2</b> |
+|   06.png | `"eager"` | `"high"`        |   <b>3</b> |
+|   07.png | `"eager"` | `"high"`        |   <b>4</b> |
+|   08.png | `"eager"` | `"high"`        |   <b>5</b> |
+|   09.png | `"eager"` | `"high"`        |  <b>6</b> |
+|   10.png | `"lazy"` | `"high"`        |   <b>8</b> |
+|   11.png | `"lazy"` | `"high"`        |   <b>9</b> |
+|   12.png | `"lazy"` | `"high"`        |   <b>10</b> |
+
+</div>
+
+### loading:なし fetchpriority:あり
+
+デモ：[/img-loading-fetchpriority/02/](/demo/img-loading-fetchpriority/02/)
+
+<div style="width:75%">
+
+| filename | `loading` | `fetchpriority` | 読み込み順 |
+| -------: | :-------- | :-------------- | ---------: |
+|   01.png | `""(eager)`  | `"low"`         |  <b>11</b> |
+|   02.png | `""(eager)`  | `"high"`        |  <b>1</b> |
+|   03.png | `""(eager)` | `"low"`         |   <b>12</b> |
+|   04.png | `""(eager)` | `"high"`        |   <b>2</b> |
+|   05.png | `""(eager)` | `"high"`        |   <b>3</b> |
+|   06.png | `""(eager)` | `"high"`        |   <b>4</b> |
+|   07.png | `""(eager)` | `"high"`        |   <b>5</b> |
+|   08.png | `""(eager)` | `"high"`        |   <b>6</b> |
+|   09.png | `""(eager)` | `"high"`        |  <b>7</b> |
+|   10.png | `""(eager)` | `"high"`        |   <b>8</b> |
+|   11.png | `""(eager)` | `"high"`        |   <b>9</b> |
+|   12.png | `""(eager)` | `"high"`        |   <b>10</b> |
+
+</div>
+
+※ `loading` の `()` 内は初期値
+
+### loading:あり fetchpriority:なし
+
+デモ：[/img-loading-fetchpriority/03/](/demo/img-loading-fetchpriority/03/)
+
+<div style="width:75%">
+
+| filename | `loading` | `fetchpriority` | 読み込み順 |
+| -------: | :-------- | :-------------- | ---------: |
+|   01.png | `"lazy"`   | `""(medium)`         |  <b>8</b> |
+|   02.png | `"lazy"`   | `""(medium)`        |  <b>9</b> |
+|   03.png | `"eager"` | `""(medium)`         |   <b>1</b> |
+|   04.png | `"eager"` | `""(medium)`        |   <b>2</b> |
+|   05.png | `"eager"` | `""(medium)`        |   <b>3</b> |
+|   06.png | `"eager"` | `""(low)`        |   <b>4</b> |
+|   07.png | `"eager"` | `""(low)`        |   <b>5</b> |
+|   08.png | `"eager"` | `""(low)`        |   <b>6</b> |
+|   09.png | `"eager"` | `""(low)`        |  <b>7</b> |
+|   10.png | `"lazy"` | `""(low)`        |   <b>10</b> |
+|   11.png | `"lazy"` | `""(low)`        |   <b>11</b> |
+|   12.png | `"lazy"` | `""(low)`        |   <b>12</b> |
+
+</div>
+
+※ `fetchpriority` の `()` 内は初期値
+
+## 分かったこと、所感など
+
+- 基本的には `fetchpriority="high"` が優先されるが `loading` の値によっても読み込み順が変わる
+- `fetchpriority` 未指定の場合は最初の5枚が `medium` として扱われる
+- 実装としては下記のような感じで良さそう？
+  - 基本は `loading="lazy"` を付与して、ファーストビューなどの画像には明示的に `loading="eager"` と `fetchpriority="high"` を付与する
+  - ファーストビューでも例えばカルーセルのような画面外に隠れるn枚目以降の画像は明示的に `fetchpriority="low"` を指定する（記述順先頭から5枚目以内なら特に）
+- 未考慮点
+  - Chrome以外のブラウザでの挙動
+    - `fetchpriority` はFirefox v132でも対応したので現状各ブラウザ最新版には対応している
+  - 通信速度の違い
+  - 画像ファイルサイズの違い
+- `fetchpriority` は他のサブリソース（ `<link>`, `<script>` ）にも適用可能だが、今回は画像のみ
+
+## 参考記事
+
+- [Fetch Priority API を使用してリソースの読み込みを最適化する  |  Articles  |  web.dev](https://web.dev/articles/fetch-priority?hl=ja)
+- [safari 17.2で有効になったfetchPriorityのおさらい](https://zenn.dev/anpan/articles/db1641d3e527c9)
+- [Web における画像ロードベストプラクティス](https://zenn.dev/1000ch/scraps/85d03fccf42a48)

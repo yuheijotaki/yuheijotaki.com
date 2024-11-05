@@ -1,0 +1,45 @@
+---
+title: Cloudflareのビルドキャッシュ設定を試してみる
+description: Cloudflareのビルドキャッシュ設定を試してみた所感記事です。
+pubDate: 2024-11-05T00:00:00.000Z
+---
+
+## 概要
+
+Cloudflareの[ビルドキャッシュ（Build caching）](https://developers.cloudflare.com/pages/configuration/build-caching/) 設定をAstroで構築している本ブログで試してみた。
+
+## ビルドキャッシュ設定
+
+Workers & Pages > 設定 > ビルド > ビルドキャッシュ  
+より「有効」に設定する。
+
+![](/images/2024110105_cloudflare-build-cache_01.png)
+
+ドキュメントにある通りAstroの場合は `node_modules/.astro` がキャッシュされる。  
+最大10GBで最終読み取り日から7日後まで保持され、手動で行う場合も同設定ページよりキャッシュ削除を行う。
+
+## 結果
+
+| ビルドキャッシュ設定 | 依存関係のインストール時間 | デプロイまでの時間 |
+| -------------------- | -------------------------- | ------------------ |
+| 前（1回目）          | 24s                        | 66s                |
+| 前（2回目）          | 25s                        | 67s                |
+| 前（3回目）          | 23s                        | 67s                |
+| 後（1回目）          | 09s                        | 52s                |
+| 後（2回目）          | 10s                        | 56s                |
+| 後（3回目）          | 10s                        | 54s                |
+
+ビルドキャッシュ設定後のログには下記が出力された。（build outputってなんだ）
+
+```
+Restoring from dependencies cache
+Restoring from build output cache
+Success: Dependencies restored from build cache.
+```
+
+## 所感
+
+- 倍速になるほどではなかったが多少効果がある
+- ローカルで新しいモジュールインストールした後にキャッシュ削除する必要あるならなかなか手間がかかるかも
+
+## 参考記事

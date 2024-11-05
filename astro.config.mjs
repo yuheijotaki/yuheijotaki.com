@@ -3,7 +3,6 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
-import cloudflare from '@astrojs/cloudflare';
 import externalLinks from './src/rehype-plugins/external-links';
 import addHeadingLinks from './src/rehype-plugins/add-heading-links';
 
@@ -41,6 +40,4 @@ export default defineConfig({
       },
     },
   },
-  output: 'hybrid',
-  adapter: cloudflare(),
 });

@@ -1,0 +1,45 @@
+---
+title: display:contents; の挙動を確認してみる
+description: display:contents; の挙動を確認した検証記事です。
+pubDate: 2024-11-11T00:00:00.000Z
+---
+
+## 概要
+
+CSSの `display: contents;` についての挙動をイマイチ理解できていなかったので検証してみた。
+
+## `display: contents;` とは
+
+[MDN](https://developer.mozilla.org/ja/docs/Web/CSS/display#contents) からの引用
+
+> これらの要素は自身のために特定のボックスを生成しません。擬似ボックスやその子ボックスで置き換えられます。なお、 CSS Display Level 3 仕様書では、 `contents` の値が「普通ではない要素」 — 置換要素のように、 CSS ボックスの純粋な概念に従って表示されない要素に影響する方法を定義しています。
+
+何を言ってるか分からないですね。
+
+## デモ
+
+- [デモ](/demo/display-contents/)
+- [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/display-contents.astro)
+
+## 解釈
+
+Chrome最新版（v130）で確認
+
+- 開発者ツールで `.contents` クラスの付け外しをしながらボックスモデルを見ると分かりやすいが、 `display: contents;` はレイアウト上では自身のコンテンツエリアをなくしたようにみなす
+- `display: grid;` の子要素として `display: contents;` を指定すると、さらにその子要素が `grid` の子要素として扱われる
+- `<button>` 要素に `display: contents;` を指定すると、キーボードフォーカスされない要素になる
+
+## 所感など
+
+- 以前から `display: contents;` にはアクセシビリティ上の問題（留意点）が多くあるとされている。
+  - [MDN](https://developer.mozilla.org/ja/docs/Web/CSS/display#display_contents) に記載があるようなアクセシビリティツリーから要素を削除するようなことはなかった（Chrome v130）
+  - 他ブラウザや各スクリーンリーダー依存でこのような問題が残っている可能性はあり
+  - [Display: Contents Is Not a CSS Reset — Adrian Roselli](https://adrianroselli.com/2018/05/display-contents-is-not-a-css-reset.html) でも支援技術による動作検証を行ってから `display: contents;` を使うことを推奨している。2024年9月の更新でも「フォーカスを取得できるものやインタラクティブなもの、より豊富なセマンティクスを持つもの （表、リスト、見出しなど）には使用しないこと」としている
+- ウェブコンポーネントに対しては `display: contents;` には使用しても問題ない認識
+
+## ほか参考
+
+- [CSS display contents](https://ishadeed.com/article/display-contents/)
+- [More accessible markup with display: contents | hidde.blog](https://hidde.blog/more-accessible-markup-with-display-contents/)
+- [[CSS]「display: contents;」がすごい便利！ラッパーを使った実装が大きく変わるこれからのテクニック | コリス](https://coliss.com/articles/build-websites/operation/work/how-to-work-display-contents.html)
+- [display: contents; とは一体何なのか](https://zenn.dev/skmtko/articles/3570173649f8da)

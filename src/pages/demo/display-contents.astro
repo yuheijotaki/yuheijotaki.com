@@ -1,0 +1,51 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="display-contents">
+  <div class="wrapper">
+    <div class="progress-bar"></div>
+    <h1><a href="/demo/">demo</a> &raquo; display-contents</h1>
+
+    <div class="grid">
+      <h2 class="contents">heading 2</h2>
+      <button type="button" class="contents" onclick="alert(this.innerText);">contents</button>
+      <ul class="contents">
+        <li>list item</li>
+        <li>list item</li>
+        <li>list item</li>
+      </ul>
+      <table class="contents" aria-label="table">
+        <thead>
+          <tr>
+            <th>table item</th>
+            <th>table item</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>table item</td>
+            <td>table item</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>table item</td>
+            <td>table item</td>
+          </tr>
+        </tfoot>
+      </table>
+      <custom-element class="contents">custom-element</custom-element>
+    </div>
+  </div>
+</LayoutDemo>
+
+<style>
+  .grid {
+    display: grid;
+  }
+
+  .contents {
+    display: contents;
+  }
+</style>

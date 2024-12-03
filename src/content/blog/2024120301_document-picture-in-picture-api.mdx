@@ -1,0 +1,37 @@
+---
+title: Document Picture-in-Picture API を試してみる
+description: Document Picture-in-Picture API を試した雑感です。
+pubDate: 2024-12-03T00:00:00.000Z
+---
+
+## 概要
+
+任意のHTMLコンテンツを別窓で最前面に配置できる Document Picture-in-Picture API を試してみた。
+
+## Document Picture-in-Picture API とは
+
+> Document Picture-in-Picture API を使用すると、任意の HTML コンテンツを配置できる常に最前面のウィンドウを開くことができます。これは、HTML の `<video>` 要素のみをピクチャー イン ピクチャー ウィンドウに配置できるようにする既存の `<video>` 用 Picture-in-Picture API を拡張します。
+
+[Chrome for Developers](https://developer.chrome.com/docs/web-platform/document-picture-in-picture?hl=ja) より
+
+馴染みのある例としては、Google Meet の通話中に別タブに切り替えた際に配置される画面ですね。
+
+対応ブラウザは Chrome, Edge です。  
+[Can I use...](https://caniuse.com/mdn-api_documentpictureinpicture)
+
+## デモ
+
+- [デモ](/demo/document-picture-in-picture-api/)
+- [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/document-picture-in-picture-api.astro)
+
+## 所感など
+
+- デモでは動画と見出し、テキストをピクチャーインピクチャーに配置してみた
+- スタイルシートのコピーなど結構泥臭くやるんだなという印象
+- ピクチャーインピクチャーのみ適用するスタイルは `@media all and (display-mode: picture-in-picture) {}` で定義できる
+- これといって使い所は思いつかないが、Meetで使われているAPIがどのような感じかはざっくり知れた
+
+## ほか参考
+
+- [Document Picture-in-Picture API - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document_Picture-in-Picture_API)
+- [ChromeのDocument Picture-in-Picture APIを試してみた](https://zenn.dev/voiceapplab/articles/2b90180c38af9d)

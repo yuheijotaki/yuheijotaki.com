@@ -34,15 +34,14 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
       return;
     }
 
-    const player = document.querySelector('#player') as HTMLDivElement;
-
-    pipButton.classList.add('is-hide');
-
+    // ピクチャーインピクチャーウィンドウを開く
     const pipWindow = await documentPictureInPicture.requestWindow({
+      // ピクチャーインピクチャーウィンドウのサイズを設定する
       width: 320,
-      height: 240,
+      height: 480,
     });
 
+    // ピクチャーインピクチャーウィンドウにスタイルシートをコピーする
     [...document.styleSheets].forEach((styleSheet) => {
       try {
         const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
@@ -61,8 +60,11 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
       }
     });
 
+    const player = document.querySelector('#player') as HTMLDivElement;
+    pipButton.classList.add('is-hide');
     pipWindow.document.body.append(player);
 
+    // ピクチャーインピクチャーウィンドウが閉じられたときの処理
     pipWindow.addEventListener('pagehide', (event) => {
       const playerContainer = document.querySelector('#playerContainer') as HTMLDivElement;
       const pipPlayer = event.target.querySelector('#player');
@@ -73,9 +75,6 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
 </script>
 
 <style>
-  .wrapper {
-  }
-
   h1 {
     padding: 20px;
     margin: 0;

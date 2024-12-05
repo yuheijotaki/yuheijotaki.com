@@ -1,0 +1,72 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="skew">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; skew</h1>
+    <section>
+      <div class="container-01">
+        <div class="content-01">
+          <img src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8" alt="" />
+        </div>
+      </div>
+      <div class="container-02">
+        <div class="content-02">
+          <img
+            src="https://images.unsplash.com/photo-1557409518-691ebcd96038?q=80&w=560&h=560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
+          />
+        </div>
+      </div>
+    </section>
+  </div>
+</LayoutDemo>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+
+  .wrapper {
+    margin: 2rem;
+  }
+
+  .container-01 {
+    --_width: 640px;
+    --_height: 426px;
+    --_angle: 10deg;
+    --_tan: tan(var(--_angle));
+    --skew-negative: skewY(calc(-1 * var(--_angle)));
+    --skew-positive: skewY(var(--_angle));
+
+    width: var(--_width);
+    padding-bottom: calc(var(--_width) * var(--_tan));
+    font-size: 0;
+  }
+
+  .content-01 {
+    height: calc(var(--_height) - var(--_width) * var(--_tan));
+    overflow: hidden;
+    transform: var(--skew-negative);
+    transform-origin: 100% 0;
+
+    img {
+      width: 100%;
+      height: auto;
+      transform: var(--skew-positive);
+      transform-origin: 100% 0;
+    }
+  }
+
+  .container-02 {
+    width: 560px;
+    clip-path: polygon(32% 0, 100% 0, 68% 100%, 0 100%);
+    font-size: 0;
+  }
+
+  .content-02 {
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+</style>

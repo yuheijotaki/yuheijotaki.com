@@ -18,6 +18,19 @@ const { title, description, image, isHome } = Astro.props;
 <html lang="ja">
   <head>
     <Head title={title} description={description} image={image} />
+    <script is:inline>
+      const colorMode = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('color-mode')) {
+          return localStorage.getItem('color-mode');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      document.documentElement.style.setProperty('--color-mode', colorMode);
+      window.colorMode = colorMode;
+    </script>
   </head>
   <body>
     <div class="wrapper">

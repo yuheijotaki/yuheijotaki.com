@@ -31,13 +31,13 @@ export default defineConfig({
   markdown: {
     rehypePlugins: [externalLinks, addHeadingLinks],
   },
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-      },
-    },
-  },
+  // vite: {
+  //   css: {
+  //     preprocessorOptions: {
+  //       scss: {
+  //         api: 'modern-compiler',
+  //       },
+  //     },
+  //   },
+  // },
 });

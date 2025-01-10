@@ -31,19 +31,18 @@ import Button from '@/components/Button.astro';
   }
 
   function getColorMode(): string {
+    if (window.colorMode) {
+      return window.colorMode;
+    }
     let storedMode: string | null = null;
     try {
       storedMode = localStorage.getItem('color-mode');
     } catch (error) {
-      // Web Storage が使えない場合のフォールバック処理
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    if (storedMode) {
-      return storedMode;
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    return 'light';
+    return (
+      storedMode || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    );
   }
 
   function toggleColorMode() {

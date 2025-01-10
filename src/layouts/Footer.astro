@@ -15,58 +15,72 @@ import Button from '@/components/Button.astro';
 </footer>
 
 <script>
-  function setRootColorMode(mode: string) {
-    const root = document.querySelector(':root') as HTMLElement;
-    root?.style.setProperty('--color-mode', mode);
-  }
-
-  function updateToggleButton(mode: string) {
-    const button = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
-    button.innerHTML = mode === 'dark' ? 'ライトモードに切り替える' : 'ダークモードに切り替える';
-  }
-
-  function setColorMode(mode: string) {
-    setRootColorMode(mode);
-    updateToggleButton(mode);
-  }
-
-  function getColorMode(): string {
-    if (window.colorMode) {
-      return window.colorMode;
+  class ThemeManager {
+    constructor() {
+      this.init();
     }
-    let storedMode: string | null = null;
-    try {
-      storedMode = localStorage.getItem('color-mode');
-    } catch (error) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return (
-      storedMode || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-    );
-  }
 
-  function toggleColorMode() {
-    const toggleButton = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
-    toggleButton?.addEventListener('click', (event) => {
-      event.preventDefault();
-      const currentMode = getColorMode();
-      const newMode = currentMode === 'dark' ? 'light' : 'dark';
-      try {
-        localStorage.setItem('color-mode', newMode);
-      } catch (error) {
-        console.log(error);
+    init() {
+      this.initColorMode();
+    }
+
+    setRootColorMode(mode: string) {
+      const root = document.querySelector(':root') as HTMLElement;
+      root?.style.setProperty('--color-mode', mode);
+      window.colorMode = mode;
+    }
+
+    updateToggleButton(mode: string) {
+      const button = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
+      button.innerHTML = mode === 'dark' ? 'ライトモードに切り替える' : 'ダークモードに切り替える';
+    }
+
+    setColorMode(mode: string) {
+      this.setRootColorMode(mode);
+      this.updateToggleButton(mode);
+    }
+
+    getColorMode(): string {
+      if (window.colorMode) {
+        return window.colorMode;
       }
-      setColorMode(newMode);
-    });
+      let storedMode: string | null = null;
+      try {
+        storedMode = localStorage.getItem('color-mode');
+      } catch (error) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      return (
+        storedMode || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      );
+    }
+
+    toggleColorMode() {
+      const toggleButton = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
+      if (!toggleButton) return;
+
+      const handleClick = () => {
+        const currentMode = this.getColorMode();
+        const newMode = currentMode === 'dark' ? 'light' : 'dark';
+        try {
+          localStorage.setItem('color-mode', newMode);
+        } catch (error) {
+          console.log(error);
+        }
+        this.setColorMode(newMode);
+      };
+
+      toggleButton.addEventListener('click', handleClick);
+    }
+
+    initColorMode() {
+      const initialColorMode = this.getColorMode();
+      this.setColorMode(initialColorMode);
+      this.toggleColorMode();
+    }
   }
 
-  function initColorMode() {
-    const initialColorMode = getColorMode();
-    setColorMode(initialColorMode);
-    toggleColorMode();
-  }
-
-  initColorMode();
+  new ThemeManager();
 </script>
 
 <style lang="scss">

@@ -1,0 +1,250 @@
+---
+title: Astroのプリフェッチ機能を理解してみる
+description: Astroプリフェッチのコードを見てみた雑感です。
+pubDate: 2025-01-15T00:00:00.000Z
+---
+
+## 概要
+
+Astroの [プリフェッチ](https://docs.astro.build/ja/guides/prefetch/) について理解してみる。
+
+## プリフェッチの基本設定
+
+[プリフェッチを有効にする](https://docs.astro.build/ja/guides/prefetch/#%E3%83%97%E3%83%AA%E3%83%95%E3%82%A7%E3%83%83%E3%83%81%E3%82%92%E6%9C%89%E5%8A%B9%E3%81%AB%E3%81%99%E3%82%8B) を参照
+
+## プリフェッチ戦略
+
+Astroのプリフェッチは4つの戦略（hover, tap, viewport, load）をサポート  
+各戦略は [src/prefetch/index.ts](https://github.com/withastro/astro/blob/main/packages/astro/src/prefetch/index.ts) にある
+
+<details>
+  <summary>コードを開閉する</summary>
+
+```ts
+/**
+ * タップ時のプリフェッチ戦略の初期化
+ */
+function initTapStrategy() {
+  // タッチとマウスの両方のイベントに対応
+  for (const event of ['touchstart', 'mousedown']) {
+    document.body.addEventListener(
+      event,
+      (e) => {
+        // tap戦略が指定されているリンクの場合
+        if (elMatchesStrategy(e.target, 'tap')) {
+          // 低速接続でも強制的にプリフェッチを実行
+          prefetch(e.target.href, { ignoreSlowConnection: true });
+        }
+      },
+      { passive: true },
+    );
+  }
+}
+
+/**
+ * ホバー時のプリフェッチ戦略の初期化
+ */
+function initHoverStrategy() {
+  let timeout: number;
+
+  // フォーカスイベントの処理（キーボード操作対応）
+  document.body.addEventListener(
+    'focusin',
+    (e) => {
+      if (elMatchesStrategy(e.target, 'hover')) {
+        handleHoverIn(e);
+      }
+    },
+    { passive: true },
+  );
+
+  // ページロード時にホバーイベントリスナーを設定
+  onPageLoad(() => {
+    for (const anchor of document.getElementsByTagName('a')) {
+      // 既に監視中のリンクはスキップ
+      if (listenedAnchors.has(anchor)) continue;
+
+      // hover戦略が指定されているリンクにイベントリスナーを追加
+      if (elMatchesStrategy(anchor, 'hover')) {
+        listenedAnchors.add(anchor);
+        anchor.addEventListener('mouseenter', handleHoverIn, { passive: true });
+        anchor.addEventListener('mouseleave', handleHoverOut, { passive: true });
+      }
+    }
+  });
+
+  // ホバー開始時の処理
+  function handleHoverIn(e: Event) {
+    const href = (e.target as HTMLAnchorElement).href;
+
+    // 80ミリ秒のデバウンス処理
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      prefetch(href);
+    }, 80) as unknown as number;
+  }
+
+  // ホバー終了時の処理（プリフェッチをキャンセル）
+  function handleHoverOut() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = 0;
+    }
+  }
+}
+
+/**
+ * ビューポート内表示時のプリフェッチ戦略の初期化
+ */
+function initViewportStrategy() {
+  let observer: IntersectionObserver;
+
+  onPageLoad(() => {
+    for (const anchor of document.getElementsByTagName('a')) {
+      // 既に監視中のリンクはスキップ
+      if (listenedAnchors.has(anchor)) continue;
+
+      // viewport戦略が指定されているリンクを監視対象に追加
+      if (elMatchesStrategy(anchor, 'viewport')) {
+        listenedAnchors.add(anchor);
+        observer ??= createViewportIntersectionObserver();
+        observer.observe(anchor);
+      }
+    }
+  });
+}
+
+/**
+ * ビューポート監視用のIntersection Observerを作成
+ */
+function createViewportIntersectionObserver() {
+  const timeouts = new WeakMap<HTMLAnchorElement, number>();
+
+  return new IntersectionObserver((entries, observer) => {
+    for (const entry of entries) {
+      const anchor = entry.target as HTMLAnchorElement;
+      const timeout = timeouts.get(anchor);
+
+      // 要素がビューポート内に表示された場合
+      if (entry.isIntersecting) {
+        // 300ミリ秒のデバウンス処理
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        timeouts.set(
+          anchor,
+          setTimeout(() => {
+            observer.unobserve(anchor);
+            timeouts.delete(anchor);
+            prefetch(anchor.href);
+          }, 300) as unknown as number,
+        );
+      } else {
+        // ビューポートから外れた場合、プリフェッチをキャンセル
+        if (timeout) {
+          clearTimeout(timeout);
+          timeouts.delete(anchor);
+        }
+      }
+    }
+  });
+}
+
+/**
+ * ページロード時のプリフェッチ戦略の初期化
+ */
+function initLoadStrategy() {
+  onPageLoad(() => {
+    for (const anchor of document.getElementsByTagName('a')) {
+      // load戦略が指定されているリンクを即時プリフェッチ
+      if (elMatchesStrategy(anchor, 'load')) {
+        prefetch(anchor.href);
+      }
+    }
+  });
+}
+```
+
+</details>
+
+## プリフェッチ処理
+
+処理は3つ方法をブラウザのサポート状況に応じて選択される
+
+1. Speculation Rules APIが利用可能な場合
+2. Link Prefetchが利用可能な場合
+3. フォールバックとしてFetch APIを使用
+
+<details>
+  <summary>コードを開閉する</summary>
+
+```ts
+/**
+ * 指定されたURLのプリフェッチを実行
+ */
+export function prefetch(url: string, opts?: PrefetchOptions) {
+  // URLのハッシュ部分を除去（同一ページ内リンクを除外）
+  url = url.replace(/#.*/, '');
+
+  const ignoreSlowConnection = opts?.ignoreSlowConnection ?? false;
+  if (!canPrefetchUrl(url, ignoreSlowConnection)) return;
+  prefetchedUrls.add(url);
+
+  // 1. Speculation Rules APIが利用可能な場合
+  if (clientPrerender && HTMLScriptElement.supports?.('speculationrules')) {
+    debug?.(`[astro] Speculation Rulesを使用してプリフェッチを実行: ${url}`);
+    appendSpeculationRules(url);
+  }
+  // 2. Link Prefetchが利用可能な場合
+  else if (
+    document.createElement('link').relList?.supports?.('prefetch') &&
+    opts?.with !== 'fetch'
+  ) {
+    debug?.(`[astro] Link Prefetchを使用してプリフェッチを実行: ${url}`);
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.setAttribute('href', url);
+    document.head.append(link);
+  }
+  // 3. フォールバックとしてFetch APIを使用
+  else {
+    debug?.(`[astro] Fetch APIを使用してプリフェッチを実行: ${url}`);
+    fetch(url, { priority: 'low' });
+  }
+}
+
+/**
+ * プリフェッチ可能なURLかどうかを判定
+ */
+function canPrefetchUrl(url: string, ignoreSlowConnection: boolean) {
+  // オフライン時はプリフェッチしない
+  if (!navigator.onLine) return false;
+
+  // データセーバーモードや低速接続時はスキップ（設定で上書き可能）
+  if (!ignoreSlowConnection && isSlowConnection()) return false;
+
+  try {
+    const urlObj = new URL(url, location.href);
+    return (
+      // 同一オリジンのURLのみプリフェッチ
+      location.origin === urlObj.origin &&
+      // 現在のページと異なるURLのみプリフェッチ
+      (location.pathname !== urlObj.pathname || location.search !== urlObj.search) &&
+      // 重複プリフェッチを防止
+      !prefetchedUrls.has(url)
+    );
+  } catch {}
+  return false;
+}
+```
+
+</details>
+
+## まとめ
+
+- 細かいところまで考慮されている機能だなとは思った
+  - ホバーやスクロール時のデバウンス処理
+  - データセーバーモードや低速接続時にはプリフェッチを抑える
+- 方法としてSpeculation Rules APIでいい感じにしていることも分かったが、どの程度パフォーマンス向上が見込めたり負荷がかかるかは実際やってみないことには、という感じ

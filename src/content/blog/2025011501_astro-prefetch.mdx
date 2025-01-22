@@ -1,7 +1,7 @@
 ---
 title: Astroのプリフェッチ機能を理解してみる
 description: Astroプリフェッチのコードを見てみた雑感です。
-pubDate: 2025-01-15T00:00:00.000Z
+pubDate: 2025-01-22T00:00:00.000Z
 ---
 
 ## 概要
@@ -173,9 +173,9 @@ function initLoadStrategy() {
 
 処理は3つ方法をブラウザのサポート状況に応じて選択される
 
-1. Speculation Rules APIが利用可能な場合
-2. Link Prefetchが利用可能な場合
-3. フォールバックとしてFetch APIを使用
+1. Speculation Rules API が利用可能な場合（[MDN](https://developer.mozilla.org/ja/docs/Web/API/Speculation_Rules_API), [Can I use...](https://caniuse.com/mdn-html_elements_script_type_speculationrules)）
+2. Link Prefetch が利用可能な場合（[MDN](https://developer.mozilla.org/ja/docs/Web/HTML/Attributes/rel/prefetch), [Can I use...](https://caniuse.com/link-rel-prefetch)）
+3. フォールバックとして Fetch API を使用（[MDN](https://developer.mozilla.org/ja/docs/Web/API/Fetch_API/Using_Fetch), [Can I use...](https://caniuse.com/mdn-api_fetch)）
 
 <details>
   <summary>コードを開閉する</summary>
@@ -194,7 +194,7 @@ export function prefetch(url: string, opts?: PrefetchOptions) {
 
   // 1. Speculation Rules APIが利用可能な場合
   if (clientPrerender && HTMLScriptElement.supports?.('speculationrules')) {
-    debug?.(`[astro] Speculation Rulesを使用してプリフェッチを実行: ${url}`);
+    debug?.(`[astro] Prefetching ${url} with <script type="speculationrules">`);
     appendSpeculationRules(url);
   }
   // 2. Link Prefetchが利用可能な場合
@@ -202,7 +202,7 @@ export function prefetch(url: string, opts?: PrefetchOptions) {
     document.createElement('link').relList?.supports?.('prefetch') &&
     opts?.with !== 'fetch'
   ) {
-    debug?.(`[astro] Link Prefetchを使用してプリフェッチを実行: ${url}`);
+    debug?.(`[astro] Prefetching ${url} with <link rel="prefetch">`);
     const link = document.createElement('link');
     link.rel = 'prefetch';
     link.setAttribute('href', url);
@@ -210,7 +210,7 @@ export function prefetch(url: string, opts?: PrefetchOptions) {
   }
   // 3. フォールバックとしてFetch APIを使用
   else {
-    debug?.(`[astro] Fetch APIを使用してプリフェッチを実行: ${url}`);
+    debug?.(`[astro] Prefetching ${url} with fetch`);
     fetch(url, { priority: 'low' });
   }
 }
@@ -244,7 +244,7 @@ function canPrefetchUrl(url: string, ignoreSlowConnection: boolean) {
 
 ## まとめ
 
-- 細かいところまで考慮されている機能だなとは思った
+- わりと細かいところまで考慮されている機能だなと思った
   - ホバーやスクロール時のデバウンス処理
   - データセーバーモードや低速接続時にはプリフェッチを抑える
 - 方法としてSpeculation Rules APIでいい感じにしていることも分かったが、どの程度パフォーマンス向上が見込めたり負荷がかかるかは実際やってみないことには、という感じ

@@ -242,6 +242,24 @@ function canPrefetchUrl(url: string, ignoreSlowConnection: boolean) {
 
 </details>
 
+## Speculation Rules API と Link Prefetch
+
+### Speculation Rules API
+
+メモリー内キャッシュを使用
+
+- ブラウザタブが開いている間のみ保持
+- タブを閉じると消失
+- ページ遷移時に、遷移先以外のキャッシュは破棄
+- メモリ使用量を最適化
+
+### Link Prefetch
+
+HTTPキャッシュに保存
+
+- ディスク容量を恒常的に使用
+- キャッシュの有効期限はサーバーの設定に依存
+
 ## まとめ
 
 - わりと細かいところまで考慮されている機能だなと思った

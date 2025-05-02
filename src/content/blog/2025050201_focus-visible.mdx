@@ -21,7 +21,7 @@ CSSの `:focus-visible` とそのポリフィルについて挙動を確認し�
 [focus-visible ポリフィル](https://github.com/WICG/focus-visible) は `:focus-visible` に対応していないブラウザや、ブラウザごとに挙動が違う場合でもだいたい同じような動きをしてくれるスクリプト。
 
 - キーボード操作かマウス操作かを判定し、必要なときだけ `.focus-visible` クラスを付ける
-- **JavaScriptで `element.focus()` などを呼び出した場合**（＝スクリプトでフォーカスを移動した場合）も、ちゃんと考慮されている
+- JavaScriptで `element.focus()` などを呼び出した（＝スクリプトでフォーカスを移動した）場合も、ちゃんと考慮されている
 
 ### スクリプトでフォーカスを移動した場合
 
@@ -82,4 +82,3 @@ Safariでは、CSSバージョンはダイアログをクリックで展開時�
 
 - [CSS :focus-visible - MDN](https://developer.mozilla.org/ja/docs/Web/CSS/:focus-visible)
 - [focus-visible is triggered when opening a dialog with a button that contains svg #2953 (GitHub)](https://github.com/radix-ui/primitives/issues/2953)
-- [WebKit Bug 247416](https://bugs.webkit.org/show_bug.cgi?id=247416)

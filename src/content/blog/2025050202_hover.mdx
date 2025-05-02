@@ -1,0 +1,92 @@
+---
+title: hover / any-hover メディアクエリの違いと使い方
+description: CSSの hover / any-hover メディアクエリの仕様や違い、使い分け、ブラウザ対応状況についてまとめました。
+pubDate: 2025-05-02T01:00:00.000Z
+---
+
+## 概要
+
+CSSの `hover` / `any-hover` メディアクエリについて仕様や違い、ブラウザ対応状況などをざっくりまとめてみた。
+
+## hover / any-hover メディアクエリとは
+
+`hover` と `any-hover` は、ユーザーの入力デバイスが「ホバー操作（マウスオーバー）」に対応しているかどうかを判定できるCSSのメディアクエリ。
+
+- `hover`: 主な入力デバイス（primary pointer）がホバー対応かどうか
+- `any-hover`: どれか一つでもホバー対応デバイスがあればOK
+
+最近のPCやタブレットはタッチとマウスが両方使えたりするので、こういう判定ができるようになったらしい。
+
+## 仕様の変遷と追加の背景
+
+昔のメディアクエリ（Level 3）だと、画面幅や向きは判定できても「入力デバイスの種類」までは分からなかった。  
+Level 4で `hover` / `any-hover`（と `pointer` / `any-pointer` も）が追加されて「主なデバイス」だけではなく「全部のデバイス」の特性も見られるようになった。
+
+Surfaceみたいな2-in-1のノートPCや、Bluetoothマウスをつないだタブレットみたいな複数入力の環境でも、スタイルを分けられるようになったという話らしい。
+
+## 仕様の違いと判定の仕組み
+
+| メディア特性       | 判定対象           | 例（タッチ＋マウス） |
+| ------------------ | ------------------ | -------------------- |
+| `hover: hover`     | 主入力デバイスのみ | 主がタッチなら false |
+| `any-hover: hover` | どれか一つでもOK   | マウスあれば true    |
+
+- `hover` は「主なデバイス」だけ見るので、主がタッチだと false になることも
+- `any-hover` は「どれか一つでも」ホバー対応なら true
+
+### 例
+
+```css
+@media (hover: hover) {
+  .button:hover {
+    background-color: tomato;
+  }
+}
+
+@media (any-hover: hover) {
+  .button:hover {
+    background-color: tomato;
+  }
+}
+```
+
+## サポート状況
+
+主要なモダンブラウザ（Chrome, Edge, Firefox, Safari, iOS, Android）で利用可能。  
+2018年以降にだいたい実装されていて、今は困ることはほぼないはず。  
+参照： [Can I use...](https://caniuse.com/?search=hover)
+
+## 実装例と使い分けのポイント
+
+- PCだけでホバースタイルを出したい場合： `@media (hover: hover)`
+- マウスやペンなど、どれか一つでもホバー対応なら出したい場合： `@media (any-hover: hover)`
+
+```css
+@media (any-hover: hover) {
+  .button:hover {
+    background-color: tomato;
+  }
+}
+```
+
+タッチデバイスで hover スタイルを消したい場合は `any-hover: none` で上書きもできる。
+
+```css
+@media (any-hover: none) {
+  .button:hover {
+    background-color: none;
+  }
+}
+```
+
+## 分かったこと・雑感
+
+- `hover` / `any-hover` は「今使ってるデバイス」ではなく「接続されてるデバイスの能力」を見ている
+- タッチ＋マウス両対応の端末で、マウスがつながってれば `any-hover: hover` になる
+- ただ、スマホやタブレットでマウスを使う人は少ないと思うので、実際のところ `hover` と `any-hover` の違いが効いてくる場面はそこまで多くない気がしている
+
+## 参考
+
+- [MDN: @media/any-hover](https://developer.mozilla.org/ja/docs/Web/CSS/@media/any-hover)
+- [Media Queries Level 4 - 7.2 Hover Capability](https://www.w3.org/TR/mediaqueries-4/#hover)
+- [CSS-Tricks: Interaction Media Features and Their Potential (for Incorrect Assumptions)](https://css-tricks.com/interaction-media-features-and-their-potential-for-incorrect-assumptions/)

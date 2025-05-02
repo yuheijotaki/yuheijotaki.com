@@ -1,0 +1,58 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="focus-visible">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; focus-visible JavaScript(Polyfill)</h1>
+
+    <p><a href="../">リンク</a></p>
+
+    <button type="button" id="trigger">ダイアログを開く</button>
+    <dialog id="dialog" aria-label="ダイアログ">
+      <ul>
+        <li><a href="../">リンク1</a></li>
+        <li><a href="../">リンク2</a></li>
+        <li><a href="../">リンク3</a></li>
+      </ul>
+    </dialog>
+
+    <button type="button" popovertarget="my-popover">ポップオーバーを開く</button>
+    <div popover id="my-popover">
+      <ul>
+        <li><a href="../">リンク1</a></li>
+        <li><a href="../">リンク2</a></li>
+        <li><a href="../">リンク3</a></li>
+      </ul>
+    </div>
+  </div>
+</LayoutDemo>
+
+<script src="/node_modules/focus-visible/dist/focus-visible.min.js" defer is:inline></script>
+
+<script>
+  const dialog = document.getElementById('dialog') as HTMLDialogElement;
+  const trigger = document.getElementById('trigger') as HTMLButtonElement;
+
+  trigger.addEventListener('click', () => {
+    dialog.showModal();
+  });
+</script>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+  @use '@/styles/extension' as *;
+
+  .wrapper {
+    margin: 2rem;
+  }
+
+  :focus-visible {
+    outline: 4px solid red;
+    outline-offset: 5px;
+  }
+
+  :focus:not(.focus-visible) {
+    outline: none;
+  }
+</style>

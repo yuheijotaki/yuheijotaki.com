@@ -1,0 +1,57 @@
+---
+title: タブUI実装をAPGのコードから考察する
+description: APGのタブUI実装例をもとに仕様と実装を考察してみました。
+pubDate: 2025-05-03T02:00:00.000Z
+---
+
+## 概要
+
+WAI-ARIA Authoring Practices Guide（APG）の[タブUI実装](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)をベースに仕様や各社デザインシステムを見てみる。
+
+## 自動・手動アクティベーション
+
+APG では2形式紹介されている。
+
+- 自動アクティベーション
+  - フォーカス時に即パネル切り替え。
+  - パネル切り替えが軽い場合に推奨。
+- 手動アクティベーション
+  - フォーカス移動して Space/Enter 押下で切り替え。
+  - 切り替えに遅延や副作用がある場合に有効。
+
+隠れたタブ内のデータも取得しているような場合は自動アクティベーションでOKという感じの説明なのだが、自分的にはもう少しUI的な必要性というか、タブや隠れたコンテンツのUI視点での判断軸で選んだほうが良いような気もするがAPGがそう言っているので。。
+
+## 実装ポイント
+
+- タブリストには`role="tablist"`を付与
+- 各タブには`role="tab"`、`aria-selected`（選択中はtrue、非選択はfalse）、`aria-controls`（対応するパネルのID）を付与
+- 各タブの`tabindex`は、選択中タブのみ0、他は-1とし、Tabキーでタブリスト全体を一気に抜けてパネルに移動できるように（左右キーでタブ間移動）
+- パネルには`role="tabpanel"`、`aria-labelledby`（対応するタブのID）を付与
+- パネル内にフォーカス可能な要素がない場合は、パネル自体に`tabindex="0"`を付与し、Tabキーでパネルに移動できるように
+- 非表示のパネルには`hidden`属性を付与し、表示・非表示を知らせる
+- キーボード操作は、Tabキーでタブリスト→パネルへ、左右キーでタブ間移動、Space/Enterで手動アクティベーション時の切り替え、Home/Endで先頭・末尾タブへの移動などがAPGのキーボードインタラクションでは紹介
+
+## URLパラメータ連動
+
+特に仕様等には記載がないが選択したタブに応じてURLパラメータが連動する方が好ましい場合もあるような気がする。  
+リロードや共有、履歴操作がしやすくなるという点でパラメータを付けたほうが良い場合もあるが、例えばページ内の主題ではない小さい領域でのタブUIでは必要ないのでは、というなんとも感覚に頼った感じの認識でいる。
+
+## デザインシステムの実装例
+
+- [MUI: Tabs API](https://mui.com/material-ui/api/tabs/)
+  - APGの仕様を踏襲しつつ、`selectionFollowsFocus`や`orientation`など柔軟な設定が可能
+- [shadcn/ui: Tabs](https://ui.shadcn.com/docs/components/tabs)
+  APGパターンを意識したシンプルな設計。カスタマイズ性も高そうな感じ
+
+## 所感
+
+- 基本はAPG通りに組めばいいのだが、自動・手動アクティベーション、URLパラメータあり/なしなど、解釈によって選ぶ形式に悩むUIにもなるなと思う
+
+## 参考
+
+- [Tabs Pattern | W3C WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)
+- [Accessible Rich Internet Applications (WAI-ARIA) 1.2](https://www.w3.org/TR/2023/REC-wai-aria-1.2-20230606/)
+- [MDN: ARIA tab ロール](https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/Reference/Roles/tab_role)
+- [Material Design: Tabs](https://m2.material.io/components/tabs)
+- [MUI: Tabs API](https://mui.com/material-ui/api/tabs/)
+- [shadcn/ui: Tabs](https://ui.shadcn.com/docs/components/tabs)

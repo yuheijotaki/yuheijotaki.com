@@ -1,0 +1,85 @@
+---
+title: CSS :focus-visibleとポリフィルの挙動を確認する
+description: CSS :focus-visibleとポリフィルの挙動を確認してみた検証記事です。
+pubDate: 2025-05-02T00:00:00.000Z
+---
+
+## 概要
+
+CSSの `:focus-visible` とそのポリフィルについて挙動を確認してみた。
+
+## :focus-visibleとは
+
+[MDN](https://developer.mozilla.org/ja/docs/Web/CSS/:focus-visible) より
+
+> `:focus-visible` 疑似クラスは、ユーザーがキーボードなどの非ポインティングデバイスでページを操作している場合など、ブラウザーがフォーカスインジケーターを表示するべきと判断したときに、要素にマッチします。
+
+従来の `:focus` だとクリックやタブ移動などどんなフォーカスでもスタイルが当たってしまうが、`:focus-visible` は「本当に必要なときだけ」アウトラインを表示できる。
+
+## ポリフィルについて
+
+[focus-visible ポリフィル](https://github.com/WICG/focus-visible) は `:focus-visible` に対応していないブラウザや、ブラウザごとに挙動が違う場合でもだいたい同じような動きをしてくれるスクリプト。
+
+- キーボード操作かマウス操作かを判定し、必要なときだけ `.focus-visible` クラスを付ける
+- **JavaScriptで `element.focus()` などを呼び出した場合**（＝スクリプトでフォーカスを移動した場合）も、ちゃんと考慮されている
+
+### スクリプトでフォーカスを移動した場合
+
+ポリフィルはユーザーの操作（キーボード/マウス）だけでなく、JavaScriptから明示的にフォーカスを移動した場合も「アウトラインを出すべきかどうか」を判定している。
+
+例えば下記のような[コード](https://github.com/WICG/focus-visible/blob/1d6162c59832c610878eb93089f10c54ce4a3125/src/focus-visible.js#L139)がポリフィルの一部に含まれている：
+
+```js
+function onFocus(event) {
+  if (!isValidFocusTarget(event.target)) {
+    return;
+  }
+  // 直前の操作がキーボードだった場合や、入力欄など「キーボードで使う要素」の場合だけ .focus-visible を付ける
+  if (hadKeyboardEvent || focusTriggersKeyboardModality(event.target)) {
+    event.target.classList.add('focus-visible');
+  }
+}
+```
+
+つまり、
+
+- 直前にキーボード操作があった場合
+- たとえばテキスト入力欄のように「キーボードで使う要素」の場合
+
+のみアウトライン（`.focus-visible`）が付くようになっている。
+
+逆に、マウスやタッチ操作の直後に `focus()` された場合は `.focus-visible` を付けないので、意図しないアウトラインが出るのを防げる。
+
+## ブラウザごとの挙動差
+
+多くのモダンブラウザ（ChromeやFirefoxなど）では `:focus-visible` の挙動はほぼ仕様通りで、キーボード操作時だけアウトラインが表示される。
+
+一方でブラウザによっては以下のような違和感のある挙動が見られることがある：
+
+- `<dialog>` 要素を `showModal()` で開いたとき、自動的にダイアログ内の最初のフォーカス可能要素にフォーカスが当たり、マウス操作でもアウトラインが表示されてしまう場合がある
+  - 関連： [247416 – focus-visible is triggered when opening dialog using mouse](https://bugs.webkit.org/show_bug.cgi?id=247416)
+- ポリフィルを使うと、マウス操作でダイアログを開いた場合はアウトラインが表示されず、キーボード操作時だけ表示される
+  - こちらの方が「期待通り」に感じる
+
+ただポリフィルを使うとこういった細かい違いも吸収できる。
+
+## デモ
+
+Safariでは、CSSバージョンはダイアログをクリックで展開時にアウトラインが表示されるが、ポリフィルを使うと表示されない。
+
+- [CSS](/demo/focus-visible/css/)
+  - [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/focus-visible/css.astro)
+- [ポリフィル使用](/demo/focus-visible/js/)
+  - [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/focus-visible/js.astro)
+
+## まとめ
+
+- `:focus-visible` は「本当に必要なときだけ」フォーカスインジケーターを表示できる便利なCSS
+- ただしブラウザによっては挙動に差があり、特にダイアログの自動フォーカス時などに違和感が出ることがある
+- ポリフィルを使うとどのブラウザでもだいたい同じような挙動にはなりそう
+
+## ほか参考
+
+- [CSS :focus-visible - MDN](https://developer.mozilla.org/ja/docs/Web/CSS/:focus-visible)
+- [focus-visible is triggered when opening a dialog with a button that contains svg #2953 (GitHub)](https://github.com/radix-ui/primitives/issues/2953)
+- [WebKit Bug 247416](https://bugs.webkit.org/show_bug.cgi?id=247416)

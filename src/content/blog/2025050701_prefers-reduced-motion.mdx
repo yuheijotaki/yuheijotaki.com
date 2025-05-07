@@ -1,0 +1,96 @@
+---
+title: prefers-reduced-motion で制御する/しないアニメーション
+description: CSSの `prefers-reduced-motion` メディアクエリを使ったアニメーション制御のポイントを考えてみた記事です。
+pubDate: 2025-05-07T00:00:00.000Z
+---
+
+## 概要
+
+CSSの `prefers-reduced-motion` メディアクエリを使う際のアニメーション制御のポイントを考えてみた。
+
+## prefers-reduced-motionとは
+
+`prefers-reduced-motion` はユーザーが「動きを減らす」とOS等で設定したかどうかを検出するメディアクエリ。  
+CSS（ `@media (prefers-reduced-motion: reduce)` ）やJavaScript（ `window.matchMedia('(prefers-reduced-motion: reduce)')` ）で検出可能。
+
+前庭障害や偏頭痛で大きく動くアニメーションによるめまいや吐き気を感じる方がいるため、[WCAG 2.1 2.3.3（AAA）](https://waic.jp/translations/WCAG21/#animation-from-interactions) でも機能や情報伝達に必須でないアニメーションをオフにできるよう求められている。
+
+## なぜ対応が必要か
+
+- 前庭障害が発生する可能性があるため
+  - 大きく動くアニメーションでめまいや吐き気を感じる人がいる
+  - [WCAG 2.1 達成基準 2.3.3](https://waic.jp/translations/WCAG21/Understanding/animation-from-interactions.html)
+    - 必須でないアニメーションはユーザーがオフにできるように、という要件
+
+## OSごとの設定項目
+
+- macOS
+  - 設定 > アクセシビリティ > ディスプレイ > 視差効果を減らす
+- iOS
+  - 設定 > アクセシビリティ > 動作 > 視差効果を減らす
+- Windows（[MDN](https://developer.mozilla.org/ja/docs/Web/CSS/@media/prefers-reduced-motion) による）
+  - 設定 > 簡単操作 > ディスプレイ > アニメーションを表示する
+- Android（[MDN](https://developer.mozilla.org/ja/docs/Web/CSS/@media/prefers-reduced-motion) による）
+  - 設定 > ユーザー補助 > アニメーションの削除
+
+その他ブラウザ、各アプリケーション内での設定が可能でそれらが反映されることもある。
+
+## 実装アプローチ
+
+### 1. 基本的に全て消す（完全無効化）
+
+```css
+:root {
+  --transition-duration: 0.2s;
+
+  @media (prefers-reduced-motion: reduce) {
+    --transition-duration: 0s;
+  }
+}
+```
+
+### 2. 代替アニメーションに置き換え
+
+大きい動きをフェードやディゾルブなどのシンプルなエフェクトに変更する
+
+```css
+.box {
+  animation: bounce 1s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box {
+    animation: fade 0.5s both;
+  }
+}
+```
+
+### 3. カスタムトグルを用意
+
+OS設定に加えサイト独自のトグルUIで切り替えを行う。  
+[Smashing Magazine](https://www.smashingmagazine.com/2020/09/design-reduced-motion-sensitivities/) の記事では Animal Crossing 公式サイトの例が紹介されており、このサイトではトグルUIのON/OFFで代替アニメーションを切り替えている。
+
+## 制御する/しないアニメーション
+
+- 残すべき（機能的）
+  - ローディングのインジケーター
+  - 状態変化のトランジション
+- 削るべき（装飾的）
+  - ループするオブジェクトアニメーション
+  - パララックススクロール
+
+## 所感
+
+[ユーザーのプリファレンスに応じて過度なアニメーションを無効にする「prefers-reduced-motion」 | Accessible & Usable](https://accessible-usable.net/2021/09/entry_210919.html) にある通り、「必要であれば保険的」程度のものと考える。  
+そのうえで、
+
+- 主に自分が実装するときに 1. の完全無効化を選択しがちだが、本質的には代替のアニメーションを行うほうが良い気もしてくる
+- ブランディング的な観点での折り合いも考え所で、ニュアンスを残しつつ代替を提示するのが正解の場合もあるかもしれない
+- macOS/iOS と比べて Windows/Android の設定は、動きが全くなくなるという言葉のニュアンスなのでユーザーからするとその違いも捉え方が変わってくるのでは
+- Xを検索すると、iPhoneのバッテリー省エネ方法として「視差効果を減らす」のオンが紹介されているため、無意識的に設定している人も少なからずいそう
+
+## 参考
+
+- [MDN: `@media (prefers-reduced-motion)`](https://developer.mozilla.org/ja/docs/Web/CSS/@media/prefers-reduced-motion)
+- [Smashing Magazine: Designing With Reduced Motion For Motion Sensitivities](https://www.smashingmagazine.com/2020/09/design-reduced-motion-sensitivities/)
+- [How to Make Your Website More Accessible with prefers-reduced-motion - DEV Community](https://dev.to/punitsonime/how-to-make-your-website-more-accessible-with-prefers-reduced-motion-do3)

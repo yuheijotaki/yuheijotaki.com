@@ -6,7 +6,7 @@ pubDate: 2025-05-02T00:00:00.000Z
 
 ## 概要
 
-CSSの `:focus-visible` とそのポリフィルについて挙動を確認してみた。
+CSSの `:focus-visible` とそのポリフィルについて挙動を確認してみる。
 
 ## :focus-visibleとは
 
@@ -27,7 +27,7 @@ CSSの `:focus-visible` とそのポリフィルについて挙動を確認し�
 
 ポリフィルはユーザーの操作（キーボード/マウス）だけでなく、JavaScriptから明示的にフォーカスを移動した場合も「アウトラインを出すべきかどうか」を判定している。
 
-例えば下記のような[コード](https://github.com/WICG/focus-visible/blob/1d6162c59832c610878eb93089f10c54ce4a3125/src/focus-visible.js#L139)がポリフィルの一部に含まれている：
+例えば下記のような [コード](https://github.com/WICG/focus-visible/blob/1d6162c59832c610878eb93089f10c54ce4a3125/src/focus-visible.js#L139) がポリフィルの一部に含まれている：
 
 ```js
 function onFocus(event) {
@@ -48,29 +48,20 @@ function onFocus(event) {
 
 のみアウトライン（`.focus-visible`）が付くようになっている。
 
-逆に、マウスやタッチ操作の直後に `focus()` された場合は `.focus-visible` を付けないので、意図しないアウトラインが出るのを防げる。
+逆にマウスやタッチ操作の直後に `focus()` された場合は `.focus-visible` を付けないため、意図しないアウトラインが出るのを防げる。
 
 ## ブラウザごとの挙動差
 
-多くのモダンブラウザ（ChromeやFirefoxなど）では `:focus-visible` の挙動はほぼ仕様通りで、キーボード操作時だけアウトラインが表示される。
-
-一方でブラウザによっては以下のような違和感のある挙動が見られることがある：
-
-- `<dialog>` 要素を `showModal()` で開いたとき、自動的にダイアログ内の最初のフォーカス可能要素にフォーカスが当たり、マウス操作でもアウトラインが表示されてしまう場合がある
-  - 関連： [247416 – focus-visible is triggered when opening dialog using mouse](https://bugs.webkit.org/show_bug.cgi?id=247416)
-- ポリフィルを使うと、マウス操作でダイアログを開いた場合はアウトラインが表示されず、キーボード操作時だけ表示される
-  - こちらの方が「期待通り」に感じる
-
-ただポリフィルを使うとこういった細かい違いも吸収できる。
-
-## デモ
-
-Safariでは、CSSバージョンはダイアログをクリックで展開時にアウトラインが表示されるが、ポリフィルを使うと表示されない。
+ピンポイントな例だが、Safari では `<dialog>` 要素を `showModal()` で開いたとき、自動的にダイアログ内の最初のフォーカス可能要素にフォーカスが当たり、マウス操作でもアウトラインが表示されてしまう場合がある。  
+関連： [247416 – focus-visible is triggered when opening dialog using mouse](https://bugs.webkit.org/show_bug.cgi?id=247416)
 
 - [CSS](/demo/focus-visible/css/)
   - [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/focus-visible/css.astro)
 - [ポリフィル使用](/demo/focus-visible/js/)
   - [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/focus-visible/js.astro)
+
+ポリフィルを使うとマウス操作でダイアログを開いた場合はアウトラインが表示されず、キーボード操作時だけ表示される。  
+ポリフィルを使うとこういった細かい違いも吸収できる。
 
 ## まとめ
 

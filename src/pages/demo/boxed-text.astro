@@ -1,0 +1,378 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="boxed-text">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; boxed-text</h1>
+
+    <div class="content">
+      <div class="section section-1">
+        <div>
+          <h2>line-height: 1.6</h2>
+          <p>通常の囲みテキストでline-heightをいじらない場合。inline なので改行あると囲みが被る</p>
+        </div>
+        <p>
+          <span class="box"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+      </div>
+
+      <div class="section section-2">
+        <div>
+          <h2>line-height: 1.6, display: inline-block;</h2>
+          <p>inline-block にすると span 自体が囲われる</p>
+        </div>
+        <p>
+          <span class="box"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+      </div>
+
+      <div class="section section-3">
+        <div>
+          <h2>line-height: 2.3</h2>
+          <p>
+            inline のまま line-height
+            を余分に設けて改行時もちょうどよいところで被るようにする。線の方はごまかせない。
+          </p>
+        </div>
+        <p>
+          <span class="box"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+      </div>
+
+      <div class="section section-4">
+        <div>
+          <h2>line-height: 2.3, box-decoration-break: clone;</h2>
+          <p>box-decoration-break: clone; とすると、改行時に囲みが整えられる</p>
+        </div>
+        <p>
+          <span class="box"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class="box"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+        <p>
+          <span class="box -fill"
+            >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</span
+          >
+        </p>
+      </div>
+
+      <div class="section section-5">
+        <div>
+          <h2>アイコン付きリンク, line-height: 2.3</h2>
+          <p>アイコン付きリンクの場合はややこしい</p>
+        </div>
+        <p>
+          <span class=""
+            >あのイーハトーヴォのすきとおった風、<a href="#" class="link-box"
+              ><span class="label"
+                >夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > 、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class=""
+            >あのイーハトーヴォのすきとおった風、<a href="#" class="link-box -fill"
+              ><span class="label"
+                >夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > 、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class=""
+            >Lorem ipsum dolor sit amet, <a href="#" class="link-box"
+              ><span class="label"
+                >consectetur adipiscing elit, sed do eiusmod tempor incididunt</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > ut labore et dolore magna aliqua.</span
+          >
+        </p>
+        <p>
+          <span class=""
+            >Lorem ipsum dolor sit amet, <a href="#" class="link-box -fill"
+              ><span class="label"
+                >consectetur adipiscing elit, sed do eiusmod tempor incididunt</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > ut labore et dolore magna aliqua.</span
+          >
+        </p>
+      </div>
+
+      <div class="section section-6">
+        <div>
+          <h2>アイコン付きリンク, line-height: 2.3, box-decoration-break: clone;</h2>
+          <p>span.label に対して box-decoration-break: clone; とすると、改行時に囲みが整えられる</p>
+        </div>
+        <p>
+          <span class=""
+            >あのイーハトーヴォのすきとおった風、<a href="#" class="link-box"
+              ><span class="label"
+                >夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > 、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class=""
+            >あのイーハトーヴォのすきとおった風、<a href="#" class="link-box -fill"
+              ><span class="label"
+                >夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > 、郊外のぎらぎらひかる草の波。</span
+          >
+        </p>
+        <p>
+          <span class=""
+            >Lorem ipsum dolor sit amet, <a href="#" class="link-box"
+              ><span class="label"
+                >consectetur adipiscing elit, sed do eiusmod tempor incididunt</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > ut labore et dolore magna aliqua.</span
+          >
+        </p>
+        <p>
+          <span class=""
+            >Lorem ipsum dolor sit amet, <a href="#" class="link-box -fill"
+              ><span class="label"
+                >consectetur adipiscing elit, sed do eiusmod tempor incididunt</span
+              ><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 5H17V12H7V5Z"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8L4.83333 8V14.2222H14V16H3V8Z"
+                ></path></svg
+              ></a
+            > ut labore et dolore magna aliqua.</span
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</LayoutDemo>
+
+<style lang="scss">
+  @use '@/styles/variables' as var;
+
+  html {
+    font-size: 62.5%;
+  }
+
+  .wrapper {
+    margin: 2rem 2rem 40rem;
+    overflow-wrap: anywhere;
+    text-size-adjust: 100%;
+  }
+
+  .content {
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 10rem;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 100%;
+    overflow: auto;
+    resize: both;
+    background-color: #ddd;
+
+    h2 {
+      font-size: 2.4rem;
+      line-height: 1.6;
+    }
+
+    p {
+      font-size: 1.6rem;
+      line-height: 1.6;
+    }
+  }
+
+  .box {
+    display: inline;
+    padding: 10px;
+    border: 1px solid #000;
+
+    &.-fill {
+      color: #fff;
+      background-color: #000;
+
+      a {
+        color: #fff;
+      }
+
+      svg path {
+        fill: #fff;
+      }
+    }
+  }
+
+  .section-2 {
+    p span {
+      display: inline-block;
+    }
+  }
+
+  .section-3 {
+    p span {
+      line-height: 2.3;
+    }
+  }
+
+  .section-4 {
+    p span {
+      box-decoration-break: clone;
+      line-height: 2.3;
+    }
+  }
+
+  .section-5,
+  .section-6 {
+    --_link-padding: 10px;
+    --_icon-size: 1em;
+    --_icon-margin-inline: 0.25em;
+    --_border-width: 1px;
+
+    p > span {
+      line-height: 2.3;
+    }
+
+    a.link-box {
+      padding-block: var(--_link-padding);
+      text-decoration: none;
+      border: var(--_border-width) solid #000;
+
+      span.label {
+        padding-right: calc(
+          var(--_icon-margin-inline) + var(--_icon-size) + var(--_border-width) +
+            var(--_link-padding)
+        );
+        padding-left: var(--_link-padding);
+      }
+
+      svg {
+        width: var(--_icon-size);
+        height: var(--_icon-size);
+        margin-right: var(--_link-padding);
+        margin-left: calc(-1 * (var(--_icon-size) + var(--_border-width) + var(--_link-padding)));
+        vertical-align: -0.125em;
+      }
+
+      &.-fill {
+        color: #fff;
+        background-color: #000;
+
+        svg path {
+          fill: #fff;
+        }
+      }
+    }
+  }
+
+  .section-6 {
+    p span {
+      box-decoration-break: clone;
+    }
+  }
+</style>

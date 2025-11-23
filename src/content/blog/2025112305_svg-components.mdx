@@ -1,0 +1,98 @@
+---
+title: Astro SVG components を試してみる
+description: Astro の SVG components 機能を試した雑感です。
+pubDate: 2025-11-23T00:00:04.000Z
+---
+
+## 概要
+
+Astro 5.0 以降で追加された SVG components 機能を使って従来の astro-icon との違いを試してみた。
+
+## SVG components とは
+
+SVG ファイルを直接インポートして Astro コンポーネントとして使える機能。
+
+```astro
+---
+import StarIcon from './icons/star.svg';
+---
+
+<StarIcon width="48" height="48" />
+```
+
+このようにインポートすると、SVG の内容が HTML にインラインで埋め込まれる。
+
+公式ドキュメント：[SVG components - Astro Docs](https://docs.astro.build/en/guides/images/#svg-components)
+
+### SVG components の処理の仕組み
+
+Astro は SVG ファイルをインポートするとビルド時に props を受け取れる Astro コンポーネントに変換する。
+
+参考：[astro/packages/astro/src/assets/utils/svg.ts#L1-L50](https://github.com/withastro/astro/blob/main/packages/astro/src/assets/utils/svg.ts#L1-L50)
+
+変換処理では SVG ファイルの内容を読み取って `Astro.props` で属性を受け取れる形に整形される。これにより SVG がそのままインラインで HTML に展開される。
+
+### 生成される HTML
+
+```html
+<!-- SVG components の生成HTML -->
+<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor">
+  <path
+    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+</svg>
+```
+
+同じアイコンを複数回使うと、その都度 SVG がインラインで展開される。
+
+## astro-icon との比較
+
+### astro-icon の仕組み
+
+astro-icon は SVG sprite を生成して最適化する仕組み。同じアイコンを複数回使う場合は `<symbol>` と `<use>` で参照する形になる。
+
+```astro
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<Icon name="star" width="48" height="48" class="custom-class" />
+```
+
+参考：[astro-icon/packages/core/src/loaders/loadLocalCollection.ts](https://github.com/natemoo-re/astro-icon/blob/main/packages/core/src/loaders/loadLocalCollection.ts)
+
+SVG ファイルを読み込む際 `@iconify/tools` を使って SVG の最適化や色の変換（`currentColor` への変換など）を行う。同じアイコンが複数回使われる場合は `<symbol>` 定義を一度だけ生成して `<use>` で参照することで HTML サイズを削減する。
+
+### 生成される HTML
+
+```html
+<!-- astro-icon の生成HTML -->
+<svg data-icon="star" width="48" height="48" class="custom-class">
+  <symbol id="ai:local:star" viewBox="0 0 24 24">
+    <path
+      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+  </symbol>
+  <use href="#ai:local:star"></use>
+</svg>
+```
+
+### 主な違い
+
+| 機能         | SVG components                  | astro-icon                     |
+| ------------ | ------------------------------- | ------------------------------ |
+| インポート   | `import Icon from './icon.svg'` | `<Icon name="icon" />`         |
+| HTML出力     | インラインSVG                   | SVG sprite（symbol + use）     |
+| 最適化       | なし                            | 同じアイコンの重複を自動削減   |
+| ファイル管理 | SVGファイルを直接管理           | アイコンディレクトリで一元管理 |
+
+## デモ
+
+- [デモ](/demo/svg-components/)
+- [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/svg-components.astro)
+
+デモでは astro-icon と SVG components を並べて、生成される HTML の違いを確認できる。
+
+## 分かったこと・所感
+
+- SVG components はシンプルな実装で追加のライブラリなしで SVG を扱える
+- どちらも props（width や height や class など）は渡せる
+- SVG components はインライン展開されるため同じアイコンを複数回使う場合は HTML サイズは増えそう

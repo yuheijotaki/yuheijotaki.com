@@ -62,7 +62,7 @@ const groupedHeadings = headings.reduce((array, heading) => {
 
     handleClick(event: Event) {
       event.preventDefault();
-      const target = event.target as HTMLAnchorElement;
+      const target = event.currentTarget as HTMLAnchorElement;
       if (!target) return;
 
       const targetId = target.getAttribute('href')?.slice(1);
@@ -70,6 +70,10 @@ const groupedHeadings = headings.reduce((array, heading) => {
 
       const targetElement = document.getElementById(targetId);
       if (!targetElement) return;
+
+      targetElement.scrollIntoView({ block: 'start' });
+
+      history.pushState(null, '', `#${targetId}`);
 
       targetElement.setAttribute('tabindex', '-1');
       targetElement.focus();
@@ -97,7 +101,7 @@ const groupedHeadings = headings.reduce((array, heading) => {
     text-decoration: underline;
     text-underline-offset: 0.25em;
     cursor: pointer;
-    border-radius: 0.25rem;
+    border-radius: 0.1rem;
 
     @include hover;
   }

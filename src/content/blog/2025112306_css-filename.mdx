@@ -1,0 +1,201 @@
+---
+title: Astro で CSS ファイル名を固定する
+description: Astro で生成される CSS ファイル名を固定する方法を試した雑感です。
+pubDate: 2025-11-23T00:00:05.000Z
+---
+
+## 概要
+
+[ビルド後に組み込み作業アリ用のAstro開発環境](https://zenn.dev/ymnkx/articles/12b45b8e06e5eb) という記事で Astro の CSS ファイル名を固定する方法が紹介されていた。CSS ファイル名の固定はできないと思ってたので実際に試してみた。
+
+## Astro での CSS ファイル名の扱い
+
+通常 Astro でビルドすると CSS ファイルにハッシュが付与される。
+
+```
+_astro/_slug_.a1Wq-uq3.css
+```
+
+ハッシュはファイルの内容が変わるたびに異なる値になる。キャッシュ戦略として有効だがバックエンドへの組み込み作業がある場合やクライアントのガイドラインでファイル名が制限される場合など固定のファイル名にしたいケースがある。
+
+固定化すると以下のようなファイル名になる。
+
+```
+_astro/common.css
+_astro/styles.css
+_astro/styles2.css
+```
+
+## CSS カスタムプロパティを使った固定化
+
+### 仕組み
+
+Vite の `rollupOptions.output.assetFileNames` で CSS のソースコードから特定のカスタムプロパティを抽出してそれをファイル名として使用する。
+
+[ビルド後に組み込み作業アリ用のAstro開発環境](https://zenn.dev/ymnkx/articles/12b45b8e06e5eb) では以下の2つのカスタムプロパティが使われている。
+
+- `--output-file-name-important` - 優先度が高い（全ページ共通 CSS やページ固有 CSS で使用）
+- `--output-file-name` - 優先度が低い（複数ページ用 CSS で使用）
+
+### 設定方法
+
+`astro.config.mjs` に以下を追加する。
+
+```javascript
+import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  build: {
+    inlineStylesheets: 'never',
+  },
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+              // --output-file-name-important: filename.css を優先
+              const importantMatch = String(assetInfo.source).match(
+                /--output-file-name-important:\s*([^;}\s]+)/,
+              );
+              if (importantMatch) {
+                return `_astro/${importantMatch[1].trim()}`;
+              }
+
+              // --output-file-name: filename.css を次に確認
+              const matches = [
+                ...String(assetInfo.source).matchAll(/--output-file-name:\s*([^;}\s]+)/g),
+              ];
+              if (matches.length > 0) {
+                const fileName =
+                  matches.map((m) => m[1].trim().replace(/\.css$/, '')).join('-') + '.css';
+                return `_astro/${fileName}`;
+              }
+
+              // カスタムプロパティがない場合はデフォルト名
+              return '_astro/styles.css';
+            }
+            return '_astro/[name].[hash][extname]';
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+- `build.inlineStylesheets: 'never'` - CSS をインライン展開せず外部ファイルとして出力
+- `assetFileNames` 関数内で `assetInfo.source` から正規表現でカスタムプロパティを抽出
+- CSS ファイル以外のアセット（画像など）はハッシュ付きのままにする
+
+### CSS への記述
+
+Astro コンポーネントの style タグに `is:global` を付けて、カスタムプロパティを記述する。
+
+```astro
+<style is:global>
+  :root {
+    --output-file-name-important: common.css;
+  }
+</style>
+
+<style lang="scss">
+  /* 通常のスタイル */
+</style>
+```
+
+## 実際に試してみる
+
+全ページで使われる Layout.astro などのコンポーネントに `--output-file-name-important: common.css` を追加する。
+
+```astro
+<style is:global>
+  :root {
+    --output-file-name-important: common.css;
+  }
+</style>
+```
+
+### ビルド結果
+
+```
+_astro/common.css
+_astro/styles.css
+_astro/styles2.css
+...
+```
+
+`common.css` が生成された。中身を確認すると Layout コンポーネントと全ページで使われている他のコンポーネントの CSS がまとめられていた。
+
+## Astro の CSS 分割の仕組み
+
+Astro はコンポーネントの使用状況に応じて CSS を自動的に分割する。
+
+- 全ページで使われるコンポーネント - 1つの CSS ファイルにまとめられる
+- 一部のページでのみ使われるコンポーネント - 別の CSS ファイルとして分割される
+
+複数のコンポーネントが1つの CSS ファイルにまとめられる場合そのファイル内には複数の `--output-file-name` カスタムプロパティが含まれる可能性がある。その場合は優先度の高い `--output-file-name-important` が使用される。
+
+## Vite と Rollup の役割
+
+Astro はビルドツールとして Vite を使用しており CSS の出力は Rollup によって処理される。
+
+- Vite - モジュールのバンドルと最適化を担当
+- Rollup - `output.assetFileNames` で出力されるアセットファイルの命名規則を制御
+
+参考：[Vite Configuration Reference](https://docs.astro.build/en/reference/configuration-reference/#vite) / [Rollup - output.assetFileNames](https://rollupjs.org/configuration-options/#output-assetfilenames)
+
+`assetInfo.source` には CSS の内容が文字列として渡される。この文字列から正規表現でカスタムプロパティを抽出することでファイル名を制御できる。
+
+## その他の固定化方法
+
+CSS カスタムプロパティを使う以外にも設定ファイルでマッピングを定義する方法がある。
+
+### 設定ファイルでのマッピング
+
+`astro.config.mjs` で明示的にファイル名のマッピングを定義する方法。
+
+```javascript
+const cssMapping = {
+  Layout: 'common.css',
+  Header: 'common.css',
+  Footer: 'common.css',
+  index: 'top.css',
+  about: 'about.css',
+};
+
+export default defineConfig({
+  build: {
+    inlineStylesheets: 'never',
+  },
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+              // names から元のファイル名を推測
+              const baseName = assetInfo.names[0];
+              const mappedName = cssMapping[baseName] || 'styles.css';
+              return `_astro/${mappedName}`;
+            }
+            return '_astro/[name].[hash][extname]';
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+### デメリット
+
+- Astro が複数のコンポーネントの CSS を1つのファイルに最適化する際 `assetInfo.names` に含まれる情報が限定的で元のファイルを正確に特定できないことがある
+- マッピングの管理が煩雑になる（コンポーネントが増えると設定も増える）
+- CSS とマッピング定義が離れているためメンテナンス性が低い
+
+CSS カスタムプロパティを使う方法は CSS の中で完結してコンポーネント単位で管理できる点で優れている。
+
+## 分かったこと・所感
+
+バックエンドへの組み込みなどに有効だがフレームワークの設計を壊してる気もするので罪悪感が残る。

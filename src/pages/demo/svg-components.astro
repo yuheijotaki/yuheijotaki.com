@@ -1,0 +1,68 @@
+---
+import { Icon } from 'astro-icon/components';
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+import StarSvg from '@/icons/star.svg';
+---
+
+<LayoutDemo title="svg-components">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; svg-components</h1>
+
+    <h2>1. astro-icon</h2>
+    <p class="note">SVG sprite（symbol + use）として最適化される</p>
+    <div class="group">
+      <Icon name="star" width="48" height="48" />
+      <Icon name="heart" width="48" height="48" />
+      <Icon name="circle" width="48" height="48" />
+    </div>
+
+    <h2>2. SVG components</h2>
+    <p class="note">SVG がインラインで展開される</p>
+    <div class="group">
+      <StarSvg width="48" height="48" />
+      <StarSvg width="48" height="48" />
+      <StarSvg width="48" height="48" />
+    </div>
+
+    <h2>3. サイズ指定</h2>
+    <div class="group">
+      <StarSvg width="24" height="24" />
+      <StarSvg width="48" height="48" />
+      <StarSvg width="72" height="72" />
+    </div>
+
+    <h2>4. スタイリング</h2>
+    <div class="group">
+      <StarSvg width="48" height="48" class="color-red" />
+      <StarSvg width="48" height="48" class="color-blue" />
+      <StarSvg width="48" height="48" class="color-green" />
+    </div>
+  </div>
+</LayoutDemo>
+
+<style>
+  .wrapper {
+    margin: 2rem;
+  }
+
+  h2 {
+    margin-top: 5rem;
+  }
+
+  .group {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .color-red {
+    color: red;
+  }
+
+  .color-blue {
+    color: blue;
+  }
+
+  .color-green {
+    color: green;
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+title: フォーカス制御のパターンを整理する
+description: UI パターンごとのフォーカス管理の違いを整理した雑感です。
+pubDate: 2025-11-23T00:00:01.000Z
+---
+
+## 概要
+
+モーダルやメガメニューなど UI によってフォーカスの制御方法が異なる。キーボード操作時にフォーカスが抜けられる／抜けられない UI の違いを整理してみた。
+
+## フォーカス管理とは
+
+キーボード操作でウェブページを利用する際は Tab キーでフォーカスを移動していく。このとき特定の UI 内にフォーカスを留めるか自由に移動させるかを制御する。
+
+## 主なフォーカス制御の方法
+
+### tabindex
+
+HTML 要素のフォーカス順序を制御する属性。
+
+- `tabindex="0"`: 通常のフォーカス順序に含める
+- `tabindex="-1"`: Tab キーではフォーカスできないが、JavaScript の `focus()` では可能
+- `tabindex="1"` 以上: フォーカス順序を指定
+
+### inert 属性
+
+要素とその子要素すべてを不活性化する HTML 属性。フォーカス移動とクリックイベントを無効化してアクセシビリティツリーからも除外する。
+
+モーダル表示時に背後のコンテンツを完全に操作不可にする場合に使う。
+
+### フォーカストラップ
+
+JavaScript でフォーカスを特定の範囲内に留める実装。モーダルやドロワーなど開いている間は背後のコンテンツを操作させたくない UI で使う。
+
+## UI パターンごとの実装
+
+### モーダルダイアログ
+
+背後のコンテンツは操作できずフォーカスはモーダル内に留まる。ESC キーで閉じて元の要素にフォーカスを戻す。
+
+実装は背後のコンテンツに `inert` 属性を付与してモーダル内でフォーカストラップを実装する。`<dialog>` 要素を使うと標準で実現できる。
+
+関連する WCAG 達成基準は [2.1.2 キーボードトラップなし（レベル A）](https://waic.jp/translations/WCAG22/#no-keyboard-trap) と [2.4.3 フォーカス順序（レベル A）](https://waic.jp/translations/WCAG22/#focus-order)。
+
+### メガメニュー
+
+背後のコンテンツも操作可能でフォーカスがメニュー外に移動したら自動的に閉じる。マウスホバーでも開閉することが多い。
+
+実装は `inert` 属性を使わず `focusin` イベントでフォーカス位置を監視してメニュー外にフォーカスが移動したら閉じる処理を実装する。
+
+関連する WCAG 達成基準は [3.2.1 フォーカス時（レベル A）](https://waic.jp/translations/WCAG22/#on-focus)。
+
+## パターンの使い分け
+
+| UI                      | フォーカストラップ | 背後を操作 | 閉じる条件                |
+| ----------------------- | ------------------ | ---------- | ------------------------- |
+| モーダルダイアログ      | 必要               | 不可       | 明示的な操作 or ESC       |
+| メガメニュー            | 不要               | 可         | フォーカスが外れる or ESC |
+| ツールチップ（Popover） | 不要               | 可         | フォーカスが外れる or ESC |
+
+## APG パターンとの対応
+
+ARIA Authoring Practices Guide (APG) では、各 UI パターンのキーボード操作が定義されている。
+
+- [Modal Dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/): フォーカストラップを実装
+- [Navigation Menubar](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/): フォーカスは自由に移動可能
+
+APG のコードを見ると、モーダル系の UI はフォーカストラップを実装していて、メニューバー系はフォーカスの移動制限をしていない。
+
+## 分かったこと・所感
+
+- モーダル系（背後を操作させない UI）はフォーカストラップを実装する
+- メニュー系（背後も操作可能な UI）はフォーカスが外れたら閉じる実装が多い
+- `inert` 属性を使うと背後のコンテンツを完全に不活性化できる
+- `<dialog>` 要素はフォーカストラップを標準で実装してるのでモーダルが楽
+
+## 参考記事
+
+- [ARIA Authoring Practices Guide (APG)](https://www.w3.org/WAI/ARIA/apg/)
+- [Modal Dialog Pattern | APG](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)
+- [Navigation Menubar Pattern | APG](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/)
+- [inert - HTML | MDN](https://developer.mozilla.org/ja/docs/Web/HTML/Global_attributes/inert)

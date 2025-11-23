@@ -1,0 +1,92 @@
+---
+title: axe-core の Best Practice ルールを理解する
+description: axe-core の Best Practice ルールについて調べた雑感です。
+pubDate: 2025-11-23T00:00:02.000Z
+---
+
+## 概要
+
+axe DevTools で Web サイトのアクセシビリティチェックをしていると WCAG の達成基準とは別に「Best Practice」という項目が検出される。どのような基準で Best Practice なのか WCAG とどう違うのかを調べてみた。
+
+## axe-core の Best Practice ルールとは
+
+axe-core の Best Practice ルールは WCAG の達成基準には直接該当しないがアクセシビリティ向上に寄与する推奨事項を含むルールセット。Deque Systems が独自に定義している。
+
+WCAG の達成基準は A、AA、AAA の3つのレベルに分類されるが Best Practice はこれらのレベルとは別にユーザビリティの向上を目的とした項目が含まれる。
+
+## 主な Best Practice ルール
+
+axe-core の Best Practice タグで検出される主な項目：
+
+### ページ構造
+
+- `page-has-heading-one` - ページに h1 見出しが存在するか
+- `region` - コンテンツがランドマークに含まれているか
+- `landmark-one-main` - メインランドマークが1つだけ存在するか
+
+### 見出し構造
+
+- `heading-order` - 見出しレベルが正しい順序で使われているか（h1 の次が h3 ではなく h2 など）
+
+### リンク
+
+- `link-name` - リンクにアクセシブルな名前が付いているか
+- `link-in-text-block` - テキストブロック内のリンクが識別可能か
+
+### 画像
+
+- `image-redundant-alt` - 画像の alt テキストが冗長でないか（「画像」「写真」などの不要なテキストを含まない）
+
+### フォーム
+
+- `label` - フォーム要素に適切なラベルが付いているか（これは WCAG の達成基準にも含まれることがある）
+
+## WCAG との関係
+
+Best Practice ルールは WCAG の達成基準とは独立している。WCAG の達成基準を満たしていても Best Practice で指摘されることがある。
+
+例えば h1 見出しの存在は WCAG の達成基準には含まれていないがページの主要なトピックを明確にするために推奨される。
+
+axe-core ではテスト時にタグを指定することで実行するルールを制御できる。
+
+```javascript
+// WCAG 2.1 レベル A, AA のみをテスト
+.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+
+// Best Practice も含めてテスト
+.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
+```
+
+## Best Practice の位置づけ
+
+WCAG の達成基準はアクセシビリティの最低限または推奨される基準を定めている。Best Practice はそれらを補完する形でより良いユーザー体験を提供するための指針となる。
+
+WCAG レベルでいうと：
+
+- レベル A - 達成が比較的容易で重篤な問題を引き起こしやすい基準
+- レベル AA - より高度なアクセシビリティを実現する基準（多くの組織が目指すレベル）
+- レベル AAA - 最も厳格な基準
+- Best Practice - WCAG の達成基準とは独立したユーザビリティ向上のための推奨事項
+
+## 実務での扱い方
+
+axe DevTools でチェックする際 Best Practice の項目は Issue として検出されるが WCAG 違反とは別に考える必要がある。
+
+例えば WCAG レベル AA の準拠を目指すプロジェクトであれば Best Practice の項目は必須ではない。ただし Best Practice の項目を改善することでユーザー体験の向上につながることが多い。
+
+また Best Practice で指摘された項目が実際にはプロジェクトの要件や文脈では適切でない場合もある。例えばランディングページではメインコンテンツをランドマークで囲まない設計も考えられる。
+
+## 分かったこと・所感
+
+- Best Practice は WCAG の達成基準とは独立したユーザビリティ観点でのチェック項目
+- ページ構造（h1 やランドマーク）や見出し順序などコンテンツの構造に関する項目が多い
+- WCAG の達成基準を満たしていても Best Practice で指摘されることがある
+- 必須ではないが改善することでユーザー体験の向上が期待できる
+- プロジェクトの要件や文脈によっては Best Practice の項目を対応しないという判断もある
+
+## 参考記事
+
+- [axe-core ルールと WCAG 2.1 達成基準の対照表 | Accessible & Usable](https://accessible-usable.net/2022/07/entry_220701.html)
+- [@axe-core/playwright によるアクセシビリティテストの自動化](https://azukiazusa.dev/blog/axe-core-playwright/)
+- [axe-core-npm/packages/playwright at master · dequelabs/axe-core-npm](https://github.com/dequelabs/axe-core-npm/tree/master/packages/playwright)
+- [axe-core Rules | Deque University](https://www.deque.com/axe/core-documentation/api-documentation/)

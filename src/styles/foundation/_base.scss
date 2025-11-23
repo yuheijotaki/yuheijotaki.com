@@ -12,9 +12,10 @@ body {
   overflow-wrap: anywhere;
   background-color: var(--color-secondary);
   text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   line-break: strict;
+
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
 }
 
 :focus-visible {
@@ -30,7 +31,7 @@ a {
   padding: 0.25rem;
   color: var(--color-link);
   text-underline-offset: 0.25em;
-  border-radius: 0.25rem;
+  border-radius: 0.1rem;
 
   &:visited {
     color: var(--color-link-visited);

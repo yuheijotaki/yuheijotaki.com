@@ -1,5 +1,6 @@
 import { visit } from 'unist-util-visit';
 import type { Element as HastElement, Root as HastRoot } from 'hast';
+import { createHash } from 'crypto';
 
 export default function addHeadingLinks() {
   return (tree: HastRoot) => {
@@ -15,7 +16,7 @@ export default function addHeadingLinks() {
 
         if (!text) return;
 
-        const id = text;
+        const id = createHash('sha256').update(text).digest('hex').substring(0, 8);
 
         node.properties = node.properties || {};
         node.properties.id = id;

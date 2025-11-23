@@ -1,0 +1,69 @@
+---
+title: CSS scroll-state() を試してみる
+description: CSS の scroll-state() を試した雑感です。
+pubDate: 2025-11-23T00:00:00.000Z
+---
+
+## 概要
+
+Chrome 131 で実装された CSS scroll-state() を使い、スクロール位置に応じたスタイリングを試してみた。
+
+## scroll-state() とは
+
+CSS でスクロール状態をクエリできる機能。
+`@container` と組み合わせて要素のスクロール状態に応じたスタイリングができる。
+
+検出できる状態は主に3つ：
+
+- `stuck` - 要素が sticky 状態かどうか
+- `snapped` - スクロールスナップ位置に停止しているか
+- `scrollable` - スクロール可能な状態か（縦横や両方向を指定可能）
+
+`container-type: scroll-state` は `position: sticky` を持つ要素自体に設定する。
+
+```css
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  container-type: scroll-state;
+}
+
+@container scroll-state(stuck: top) {
+  .header {
+    background: tomato;
+  }
+}
+```
+
+## ブラウザ対応状況
+
+Chrome 131 以降でサポート。Safari と Firefox は現状未サポート。  
+参考：[MDN - コンテナースクロール状態クエリーの使用](https://developer.mozilla.org/ja/docs/Web/CSS/Guides/Conditional_rules/Container_scroll-state_queries)  
+[Can I use...](https://caniuse.com/?search=scroll-state)
+
+## デモ
+
+- [デモ](/demo/scroll-state/)
+- [コード](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/pages/demo/scroll-state.astro)
+
+デモでは次のパターンを試した：
+
+1. `stuck` - ヘッダーがスティッキー状態でスタイル変更
+2. `snapped` - スナップしたカードの強調表示
+3. `scrollable` - スクロール可能/不可能の状態表示
+
+## 分かったこと・所感
+
+- Intersection Observer や scroll イベントを JS で書いていた処理が CSS だけで実現できる
+- `stuck` はスティッキーヘッダーのシャドウ表示など定番パターンがシンプルに実装できる
+- `snapped` はカルーセルやスクロールスナップ UI で現在アクティブな要素を視覚的に示すのに使える
+- `container-type: scroll-state` は `position: sticky` を持つ要素自体に設定する（子要素ではない）
+- Chrome 131 以降で動作するが他ブラウザは未対応
+- Scroll-driven Animations と併用するとより高度なスクロール連動 UI が作れそう
+
+## 参考記事
+
+- [コンテナースクロール状態クエリーの使用 - MDN](https://developer.mozilla.org/ja/docs/Web/CSS/Guides/Conditional_rules/Container_scroll-state_queries)
+- [スクロールの状態変化でスタイル切替が可能に！ scroll-state()入門 - ICS MEDIA](https://ics.media/entry/250602/)
+- [CSS Scroll State Queries | Chrome for Developers](https://developer.chrome.com/blog/css-scroll-state-queries?hl=ja)
+- [CSS Containment Module Level 3](https://drafts.csswg.org/css-contain-3/#scroll-state-container)

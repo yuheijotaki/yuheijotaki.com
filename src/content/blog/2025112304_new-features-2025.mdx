@@ -1,0 +1,96 @@
+---
+title: 使っていいのか迷う機能 2025
+description: 新しい Web 標準機能のブラウザ対応状況を整理した雑感です。
+pubDate: 2025-11-23T00:00:03.000Z
+---
+
+## 概要
+
+新しい CSS や HTML の機能が次々と追加されているが実際に実務で使っていいのか判断に迷う。ここ1〜2年で使えるようになったものとまだ使えないものを整理してみた。
+
+## 判断基準
+
+### Baseline とは
+
+Baseline は主要なブラウザで機能が利用可能になったことを示す指標。MDN や web.dev で表示される。
+
+- Newly available - すべての主要ブラウザで利用可能になってから30ヶ月未満
+- Widely available - すべての主要ブラウザで利用可能になってから30ヶ月以上経過
+
+### クライアントワークでの基準
+
+Web 制作会社でのクライアントワークでは Chrome、Safari、Firefox、Edge、iOS Safari、Android Chrome の全てで利用可能でないと「使えない」という基準で判断する。
+
+Baseline の「Newly available」であれば基本的には使えるが一部のブラウザでのみ実装されている機能はフォールバックを用意しない限り使用を控える。
+
+## 使える機能
+
+全ブラウザで利用可能になった機能。
+
+### [CSS Nesting](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_nesting)
+
+Sass や SCSS で使われていたネスト構文がネイティブ CSS で利用可能になった。
+
+Baseline: Widely available（2023年8月）
+
+### [Popover API](https://developer.mozilla.org/ja/docs/Web/API/Popover_API)
+
+JavaScript を使わずに HTML 属性だけでポップオーバーを実装できる。Anchor Positioning と組み合わせることで柔軟な配置が可能だが Anchor Positioning が未対応のブラウザでは位置調整が必要。
+
+Baseline: Newly available（2024年4月）
+
+### [@starting-style](https://developer.mozilla.org/ja/docs/Web/CSS/@starting-style)
+
+display: none から display: block への切り替え時にトランジションを適用できる。これまで opacity や transform のトランジションは可能だったが display の変更時にはトランジションが効かなかった。
+
+Baseline: Newly available（2024年5月）
+
+### [light-dark() 関数](https://developer.mozilla.org/ja/docs/Web/CSS/color_value/light-dark)
+
+ライトモードとダークモードで異なる色を1行で指定できる。prefers-color-scheme のメディアクエリを書く必要がなくなった。
+
+Baseline: Newly available（2024年3月）
+
+## まだ使えない機能
+
+一部のブラウザでのみ実装されているか実装途中の機能。
+
+### [CSS Anchor Positioning](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_anchor_positioning)
+
+ツールチップやポップオーバーをアンカー要素に対して正確に配置する機能。Chrome と Edge のみ対応で Safari と Firefox は未対応。Popover API と組み合わせて使うことが多いが Anchor Positioning が使えないブラウザでは JavaScript での位置調整が必要になる。
+
+対応状況: Chrome 125+, Edge 125+（Safari と Firefox 未対応）
+
+### [View Transitions API](https://developer.mozilla.org/ja/docs/Web/API/View_Transitions_API)
+
+ページ遷移時にスムーズなアニメーションを実現する API。Chrome と Edge のみ対応。SPA だけでなく MPA（マルチページアプリケーション）でも使える。
+
+対応状況: Chrome 111+, Edge 111+（Safari と Firefox 未対応）
+
+### [Scroll-driven Animations](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_scroll-driven_animations)
+
+スクロール位置に連動したアニメーションを CSS だけで実装できる。Safari が未対応。
+
+対応状況: Chrome 115+, Edge 115+, Firefox 114+（Safari 未対応）
+
+### [field-sizing](https://developer.mozilla.org/ja/docs/Web/CSS/field-sizing)
+
+textarea や input 要素のサイズを内容に応じて自動調整する機能。Chrome のみ対応。
+
+対応状況: Chrome 123+（他ブラウザ未対応）
+
+### [interpolate-size](https://developer.mozilla.org/ja/docs/Web/CSS/interpolate-size)
+
+height: auto や width: auto でもアニメーションを可能にする機能。Chrome のみ対応。これまで height: 0 から height: auto へのトランジションができなかったがこの機能で可能になる。
+
+対応状況: Chrome 129+（他ブラウザ未対応）
+
+### [reading-flow](https://developer.mozilla.org/ja/docs/Web/CSS/reading-flow)
+
+CSS Grid や Flexbox で配置した要素の読み上げ順序を制御する機能。まだ実装されているブラウザはない。視覚的な順序とスクリーンリーダーでの読み上げ順序を一致させることができる。
+
+対応状況: すべてのブラウザで未対応（仕様策定中）
+
+## 分かったこと・所感
+
+CSS Nesting みたく使えるけど設計難しいとか `light-dark()` みたく使えるけどどこでとか `field-sizing` や `reading-flow` みたく使えてもいやだなとか、そういうのも多いがまあ知っておくのは大事ということで。

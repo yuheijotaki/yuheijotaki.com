@@ -1,0 +1,144 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="scroll-state()">
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; scroll-state()</h1>
+
+    <h2>1. stuck - スティッキーヘッダー</h2>
+    <div class="section">
+      <div class="demo1">
+        <div class="header-wrapper">
+          <div class="header">ヘッダー（スクロールで変化）</div>
+        </div>
+        {Array.from({ length: 20 }, (_, i) => <p>コンテンツ {i + 1}</p>)}
+      </div>
+    </div>
+
+    <h2>2. snapped - スナップ時の強調</h2>
+    <div class="section">
+      <div class="demo2">
+        {
+          Array.from({ length: 8 }, (_, i) => (
+            <div class="card-wrapper">
+              <div class="card">カード {i + 1}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <h2>3. scrollable - スクロール可能表示</h2>
+    <div class="section">
+      <div class="demo3">
+        {Array.from({ length: 15 }, (_, i) => <p>行 {i + 1}</p>)}
+        <div class="indicator">スクロール可能</div>
+      </div>
+    </div>
+  </div>
+</LayoutDemo>
+
+<style>
+  .wrapper {
+    margin: 2rem;
+  }
+
+  .section {
+    margin-bottom: 3rem;
+  }
+
+  /* 1. stuck */
+  .demo1 {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #222;
+  }
+
+  .header-wrapper {
+    position: sticky;
+    top: 0;
+    container-type: scroll-state;
+  }
+
+  .header {
+    padding: 1rem;
+    background: #fff;
+    border-bottom: 1px solid #222;
+  }
+
+  @container scroll-state(stuck: top) {
+    .header {
+      background: tomato;
+    }
+  }
+
+  .demo1 p {
+    padding: 1rem;
+    margin: 0.5rem;
+    background: #f9f9f9;
+  }
+
+  /* 2. snapped */
+  .demo2 {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    overflow-x: scroll;
+    border: 1px solid #222;
+    scroll-snap-type: x mandatory;
+  }
+
+  .card-wrapper {
+    scroll-snap-align: center;
+    container-type: scroll-state;
+  }
+
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 150px;
+    background: #f0f0f0;
+    border: 1px solid #222;
+  }
+
+  @container scroll-state(snapped: inline) {
+    .card {
+      background: tomato;
+    }
+  }
+
+  /* 3. scrollable */
+  .demo3 {
+    position: relative;
+    height: 200px;
+    padding: 1rem;
+    overflow-y: scroll;
+    border: 1px solid #222;
+    container-type: scroll-state;
+  }
+
+  .demo3 p {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    background: #f9f9f9;
+  }
+
+  .indicator {
+    position: sticky;
+    right: 0;
+    bottom: 0;
+    display: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    background: tomato;
+  }
+
+  @container scroll-state(scrollable: bottom) {
+    .indicator {
+      display: inline-block;
+    }
+  }
+</style>

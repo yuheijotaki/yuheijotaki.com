@@ -1,0 +1,42 @@
+---
+export const prerender = false;
+
+import { getLiveCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const { entries, error } = await getLiveCollection('liveBlog');
+---
+
+<Layout
+  title="Live Content Collections テスト"
+  description="microCMS から取得したデータを表示"
+  isHome={false}>
+  <main>
+    {
+      error ? (
+        <div>
+          <strong>エラーが発生しました:</strong>
+          <p>{error.message}</p>
+        </div>
+      ) : entries && entries.length > 0 ? (
+        <div>
+          <p>取得件数: {entries.length}件</p>
+          <ul>
+            {entries.map((post) => (
+              <li>
+                <h2>{post.data.title}</h2>
+                <div>
+                  <p>ID: {post.id}</p>
+                  <p>公開日: {post.data.publishedAt.toLocaleString('ja-JP')}</p>
+                  <p>作成日: {post.data.createdAt.toLocaleString('ja-JP')}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>データがありません</p>
+      )
+    }
+  </main>
+</Layout>

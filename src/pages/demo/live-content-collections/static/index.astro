@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+
+const posts = await getCollection('staticMicroCMSBlog');
+---
+
+<LayoutDemo title="live-content-collections">
+  <div class="wrapper">
+    <h1>
+      <a href="/demo/">demo</a> &raquo;
+      <a href="/demo/live-content-collections/">live-content-collections</a> &raquo; static
+    </h1>
+
+    {
+      posts.length > 0 ? (
+        <div>
+          <p>posts: {posts.length}</p>
+          <ul>
+            {posts.map((post) => (
+              <li>
+                <p>
+                  <a href={`/demo/live-content-collections/static/${post.id}`}>{post.data.title}</a>
+                </p>
+                <p>id: {post.id}</p>
+                <p>publishedAt: {post.data.publishedAt.toLocaleString('ja-JP')}</p>
+                <p>createdAt: {post.data.createdAt.toLocaleString('ja-JP')}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>データがありません</p>
+      )
+    }
+  </div>
+</LayoutDemo>

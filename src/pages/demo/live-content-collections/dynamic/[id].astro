@@ -1,0 +1,43 @@
+---
+export const prerender = false;
+
+import { getLiveEntry } from 'astro:content';
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect('/demo/live-content-collections/dynamic/');
+}
+
+const { entry, error } = await getLiveEntry('liveBlog', id);
+
+if (error || !entry) {
+  return Astro.redirect('/demo/live-content-collections/dynamic/');
+}
+---
+
+<LayoutDemo title="live-content-collections">
+  <div class="wrapper">
+    <h1>
+      <a href="/demo/">demo</a> &raquo;
+      <a href="/demo/live-content-collections/">live-content-collections</a> &raquo;
+      <a href="/demo/live-content-collections/dynamic/">dynamic</a> &raquo;
+      {entry.id}
+    </h1>
+
+    <dl>
+      <dt>ID:</dt>
+      <dd>{entry.id}</dd>
+
+      <dt>publishedAt:</dt>
+      <dd>{entry.data.publishedAt.toLocaleString('ja-JP')}</dd>
+
+      <dt>createdAt:</dt>
+      <dd>{entry.data.createdAt.toLocaleString('ja-JP')}</dd>
+
+      <dt>updatedAt:</dt>
+      <dd>{entry.data.updatedAt.toLocaleString('ja-JP')}</dd>
+    </dl>
+  </div>
+</LayoutDemo>

@@ -1,0 +1,46 @@
+---
+export const prerender = false;
+
+import { getLiveCollection } from 'astro:content';
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+
+const { entries, error } = await getLiveCollection('liveBlog');
+---
+
+<LayoutDemo title="live-content-collections">
+  <div class="wrapper">
+    <h1>
+      <a href="/demo/">demo</a> &raquo;
+      <a href="/demo/live-content-collections/">live-content-collections</a> &raquo; dynamic
+    </h1>
+
+    {
+      error ? (
+        <div>
+          <strong>エラーが発生しました:</strong>
+          <p>{error.message}</p>
+        </div>
+      ) : entries && entries.length > 0 ? (
+        <div>
+          <p>posts: {entries.length}</p>
+          <ul>
+            {entries.map((post) => (
+              <li>
+                <p>
+                  <a href={`/demo/live-content-collections/dynamic/${post.id}`}>
+                    {post.data.title}
+                  </a>
+                </p>
+                <p>ID: {post.id}</p>
+                <p>publishedAt: {post.data.publishedAt.toLocaleString('ja-JP')}</p>
+                <p>createdAt: {post.data.createdAt.toLocaleString('ja-JP')}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>データがありません</p>
+      )
+    }
+  </div>
+</LayoutDemo>

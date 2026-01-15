@@ -1,0 +1,48 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('staticMicroCMSBlog');
+  return posts.map((post) => ({
+    params: { id: post.id },
+  }));
+}
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect('/demo/live-content-collections/static/');
+}
+
+const entry = await getEntry('staticMicroCMSBlog', id);
+
+if (!entry) {
+  return Astro.redirect('/demo/live-content-collections/static/');
+}
+---
+
+<LayoutDemo title="live-content-collections">
+  <div class="wrapper">
+    <h1>
+      <a href="/demo/">demo</a> &raquo;
+      <a href="/demo/live-content-collections/">live-content-collections</a> &raquo;
+      <a href="/demo/live-content-collections/static/">static</a> &raquo;
+      {entry.id}
+    </h1>
+
+    <dl>
+      <dt>ID:</dt>
+      <dd>{entry.id}</dd>
+
+      <dt>publishedAt:</dt>
+      <dd>{entry.data.publishedAt.toLocaleString('ja-JP')}</dd>
+
+      <dt>createdAt:</dt>
+      <dd>{entry.data.createdAt.toLocaleString('ja-JP')}</dd>
+
+      <dt>updatedAt:</dt>
+      <dd>{entry.data.updatedAt.toLocaleString('ja-JP')}</dd>
+    </dl>
+  </div>
+</LayoutDemo>

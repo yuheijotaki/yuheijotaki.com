@@ -1,0 +1,105 @@
+---
+title: Astro Live Content Collections を試してみる
+description: Astro 5.10 で追加された Live Content Collections の実験的機能を試した雑感です。
+pubDate: 2026-01-15T00:00:00.000Z
+---
+
+## 概要
+
+Astro 5.10 で追加された [Live Content Collections](https://docs.astro.build/en/reference/experimental-flags/live-content-collections/) を試してみた。Live Content Collections はビルド時ではなくリクエスト時にデータを取得できる機能（v5 系だと要 experimental フラグ）。
+
+## Live Content Collections とは
+
+### 従来の Content Collections
+
+- データはビルド時に取得される
+- データストアに保存される
+- 静的なコンテンツに最適
+
+### Live Content Collections
+
+- データはリクエスト時に取得される
+- データストアには保存されない
+- 常に最新のデータを取得できる
+- 頻繁に更新されるコンテンツに最適
+
+詳細： [Live Content Collections: A Deep Dive | Astro](https://astro.build/blog/live-content-collections-deep-dive/)
+
+## 環境構築
+
+SSR アダプターとして今回は Vercel を使用する。
+
+### 設定
+
+`astro.config.mjs` に実験的フラグを追加する。
+
+```javascript
+export default defineConfig({
+  adapter: vercel(),
+  experimental: {
+    liveContentCollections: true,
+  },
+});
+```
+
+[src/live.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/live.config.ts) にライブコレクションを定義する。（従来の `src/content.config.ts` とは別ファイル）
+
+ポイントいくつか
+
+- `defineLiveCollection()` を使用
+- `type: 'live'` を指定
+- `loader` に `loadCollection` と `loadEntry` を実装
+
+## Content Collections と Live Content Collections の比較
+
+今回は従来のビルド時 Content Collections と Live Content Collections の両方を実装して比較した。
+
+### デモページ、ソースコード
+
+- 静的版（従来の Content Collections）
+  - [デモページ](/demo/live-content-collections/static/)
+  - [src/content.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/content/config.ts)
+  - [src/pages/demo/live-content-collections/static/](https://github.com/yuheijotaki/yuheijotaki.com/tree/main/src/pages/demo/live-content-collections/static)
+- 動的版（Live Content Collections）
+  - [デモページ](/demo/live-content-collections/dynamic/)
+  - [src/live.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/live.config.ts)
+  - [src/pages/demo/live-content-collections/dynamic/](https://github.com/yuheijotaki/yuheijotaki.com/tree/main/src/pages/demo/live-content-collections/dynamic)
+
+### 静的版（Content Collections）
+
+`src/content.config.ts` で定義する。ページコンポーネントでは `getCollection()` を使用。
+
+### 動的版（Live Content Collections）
+
+`src/live.config.ts` で定義する。ページコンポーネントでは `getLiveCollection()` を使用。
+
+```astro
+---
+export const prerender = false;
+
+import { getLiveCollection } from 'astro:content';
+const { entries, error } = await getLiveCollection('liveBlog');
+---
+```
+
+## 従来の fetch（SSR）との比較
+
+### 従来の fetch
+
+- 手動で型の定義が必要
+- バリデーションは自分で実装
+- エラーハンドリングも自分で実装
+
+### Live Content Collections
+
+- スキーマから自動的に型が推論される
+- Zod による自動バリデーション
+- エラーハンドリングが統一される
+- ローダーとして再利用や配布可能
+
+Live Content Collections は SSR の上に構築された抽象化レイヤーという扱いらしい（よく分からない）
+
+## 所感
+
+- 割とシンプルなデータでも Live Content Collections のページは重いので使い所は気をつけないと
+- 記事のプレビュー環境で使うのとかはいいかも

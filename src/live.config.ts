@@ -2,7 +2,7 @@ import { defineLiveCollection } from 'astro:content';
 import { createClient } from 'microcms-js-sdk';
 import { z } from 'astro:content';
 
-// microCMS レスポンスの型定義
+// microCMS レスポンスの型
 interface MicroCMSBlogPost {
   id: string;
   updatedAt: string;
@@ -32,7 +32,6 @@ const liveBlog = defineLiveCollection({
     name: 'microcms-blog-loader',
     loadCollection: async () => {
       try {
-        // Vercel環境では process.env を直接使用
         const serviceDomain = import.meta.env.MICROCMS_DOMAIN;
         const apiKey = import.meta.env.MICROCMS_PRODUCTION_API_KEY;
 
@@ -83,7 +82,6 @@ const liveBlog = defineLiveCollection({
     },
     loadEntry: async (idOrFilter) => {
       try {
-        // 文字列の場合とオブジェクトの場合の両方に対応
         const id =
           typeof idOrFilter === 'string' ? idOrFilter : idOrFilter?.id || idOrFilter?.filter?.id;
 
@@ -139,5 +137,4 @@ const liveBlog = defineLiveCollection({
   schema: blogSchema,
 });
 
-// コレクションをエクスポート
 export const collections = { liveBlog };

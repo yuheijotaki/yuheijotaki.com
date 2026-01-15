@@ -1,10 +1,6 @@
 import { defineLiveCollection } from 'astro:content';
 import { createClient } from 'microcms-js-sdk';
 import { z } from 'astro:content';
-import { loadEnv } from 'vite';
-
-// 環境変数をロード
-const env = loadEnv('', process.cwd(), '');
 
 // microCMS レスポンスの型定義
 interface MicroCMSBlogPost {
@@ -38,12 +34,21 @@ const liveBlog = defineLiveCollection({
     name: 'microcms-blog-loader',
     loadCollection: async () => {
       try {
-        // loader内で環境変数を読み込む
-        const serviceDomain = env.MICROCMS_DOMAIN;
-        const apiKey = env.MICROCMS_PRODUCTION_API_KEY;
+        // Vercel環境では process.env を直接使用
+        const serviceDomain = import.meta.env.MICROCMS_DOMAIN;
+        const apiKey = import.meta.env.MICROCMS_PRODUCTION_API_KEY;
+
+        console.log('[Live Collection] loadCollection called');
+        console.log('[Live Collection] serviceDomain exists:', !!serviceDomain);
+        console.log('[Live Collection] apiKey exists:', !!apiKey);
 
         if (!serviceDomain || !apiKey) {
-          throw new Error('MICROCMS_DOMAIN and MICROCMS_PRODUCTION_API_KEY are required');
+          const error = new Error(
+            'MICROCMS_DOMAIN and MICROCMS_PRODUCTION_API_KEY are required. ' +
+              `serviceDomain: ${!!serviceDomain}, apiKey: ${!!apiKey}`,
+          );
+          console.error('[Live Collection] Environment variables missing:', error);
+          return { error };
         }
 
         const client = createClient({
@@ -51,9 +56,12 @@ const liveBlog = defineLiveCollection({
           apiKey,
         });
 
+        console.log('[Live Collection] Fetching from microCMS...');
         const response = await client.get<MicroCMSResponse>({
           endpoint: 'blog',
         });
+
+        console.log('[Live Collection] Fetched entries:', response.contents.length);
 
         return {
           entries: response.contents.map((post) => ({
@@ -70,22 +78,23 @@ const liveBlog = defineLiveCollection({
           },
         };
       } catch (error) {
-        console.error('microCMS fetch error:', error);
+        console.error('[Live Collection] microCMS fetch error:', error);
         return {
           error: error instanceof Error ? error : new Error('Unknown error'),
         };
       }
     },
-    loadEntry: async (idOrFilter: string | { filter: { id: string } }) => {
+    loadEntry: async ({ id }: { id: string }) => {
       try {
-        // IDが文字列かフィルターオブジェクトかを判定
-        const id = typeof idOrFilter === 'string' ? idOrFilter : idOrFilter.filter.id;
+        console.log('[Live Collection] loadEntry called with id:', id);
 
-        const serviceDomain = env.MICROCMS_DOMAIN;
-        const apiKey = env.MICROCMS_PRODUCTION_API_KEY;
+        const serviceDomain = import.meta.env.MICROCMS_DOMAIN;
+        const apiKey = import.meta.env.MICROCMS_PRODUCTION_API_KEY;
 
         if (!serviceDomain || !apiKey) {
-          throw new Error('MICROCMS_DOMAIN and MICROCMS_PRODUCTION_API_KEY are required');
+          const error = new Error('MICROCMS_DOMAIN and MICROCMS_PRODUCTION_API_KEY are required');
+          console.error('[Live Collection] Environment variables missing:', error);
+          return { error };
         }
 
         const client = createClient({
@@ -97,6 +106,8 @@ const liveBlog = defineLiveCollection({
           endpoint: 'blog',
           contentId: id,
         });
+
+        console.log('[Live Collection] Fetched entry:', post.id);
 
         return {
           id: post.id,
@@ -111,7 +122,7 @@ const liveBlog = defineLiveCollection({
           },
         };
       } catch (error) {
-        console.error('microCMS fetch error:', error);
+        console.error('[Live Collection] microCMS fetch error:', error);
         return {
           error: error instanceof Error ? error : new Error('Unknown error'),
         };

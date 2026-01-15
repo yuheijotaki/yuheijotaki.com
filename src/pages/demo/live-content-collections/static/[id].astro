@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import LayoutDemo from '@/layouts/LayoutDemo.astro';
+import { formatDate } from '@/utils/formatDate';
 
 export async function getStaticPaths() {
   const posts = await getCollection('staticMicroCMSBlog');
@@ -36,13 +37,10 @@ if (!entry) {
       <dd>{entry.id}</dd>
 
       <dt>publishedAt:</dt>
-      <dd>{entry.data.publishedAt.toLocaleString('ja-JP')}</dd>
-
-      <dt>createdAt:</dt>
-      <dd>{entry.data.createdAt.toLocaleString('ja-JP')}</dd>
+      <dd>{formatDate(entry.data.publishedAt)}</dd>
 
       <dt>updatedAt:</dt>
-      <dd>{entry.data.updatedAt.toLocaleString('ja-JP')}</dd>
+      <dd>{formatDate(entry.data.updatedAt)}</dd>
     </dl>
   </div>
 </LayoutDemo>

@@ -3,6 +3,7 @@ export const prerender = false;
 
 import { getLiveEntry } from 'astro:content';
 import LayoutDemo from '@/layouts/LayoutDemo.astro';
+import { formatDate } from '@/utils/formatDate';
 
 const { id } = Astro.params;
 
@@ -31,13 +32,10 @@ if (error || !entry) {
       <dd>{entry.id}</dd>
 
       <dt>publishedAt:</dt>
-      <dd>{entry.data.publishedAt.toLocaleString('ja-JP')}</dd>
-
-      <dt>createdAt:</dt>
-      <dd>{entry.data.createdAt.toLocaleString('ja-JP')}</dd>
+      <dd>{formatDate(entry.data.publishedAt)}</dd>
 
       <dt>updatedAt:</dt>
-      <dd>{entry.data.updatedAt.toLocaleString('ja-JP')}</dd>
+      <dd>{formatDate(entry.data.updatedAt)}</dd>
     </dl>
   </div>
 </LayoutDemo>

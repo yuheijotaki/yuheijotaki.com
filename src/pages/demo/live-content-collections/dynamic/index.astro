@@ -3,6 +3,7 @@ export const prerender = false;
 
 import { getLiveCollection } from 'astro:content';
 import LayoutDemo from '@/layouts/LayoutDemo.astro';
+import { formatDate } from '@/utils/formatDate';
 
 const { entries, error } = await getLiveCollection('liveBlog');
 ---
@@ -32,8 +33,7 @@ const { entries, error } = await getLiveCollection('liveBlog');
                   </a>
                 </p>
                 <p>ID: {post.id}</p>
-                <p>publishedAt: {post.data.publishedAt.toLocaleString('ja-JP')}</p>
-                <p>createdAt: {post.data.createdAt.toLocaleString('ja-JP')}</p>
+                <p>publishedAt: {formatDate(post.data.publishedAt)}</p>
               </li>
             ))}
           </ul>

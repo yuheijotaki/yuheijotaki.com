@@ -37,7 +37,6 @@ const staticMicroCMSBlog = defineCollection({
       return response.contents.map((post: any) => ({
         id: post.id,
         title: post.title,
-        createdAt: new Date(post.createdAt),
         updatedAt: new Date(post.updatedAt),
         publishedAt: new Date(post.publishedAt),
       }));
@@ -48,7 +47,6 @@ const staticMicroCMSBlog = defineCollection({
   },
   schema: z.object({
     title: z.string(),
-    createdAt: z.date(),
     updatedAt: z.date(),
     publishedAt: z.date(),
   }),

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import LayoutDemo from '@/layouts/LayoutDemo.astro';
+import { formatDate } from '@/utils/formatDate';
 
 const posts = await getCollection('staticMicroCMSBlog');
 ---
@@ -23,8 +24,7 @@ const posts = await getCollection('staticMicroCMSBlog');
                   <a href={`/demo/live-content-collections/static/${post.id}`}>{post.data.title}</a>
                 </p>
                 <p>id: {post.id}</p>
-                <p>publishedAt: {post.data.publishedAt.toLocaleString('ja-JP')}</p>
-                <p>createdAt: {post.data.createdAt.toLocaleString('ja-JP')}</p>
+                <p>publishedAt: {formatDate(post.data.publishedAt)}</p>
               </li>
             ))}
           </ul>

@@ -5,7 +5,6 @@ import { z } from 'astro:content';
 // microCMS レスポンスの型定義
 interface MicroCMSBlogPost {
   id: string;
-  createdAt: string;
   updatedAt: string;
   publishedAt: string;
   revisedAt: string;
@@ -22,7 +21,6 @@ interface MicroCMSResponse {
 // スキーマ定義
 const blogSchema = z.object({
   title: z.string(),
-  createdAt: z.date(),
   updatedAt: z.date(),
   publishedAt: z.date(),
 });
@@ -68,7 +66,6 @@ const liveBlog = defineLiveCollection({
             id: post.id,
             data: {
               title: post.title,
-              createdAt: new Date(post.createdAt),
               updatedAt: new Date(post.updatedAt),
               publishedAt: new Date(post.publishedAt),
             },
@@ -124,7 +121,6 @@ const liveBlog = defineLiveCollection({
           id: post.id,
           data: {
             title: post.title,
-            createdAt: new Date(post.createdAt),
             updatedAt: new Date(post.updatedAt),
             publishedAt: new Date(post.publishedAt),
           },

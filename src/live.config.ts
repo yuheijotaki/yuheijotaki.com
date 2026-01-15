@@ -35,6 +35,7 @@ const blogSchema = z.object({
 const liveBlog = defineLiveCollection({
   type: 'live',
   loader: {
+    name: 'microcms-blog-loader',
     loadCollection: async () => {
       try {
         // loader内で環境変数を読み込む
@@ -75,8 +76,11 @@ const liveBlog = defineLiveCollection({
         };
       }
     },
-    loadEntry: async (id: string) => {
+    loadEntry: async (idOrFilter: string | { filter: { id: string } }) => {
       try {
+        // IDが文字列かフィルターオブジェクトかを判定
+        const id = typeof idOrFilter === 'string' ? idOrFilter : idOrFilter.filter.id;
+
         const serviceDomain = env.MICROCMS_DOMAIN;
         const apiKey = env.MICROCMS_PRODUCTION_API_KEY;
 
@@ -95,14 +99,12 @@ const liveBlog = defineLiveCollection({
         });
 
         return {
-          entry: {
-            id: post.id,
-            data: {
-              title: post.title,
-              createdAt: new Date(post.createdAt),
-              updatedAt: new Date(post.updatedAt),
-              publishedAt: new Date(post.publishedAt),
-            },
+          id: post.id,
+          data: {
+            title: post.title,
+            createdAt: new Date(post.createdAt),
+            updatedAt: new Date(post.updatedAt),
+            publishedAt: new Date(post.publishedAt),
           },
           cacheHint: {
             tags: [`microcms-blog-${id}`],

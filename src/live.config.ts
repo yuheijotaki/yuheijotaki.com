@@ -84,9 +84,20 @@ const liveBlog = defineLiveCollection({
         };
       }
     },
-    loadEntry: async ({ id }: { id: string }) => {
+    loadEntry: async (idOrFilter) => {
       try {
-        console.log('[Live Collection] loadEntry called with id:', id);
+        // 文字列の場合とオブジェクトの場合の両方に対応
+        const id =
+          typeof idOrFilter === 'string' ? idOrFilter : idOrFilter?.id || idOrFilter?.filter?.id;
+
+        console.log('[Live Collection] loadEntry called with:', idOrFilter);
+        console.log('[Live Collection] Extracted id:', id);
+
+        if (!id) {
+          return {
+            error: new Error('ID is required'),
+          };
+        }
 
         const serviceDomain = import.meta.env.MICROCMS_DOMAIN;
         const apiKey = import.meta.env.MICROCMS_PRODUCTION_API_KEY;

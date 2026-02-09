@@ -1,0 +1,44 @@
+---
+title: pitcms を試してみる
+description: pitcms を試した雑感です。
+pubDate: 2026-02-09T00:00:00.000Z
+---
+
+## pitcms とは
+
+GitHub と連携してコンテンツを管理できる日本製ヘッドレスCMS  
+公式サイト：[pitcms](https://pitcms.net/)
+
+## 導入から設定まで
+
+- [導入する | pitcms](https://pitcms.net/docs/getting-started/installation)
+- [各機能の設定 | pitcms](https://pitcms.net/docs/getting-started/project)
+
+## 入稿から反映まで
+
+今回はデプロイ先、プレビュー環境を Cloudflare Pages にした。
+
+1. pitcms の管理画面で「編集セッション」を作成
+2. コレクション内の記事を編集
+3. 記事の保存後にプレビューURLが発行されるので確認（ `https://pitcms-***.***.pages.dev/` など ）
+4. 確認後、編集セッションの「変更を反映」
+5. 本番環境にデプロイされる
+
+git の動きとしては、3. の段階でプレビューブランチが作成、5.の段階で main ブランチへマージされる
+
+## デモ
+
+Astro の Content Collections（SSG）と組み合わせて使ってみた。
+
+- デモサイト：[pitcms-sample.pages.dev](https://pitcms-sample.pages.dev/)
+- リポジトリ：[yuheijotaki/pitcms-sample](https://github.com/yuheijotaki/pitcms-sample)
+
+## 分かったこと・所感
+
+- コレクションのスキーマはルートに置く pitcms.jsonc ファイルで定義する
+- プレビュー環境の対応は Cloudflare Pages の他に、Vercel、Netlify、Cloudflare Workers が選択できる。1クリックで設定できるので楽
+- GitHub のコンテンツをデータソースとするため、例えばローカルで記事編集してプッシュすると pitcms の管理画面に反映される仕組み
+- 編集セッションの概念が最初はとっつきにくいが、使って理解すると理にかなっているように思えた
+- Astro の Content Collections との相性がよさそう
+- TinaCMS（TinaCloud）に近い感じがする
+- プランはコレクション（API）3つ、メンバー3人などの制限がある Free プラン、それらの数が無制限の Proプラン（¥980/月）がある

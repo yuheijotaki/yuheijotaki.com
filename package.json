@@ -69,7 +69,6 @@
     "glob": "^13.0.1",
     "markuplint": "^4.14.0",
     "postcss": "^8.5.6",
-    "postcss-fluid-sizing-function": "^0.0.3",
     "postcss-html": "^1.8.1",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",

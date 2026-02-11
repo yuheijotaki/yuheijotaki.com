@@ -3,4 +3,4 @@
 
 export const SITE_URL = 'https://yuheijotaki.com';
 export const SITE_TITLE = 'yuheijotaki.com';
-export const SITE_DESCRIPTION = 'Welcome to my website.';
+export const SITE_DESCRIPTION = '主にウェブデザインや技術についてのブログサイトです。';

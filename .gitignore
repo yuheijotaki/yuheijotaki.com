@@ -2,9 +2,8 @@
 dist/
 # generated types
 .astro/
-# OG image cache (included in .astro/)
-# - .astro/og-cache.json
-# - .astro/og-images/
+# OG image cache (in node_modules/.cache/)
+# - node_modules/.cache/astro-og/
 
 # dependencies
 node_modules/

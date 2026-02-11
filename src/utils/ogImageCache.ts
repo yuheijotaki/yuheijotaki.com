@@ -12,7 +12,7 @@ interface OgImageCache {
   [slug: string]: CacheEntry;
 }
 
-const CACHE_FILE_PATH = join(process.cwd(), '.astro', 'og-cache.json');
+const CACHE_FILE_PATH = join(process.cwd(), 'node_modules', '.cache', 'astro-og', 'cache.json');
 
 /**
  * タイトルからハッシュ値を生成

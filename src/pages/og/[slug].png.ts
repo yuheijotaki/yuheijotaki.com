@@ -13,7 +13,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const CACHE_DIR = join(process.cwd(), '.astro', 'og-images');
+const CACHE_DIR = join(process.cwd(), 'node_modules', '.cache', 'astro-og', 'images');
 
 // グローバルキャッシュ（ビルド中に1回だけロード）
 let globalCache: Awaited<ReturnType<typeof loadCache>> | null = null;

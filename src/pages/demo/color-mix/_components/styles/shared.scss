@@ -1,0 +1,37 @@
+@mixin range-slider {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  cursor: pointer;
+  background: var(--_border);
+  border: none;
+  border-radius: 2px;
+
+  &::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    appearance: none;
+    cursor: pointer;
+    background: var(--_text);
+    border: 2px solid var(--_bg);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--_border);
+    transition: transform var(--_transition);
+  }
+
+  &::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--_accent);
+    outline-offset: 2px;
+  }
+}
+
+@mixin section-card {
+  padding: 1.5rem;
+  background: var(--_surface);
+  border: 1px solid var(--_border);
+  border-radius: var(--_radius);
+}

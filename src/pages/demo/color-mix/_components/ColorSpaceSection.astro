@@ -1,0 +1,236 @@
+---
+import ColorInput from './ColorInput.astro';
+import CodeBlock from './CodeBlock.astro';
+---
+
+<section class="section" aria-labelledby="heading-colorspace">
+  <h2 id="heading-colorspace">色空間の比較</h2>
+  <p class="desc">
+    同じ2色でも色空間によって混合結果が異なります。特に <code>oklch</code> は知覚的に均一な混合を実現します。
+  </p>
+
+  <div class="cs-controls">
+    <ColorInput id="cs-color-a" label="色A" value="#2563eb" />
+    <ColorInput id="cs-color-b" label="色B" value="#f43f5e" />
+  </div>
+
+  <div class="cs-grid" id="cs-grid">
+    {
+      ['srgb', 'srgb-linear', 'oklch', 'hsl'].map((space) => (
+        <div class="cs-row" data-space={space}>
+          <span class="cs-label">{space}</span>
+          <div class="cs-steps">
+            {[0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100].map((pct) => (
+              <div class="cs-step" data-pct={pct} />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <CodeBlock
+    id="cs-code"
+    code={`color-mix(in srgb, #2563eb 50%, #f43f5e)\ncolor-mix(in oklch, #2563eb 50%, #f43f5e)`}
+  />
+</section>
+
+<script>
+  const csColorA = document.getElementById('cs-color-a') as HTMLInputElement;
+  const csColorB = document.getElementById('cs-color-b') as HTMLInputElement;
+  const csHexA = document.getElementById('cs-color-a-hex')!;
+  const csHexB = document.getElementById('cs-color-b-hex')!;
+  const csGrid = document.getElementById('cs-grid')!;
+  const csCode = document.getElementById('cs-code')?.querySelector('code');
+
+  function updateColorSpace() {
+    const a = csColorA.value;
+    const b = csColorB.value;
+    csHexA.textContent = a;
+    csHexB.textContent = b;
+    csGrid.style.setProperty('--_cs-a', a);
+    csGrid.style.setProperty('--_cs-b', b);
+
+    if (csCode) {
+      csCode.textContent = `color-mix(in srgb, ${a} 50%, ${b})\ncolor-mix(in oklch, ${a} 50%, ${b})`;
+    }
+  }
+
+  csColorA.addEventListener('input', updateColorSpace);
+  csColorB.addEventListener('input', updateColorSpace);
+  updateColorSpace();
+</script>
+
+<style lang="scss">
+  /* stylelint-disable custom-property-pattern */
+
+  .cs-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cs-grid {
+    --_cs-a: #2563eb;
+    --_cs-b: #f43f5e;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--_border);
+    border-radius: var(--_radius);
+  }
+
+  .cs-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: var(--_bg);
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--_border);
+    }
+  }
+
+  .cs-label {
+    flex-shrink: 0;
+    width: 90px;
+    font-family: var(--_mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--_text-secondary);
+  }
+
+  .cs-steps {
+    display: flex;
+    flex: 1;
+    gap: 3px;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .cs-step {
+    flex: 1;
+    height: 32px;
+    transition: background var(--_transition);
+  }
+
+  /* srgb */
+  .cs-row[data-space='srgb'] .cs-step[data-pct='0'] {
+    background: var(--_cs-a);
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='12.5'] {
+    background: color-mix(in srgb, var(--_cs-a) 87.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='25'] {
+    background: color-mix(in srgb, var(--_cs-a) 75%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='37.5'] {
+    background: color-mix(in srgb, var(--_cs-a) 62.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='50'] {
+    background: color-mix(in srgb, var(--_cs-a) 50%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='62.5'] {
+    background: color-mix(in srgb, var(--_cs-a) 37.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='75'] {
+    background: color-mix(in srgb, var(--_cs-a) 25%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='87.5'] {
+    background: color-mix(in srgb, var(--_cs-a) 12.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb'] .cs-step[data-pct='100'] {
+    background: var(--_cs-b);
+  }
+
+  /* srgb-linear */
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='0'] {
+    background: var(--_cs-a);
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='12.5'] {
+    background: color-mix(in srgb-linear, var(--_cs-a) 87.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='25'] {
+    background: color-mix(in srgb-linear, var(--_cs-a) 75%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='37.5'] {
+    background: color-mix(in srgb-linear, var(--_cs-a) 62.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='50'] {
+    background: color-mix(in srgb-linear, var(--_cs-a) 50%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='62.5'] {
+    background: color-mix(in srgb-linear, var(--_cs-a) 37.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='75'] {
+    background: color-mix(in srgb-linear, var(--_cs-a) 25%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='87.5'] {
+    background: color-mix(in srgb-linear, var(--_cs-a) 12.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='srgb-linear'] .cs-step[data-pct='100'] {
+    background: var(--_cs-b);
+  }
+
+  /* oklch */
+  .cs-row[data-space='oklch'] .cs-step[data-pct='0'] {
+    background: var(--_cs-a);
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='12.5'] {
+    background: color-mix(in oklch, var(--_cs-a) 87.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='25'] {
+    background: color-mix(in oklch, var(--_cs-a) 75%, var(--_cs-b));
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='37.5'] {
+    background: color-mix(in oklch, var(--_cs-a) 62.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='50'] {
+    background: color-mix(in oklch, var(--_cs-a) 50%, var(--_cs-b));
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='62.5'] {
+    background: color-mix(in oklch, var(--_cs-a) 37.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='75'] {
+    background: color-mix(in oklch, var(--_cs-a) 25%, var(--_cs-b));
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='87.5'] {
+    background: color-mix(in oklch, var(--_cs-a) 12.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='oklch'] .cs-step[data-pct='100'] {
+    background: var(--_cs-b);
+  }
+
+  /* hsl */
+  .cs-row[data-space='hsl'] .cs-step[data-pct='0'] {
+    background: var(--_cs-a);
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='12.5'] {
+    background: color-mix(in hsl, var(--_cs-a) 87.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='25'] {
+    background: color-mix(in hsl, var(--_cs-a) 75%, var(--_cs-b));
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='37.5'] {
+    background: color-mix(in hsl, var(--_cs-a) 62.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='50'] {
+    background: color-mix(in hsl, var(--_cs-a) 50%, var(--_cs-b));
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='62.5'] {
+    background: color-mix(in hsl, var(--_cs-a) 37.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='75'] {
+    background: color-mix(in hsl, var(--_cs-a) 25%, var(--_cs-b));
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='87.5'] {
+    background: color-mix(in hsl, var(--_cs-a) 12.5%, var(--_cs-b));
+  }
+  .cs-row[data-space='hsl'] .cs-step[data-pct='100'] {
+    background: var(--_cs-b);
+  }
+</style>

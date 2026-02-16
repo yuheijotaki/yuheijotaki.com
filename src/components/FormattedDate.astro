@@ -1,22 +1,18 @@
 ---
 import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import ja from 'dayjs/locale/ja';
 dayjs.locale(ja);
-dayjs.extend(timezone);
-dayjs.extend(utc);
 
 interface Props {
   date: Date;
 }
 
 const { date } = Astro.props;
-const zoneDate = dayjs.utc(date).tz('Asia/Tokyo');
-const formattedDate = `${zoneDate.format('YYYY')}年${zoneDate.format('M')}月${zoneDate.format('D')}日（${zoneDate.format('ddd')}）`;
+const d = dayjs(date);
+const formattedDate = `${d.format('YYYY')}年${d.format('M')}月${d.format('D')}日（${d.format('ddd')}）`;
 ---
 
-<time datetime={zoneDate.toString()}>
+<time datetime={d.format('YYYY-MM-DD')}>
   {formattedDate}
 </time>
 

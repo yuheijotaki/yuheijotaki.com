@@ -1,0 +1,219 @@
+---
+import ColorInput from './ColorInput.astro';
+import CodeBlock from './CodeBlock.astro';
+---
+
+<section class="section" aria-labelledby="heading-examples">
+  <h2 id="heading-examples">実用コード例</h2>
+  <p class="desc">color-mix() を使った実践的なパターン。コードをクリックでコピーできます。</p>
+
+  <div class="examples-grid">
+    <div class="example-card" id="example-darken">
+      <h3>ホバーで暗くする</h3>
+      <div class="example-card-controls">
+        <ColorInput id="example-darken-color" label="ボタン色" value="#2563eb" />
+      </div>
+      <div class="example-demo">
+        <button class="demo-btn demo-btn--darken" type="button">Hover me</button>
+      </div>
+      <CodeBlock
+        id="example-darken-code"
+        code={`.btn:hover {\n  background: color-mix(in srgb, #2563eb 80%, black);\n}`}
+      />
+    </div>
+
+    <div class="example-card" id="example-border">
+      <h3>半透明ボーダー</h3>
+      <div class="example-card-controls">
+        <ColorInput id="example-border-color" label="テキスト色" value="#1a1a1a" />
+      </div>
+      <div class="example-demo">
+        <div class="demo-card demo-card--border">半透明ボーダー</div>
+      </div>
+      <CodeBlock
+        id="example-border-code"
+        code={`.card {\n  border: 1px solid color-mix(in srgb, #1a1a1a 15%, transparent);\n}`}
+      />
+    </div>
+
+    <div class="example-card" id="example-theme">
+      <h3>テーマカラーのバリエーション</h3>
+      <div class="example-card-controls">
+        <ColorInput id="example-theme-color" label="ベース色" value="#8b5cf6" />
+      </div>
+      <div class="example-demo">
+        <div class="demo-theme-chips">
+          <span class="theme-chip theme-chip--light">Light</span>
+          <span class="theme-chip theme-chip--base">Base</span>
+          <span class="theme-chip theme-chip--dark">Dark</span>
+        </div>
+      </div>
+      <CodeBlock
+        id="example-theme-code"
+        code={`--color-light: color-mix(in srgb, #8b5cf6 40%, white);\n--color-dark: color-mix(in srgb, #8b5cf6 70%, black);`}
+      />
+    </div>
+  </div>
+</section>
+
+<script>
+  // Darken example
+  const darkenColor = document.getElementById('example-darken-color') as HTMLInputElement;
+  const darkenHex = document.getElementById('example-darken-color-hex')!;
+  const darkenBtn = document.querySelector('.demo-btn--darken') as HTMLElement;
+  const darkenCode = document.getElementById('example-darken-code')?.querySelector('code');
+
+  function updateDarken() {
+    const color = darkenColor.value;
+    darkenHex.textContent = color;
+    darkenBtn.style.setProperty('--_color', color);
+    if (darkenCode) {
+      darkenCode.textContent = `.btn:hover {\n  background: color-mix(in srgb, ${color} 80%, black);\n}`;
+    }
+  }
+
+  darkenColor.addEventListener('input', updateDarken);
+  updateDarken();
+
+  // Border example
+  const borderColor = document.getElementById('example-border-color') as HTMLInputElement;
+  const borderHex = document.getElementById('example-border-color-hex')!;
+  const borderCard = document.querySelector('.demo-card--border') as HTMLElement;
+  const borderCode = document.getElementById('example-border-code')?.querySelector('code');
+
+  function updateBorder() {
+    const color = borderColor.value;
+    borderHex.textContent = color;
+    borderCard.style.setProperty('--_border-color', color);
+    if (borderCode) {
+      borderCode.textContent = `.card {\n  border: 1px solid color-mix(in srgb, ${color} 15%, transparent);\n}`;
+    }
+  }
+
+  borderColor.addEventListener('input', updateBorder);
+  updateBorder();
+
+  // Theme example
+  const themeColor = document.getElementById('example-theme-color') as HTMLInputElement;
+  const themeHex = document.getElementById('example-theme-color-hex')!;
+  const themeChips = document.querySelector('.demo-theme-chips') as HTMLElement;
+  const themeCode = document.getElementById('example-theme-code')?.querySelector('code');
+
+  function updateTheme() {
+    const color = themeColor.value;
+    themeHex.textContent = color;
+    themeChips.style.setProperty('--_base', color);
+    if (themeCode) {
+      themeCode.textContent = `--color-light: color-mix(in srgb, ${color} 40%, white);\n--color-dark: color-mix(in srgb, ${color} 70%, black);`;
+    }
+  }
+
+  themeColor.addEventListener('input', updateTheme);
+  updateTheme();
+</script>
+
+<style lang="scss">
+  /* stylelint-disable custom-property-pattern */
+
+  .examples-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .example-card {
+    overflow: hidden;
+    border: 1px solid var(--_border);
+    border-radius: var(--_radius);
+
+    h3 {
+      padding: 1rem 1.25rem 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    :global(.code-block) {
+      margin-top: 0;
+      border: none;
+      border-top: 1px solid var(--_border);
+      border-radius: 0 0 var(--_radius) var(--_radius);
+    }
+  }
+
+  .example-card-controls {
+    padding: 0.75rem 1.25rem 0;
+  }
+
+  .example-demo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+  }
+
+  /* Demo: Darken button */
+  .demo-btn {
+    --_color: #2563eb;
+
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    background: var(--_color);
+    border: none;
+    border-radius: 8px;
+    transition: background var(--_transition);
+
+    &:hover {
+      background: color-mix(in srgb, var(--_color) 80%, black);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--_accent);
+      outline-offset: 2px;
+    }
+  }
+
+  /* Demo: Border card */
+  .demo-card--border {
+    --_border-color: #1a1a1a;
+
+    padding: 1rem 1.5rem;
+    font-size: 14px;
+    color: var(--_text);
+    background: var(--_bg);
+    border: 1px solid color-mix(in srgb, var(--_border-color) 15%, transparent);
+    border-radius: 8px;
+  }
+
+  /* Demo: Theme chips */
+  .demo-theme-chips {
+    --_base: #8b5cf6;
+
+    display: flex;
+    gap: 8px;
+  }
+
+  .theme-chip {
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+
+  .theme-chip--light {
+    color: color-mix(in srgb, var(--_base) 90%, black);
+    background: color-mix(in srgb, var(--_base) 15%, white);
+  }
+
+  .theme-chip--base {
+    color: #fff;
+    background: var(--_base);
+  }
+
+  .theme-chip--dark {
+    color: #fff;
+    background: color-mix(in srgb, var(--_base) 70%, black);
+  }
+</style>

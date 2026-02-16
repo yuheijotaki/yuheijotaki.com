@@ -1,0 +1,195 @@
+---
+import CodeBlock from './CodeBlock.astro';
+---
+
+<section class="section" aria-labelledby="heading-palette">
+  <h2 id="heading-palette">パレット生成</h2>
+  <p class="desc">ベースカラーに white / black を混ぜて tint / shade のスケールを生成します。</p>
+
+  <div class="palette-controls">
+    <div class="control">
+      <label for="hue-slider">色相</label>
+      <input
+        type="range"
+        id="hue-slider"
+        min="0"
+        max="360"
+        value="220"
+        aria-valuemin="0"
+        aria-valuemax="360"
+        aria-valuenow="220"
+      />
+      <output id="hue-value">220°</output>
+    </div>
+    <div class="control">
+      <label for="sat-slider">彩度</label>
+      <input
+        type="range"
+        id="sat-slider"
+        min="20"
+        max="100"
+        value="75"
+        aria-valuemin="20"
+        aria-valuemax="100"
+        aria-valuenow="75"
+      />
+      <output id="sat-value">75%</output>
+    </div>
+  </div>
+
+  <div class="palette" id="palette-row" role="list" aria-label="カラーパレット">
+    {
+      [95, 85, 75, 65, 50, 35, 25, 15, 5].map((mix, i) => {
+        const label = i === 4 ? '500' : `${(i + 1) * 100}`;
+        return (
+          <div
+            class="palette-chip"
+            style={`--_mix: ${mix}%;`}
+            data-mix={mix}
+            role="listitem"
+            aria-label={`${label}`}>
+            <span class="chip-label">{label}</span>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  <CodeBlock
+    id="palette-code"
+    code={`--base: hsl(220 75% 50%);\n--100: color-mix(in srgb, var(--base) 95%, white);\n--500: var(--base);\n--900: color-mix(in srgb, var(--base) 5%, black);`}
+  />
+</section>
+
+<script>
+  const hueSlider = document.getElementById('hue-slider') as HTMLInputElement;
+  const satSlider = document.getElementById('sat-slider') as HTMLInputElement;
+  const hueValue = document.getElementById('hue-value')!;
+  const satValue = document.getElementById('sat-value')!;
+  const paletteRow = document.getElementById('palette-row')!;
+  const paletteCode = document.getElementById('palette-code')?.querySelector('code');
+
+  function updatePalette() {
+    const h = hueSlider.value;
+    const s = satSlider.value;
+    hueValue.textContent = `${h}°`;
+    satValue.textContent = `${s}%`;
+    hueSlider.setAttribute('aria-valuenow', h);
+    satSlider.setAttribute('aria-valuenow', s);
+    paletteRow.style.setProperty('--_base-h', h);
+    paletteRow.style.setProperty('--_base-s', `${s}%`);
+
+    if (paletteCode) {
+      paletteCode.textContent = `--base: hsl(${h} ${s}% 50%);\n--100: color-mix(in srgb, var(--base) 95%, white);\n--500: var(--base);\n--900: color-mix(in srgb, var(--base) 5%, black);`;
+    }
+  }
+
+  hueSlider.addEventListener('input', updatePalette);
+  satSlider.addEventListener('input', updatePalette);
+  updatePalette();
+</script>
+
+<style lang="scss">
+  @use './styles/shared' as *;
+
+  /* stylelint-disable custom-property-pattern */
+
+  .palette-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .control {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--_text-secondary);
+      white-space: nowrap;
+    }
+
+    input[type='range'] {
+      width: 140px;
+
+      @include range-slider;
+
+      &::-webkit-slider-thumb {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    output {
+      min-width: 3ch;
+      font-family: var(--_mono);
+      font-size: 12px;
+      color: var(--_text-tertiary);
+    }
+  }
+
+  .palette {
+    --_base-h: 220;
+    --_base-s: 75%;
+    --_base-color: hsl(var(--_base-h) var(--_base-s) 50%);
+
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 4px;
+    overflow: hidden;
+    border-radius: var(--_radius);
+  }
+
+  .palette-chip {
+    position: relative;
+    aspect-ratio: 1 / 1.3;
+    cursor: default;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .palette-chip:nth-child(-n + 4) {
+    background: color-mix(in srgb, var(--_base-color) var(--_mix), white);
+  }
+
+  .palette-chip:nth-child(5) {
+    background: var(--_base-color);
+  }
+
+  .palette-chip:nth-child(n + 6) {
+    background: color-mix(in srgb, var(--_base-color) var(--_mix), black);
+  }
+
+  .palette-chip:hover {
+    z-index: 1;
+    transform: scaleY(1.08);
+  }
+
+  .chip-label {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
+    left: 0;
+    font-family: var(--_mono);
+    font-size: 9px;
+    font-weight: 500;
+    text-align: center;
+    opacity: 0;
+    transition: opacity var(--_transition);
+  }
+
+  .palette-chip:nth-child(-n + 4) .chip-label {
+    color: rgb(0 0 0 / 50%);
+  }
+
+  .palette-chip:nth-child(n + 5) .chip-label {
+    color: rgb(255 255 255 / 70%);
+  }
+
+  .palette-chip:hover .chip-label {
+    opacity: 1;
+  }
+</style>

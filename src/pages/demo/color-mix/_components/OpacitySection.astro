@@ -1,0 +1,136 @@
+---
+import ColorInput from './ColorInput.astro';
+import CodeBlock from './CodeBlock.astro';
+---
+
+<section class="section" aria-labelledby="heading-opacity">
+  <h2 id="heading-opacity">透明度の制御</h2>
+  <p class="desc">
+    <code>color-mix(in srgb, color N%, transparent)</code> で不透明度をCSSだけで制御できます。
+  </p>
+
+  <div class="opacity-controls">
+    <ColorInput id="opacity-base-color" label="ベースカラー" value="#2563eb" />
+  </div>
+
+  <div class="opacity-demo" id="opacity-demo">
+    <div class="opacity-row">
+      {
+        [10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((pct) => (
+          <div class="opacity-cell" data-pct={pct}>
+            <div class="opacity-fill" />
+            <span class="opacity-label">{pct}%</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <CodeBlock id="opacity-code" code="color-mix(in srgb, #2563eb 50%, transparent)" />
+</section>
+
+<script>
+  const opacityBaseColor = document.getElementById('opacity-base-color') as HTMLInputElement;
+  const opacityHex = document.getElementById('opacity-base-color-hex')!;
+  const opacityDemo = document.getElementById('opacity-demo')!;
+  const opacityCode = document.getElementById('opacity-code')?.querySelector('code');
+
+  function updateOpacity() {
+    const color = opacityBaseColor.value;
+    opacityHex.textContent = color;
+    opacityDemo.style.setProperty('--_opacity-color', color);
+
+    if (opacityCode) {
+      opacityCode.textContent = `color-mix(in srgb, ${color} 50%, transparent)`;
+    }
+  }
+
+  opacityBaseColor.addEventListener('input', updateOpacity);
+  updateOpacity();
+</script>
+
+<style lang="scss">
+  /* stylelint-disable custom-property-pattern */
+
+  .opacity-controls {
+    margin-bottom: 1rem;
+  }
+
+  .opacity-demo {
+    --_opacity-color: #2563eb;
+
+    padding: 1.5rem;
+    background: var(--_surface);
+    border: 1px solid var(--_border);
+    border-radius: var(--_radius);
+  }
+
+  .opacity-row {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 6px;
+  }
+
+  @media (width <= 600px) {
+    .opacity-row {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .opacity-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .opacity-fill {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    transition:
+      background var(--_transition),
+      transform var(--_transition);
+  }
+
+  .opacity-cell[data-pct='10'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 10%, transparent);
+  }
+  .opacity-cell[data-pct='20'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 20%, transparent);
+  }
+  .opacity-cell[data-pct='30'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 30%, transparent);
+  }
+  .opacity-cell[data-pct='40'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 40%, transparent);
+  }
+  .opacity-cell[data-pct='50'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 50%, transparent);
+  }
+  .opacity-cell[data-pct='60'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 60%, transparent);
+  }
+  .opacity-cell[data-pct='70'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 70%, transparent);
+  }
+  .opacity-cell[data-pct='80'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 80%, transparent);
+  }
+  .opacity-cell[data-pct='90'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 90%, transparent);
+  }
+  .opacity-cell[data-pct='100'] .opacity-fill {
+    background: color-mix(in srgb, var(--_opacity-color) 100%, transparent);
+  }
+
+  .opacity-cell:hover .opacity-fill {
+    transform: translateY(-2px);
+  }
+
+  .opacity-label {
+    font-family: var(--_mono);
+    font-size: 10px;
+    color: var(--_text-tertiary);
+  }
+</style>

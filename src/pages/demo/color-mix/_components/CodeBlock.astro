@@ -1,0 +1,88 @@
+---
+interface Props {
+  code?: string;
+  id?: string;
+}
+
+const { code = '', id } = Astro.props;
+---
+
+<div class="code-block" role="button" tabindex="0" aria-label="コードをコピー" id={id}>
+  <code>{code}</code>
+  <span class="copy-hint" aria-hidden="true">Click to copy</span>
+</div>
+
+<script>
+  document.querySelectorAll('.code-block').forEach((block) => {
+    const el = block as HTMLElement;
+
+    function handleCopy() {
+      const codeEl = el.querySelector('code');
+      if (!codeEl) return;
+      navigator.clipboard.writeText(codeEl.textContent || '').then(() => {
+        const hint = el.querySelector('.copy-hint') as HTMLElement;
+        if (hint) {
+          hint.textContent = 'Copied!';
+          setTimeout(() => {
+            hint.textContent = 'Click to copy';
+          }, 1500);
+        }
+      });
+    }
+
+    el.addEventListener('click', handleCopy);
+    el.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleCopy();
+      }
+    });
+  });
+</script>
+
+<style lang="scss">
+  /* stylelint-disable custom-property-pattern */
+
+  .code-block {
+    position: relative;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+    cursor: pointer;
+    background: #fafafa;
+    border: 1px solid var(--_border);
+    border-radius: var(--_radius);
+    transition: background var(--_transition);
+
+    &:hover {
+      background: #f0f0f0;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--_accent);
+      outline-offset: -2px;
+    }
+
+    code {
+      display: block;
+      font-family: var(--_mono);
+      font-size: 12.5px;
+      line-height: 1.7;
+      white-space: pre;
+    }
+  }
+
+  .copy-hint {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    font-size: 11px;
+    color: var(--_text-tertiary);
+    opacity: 0;
+    transition: opacity var(--_transition);
+  }
+
+  .code-block:hover .copy-hint,
+  .code-block:focus-visible .copy-hint {
+    opacity: 1;
+  }
+</style>

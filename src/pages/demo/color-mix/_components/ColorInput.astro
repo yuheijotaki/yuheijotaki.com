@@ -1,0 +1,70 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  value?: string;
+}
+
+const { id, label, value = '#2563eb' } = Astro.props;
+---
+
+<div class="color-input-group">
+  <label for={id}>{label}</label>
+  <div class="color-input-wrap">
+    <input type="color" id={id} value={value} />
+    <output class="color-hex" id={`${id}-hex`}>{value}</output>
+  </div>
+</div>
+
+<style lang="scss">
+  /* stylelint-disable custom-property-pattern */
+
+  .color-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--_text-tertiary);
+    }
+  }
+
+  .color-input-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    input[type='color'] {
+      width: 36px;
+      height: 36px;
+      padding: 2px;
+      appearance: none;
+      cursor: pointer;
+      background: none;
+      border: 1px solid var(--_border);
+      border-radius: 8px;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+        border-radius: 6px;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--_accent);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  .color-hex {
+    font-family: var(--_mono);
+    font-size: 13px;
+    color: var(--_text-secondary);
+  }
+</style>

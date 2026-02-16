@@ -1,0 +1,147 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+import MixSection from './_components/MixSection.astro';
+import OpacitySection from './_components/OpacitySection.astro';
+import PaletteSection from './_components/PaletteSection.astro';
+import ColorSpaceSection from './_components/ColorSpaceSection.astro';
+import ExamplesSection from './_components/ExamplesSection.astro';
+---
+
+<LayoutDemo title="color-mix()">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <div class="page">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/demo/">demo</a><span class="sep" aria-hidden="true">/</span><span
+        aria-current="page">color-mix()</span
+      >
+    </nav>
+
+    <header class="hero">
+      <h1>color-mix()</h1>
+      <p class="lead">CSSだけで色を混ぜる、薄める、パレットを作る。</p>
+    </header>
+
+    <MixSection />
+    <OpacitySection />
+    <PaletteSection />
+    <ColorSpaceSection />
+    <ExamplesSection />
+  </div>
+</LayoutDemo>
+
+<style lang="scss">
+  /* stylelint-disable custom-property-pattern */
+
+  .page {
+    --_text: #1a1a1a;
+    --_text-secondary: #6b6b6b;
+    --_text-tertiary: #9a9a9a;
+    --_bg: #fff;
+    --_border: #e5e5e5;
+    --_surface: #f7f7f7;
+    --_accent: #2563eb;
+    --_font: 'Noto Sans JP', -apple-system, blinkmacsystemfont, sans-serif;
+    --_mono: 'SF Mono', 'Fira Code', ui-monospace, monospace;
+    --_radius: 10px;
+    --_transition: 0.2s ease;
+
+    max-width: 692px;
+    min-height: 100vh;
+    padding: 3rem 1.5rem 6rem;
+    margin: 0 auto;
+    font-family: var(--_font);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--_text);
+    background: var(--_bg);
+  }
+
+  @media (width >= 768px) {
+    .page {
+      padding: 4rem 1.5rem 8rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(*),
+    :global(*::before),
+    :global(*::after) {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    margin-bottom: 3rem;
+    font-size: 13px;
+    color: var(--_text-tertiary);
+
+    a {
+      color: var(--_text-tertiary);
+      text-decoration: none;
+      transition: color var(--_transition);
+
+      &:hover {
+        color: var(--_text);
+      }
+    }
+  }
+
+  .sep {
+    margin: 0 0.35em;
+  }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 4rem;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .lead {
+    margin-top: 0.5rem;
+    font-size: 15px;
+    color: var(--_text-secondary);
+  }
+
+  /* Section shared */
+  :global(.section) {
+    margin-bottom: 4rem;
+  }
+
+  :global(.section h2) {
+    margin-bottom: 0.35rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  :global(.desc) {
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--_text-secondary);
+  }
+
+  :global(.desc code) {
+    padding: 0.15em 0.35em;
+    font-family: var(--_mono);
+    font-size: 12.5px;
+    color: var(--_text);
+    background: var(--_surface);
+    border: 1px solid var(--_border);
+    border-radius: 5px;
+  }
+</style>

@@ -1,0 +1,167 @@
+---
+import ColorInput from './ColorInput.astro';
+import CodeBlock from './CodeBlock.astro';
+---
+
+<section class="section" aria-labelledby="heading-mix">
+  <h2 id="heading-mix">色の混合</h2>
+  <p class="desc">
+    2色と混合比率を自由に変更できます。<code>color-mix(in srgb, ...)</code> の結果をリアルタイムでプレビュー。
+  </p>
+
+  <div class="mix-playground">
+    <div class="mix-inputs">
+      <ColorInput id="mix-color-a" label="色A" value="#2563eb" />
+      <div class="mix-ratio-group">
+        <label for="mix-ratio-slider">混合比率</label>
+        <input
+          type="range"
+          id="mix-ratio-slider"
+          min="0"
+          max="100"
+          value="50"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="50"
+        />
+        <output class="ratio-value" id="mix-ratio-value">50%</output>
+      </div>
+      <ColorInput id="mix-color-b" label="色B" value="#f43f5e" />
+    </div>
+
+    <div class="mix-result-area">
+      <div class="mix-result-bar">
+        <div class="mix-bar-a" id="mix-bar-a"></div>
+        <div class="mix-bar-b" id="mix-bar-b"></div>
+      </div>
+      <div class="mix-result-preview" id="mix-result-preview">
+        <span class="result-label" id="mix-result-label">混合結果</span>
+      </div>
+    </div>
+  </div>
+
+  <CodeBlock id="mix-code" code="color-mix(in srgb, #2563eb 50%, #f43f5e)" />
+</section>
+
+<script>
+  const mixColorA = document.getElementById('mix-color-a') as HTMLInputElement;
+  const mixColorB = document.getElementById('mix-color-b') as HTMLInputElement;
+  const mixRatioSlider = document.getElementById('mix-ratio-slider') as HTMLInputElement;
+  const mixHexA = document.getElementById('mix-color-a-hex')!;
+  const mixHexB = document.getElementById('mix-color-b-hex')!;
+  const mixRatioValue = document.getElementById('mix-ratio-value')!;
+  const mixBarA = document.getElementById('mix-bar-a')!;
+  const mixBarB = document.getElementById('mix-bar-b')!;
+  const mixResultPreview = document.getElementById('mix-result-preview')!;
+  const mixResultLabel = document.getElementById('mix-result-label')!;
+  const mixCode = document.getElementById('mix-code')?.querySelector('code');
+
+  function updateMix() {
+    const a = mixColorA.value;
+    const b = mixColorB.value;
+    const ratio = mixRatioSlider.value;
+    mixHexA.textContent = a;
+    mixHexB.textContent = b;
+    mixRatioValue.textContent = `${ratio}%`;
+    mixRatioSlider.setAttribute('aria-valuenow', ratio);
+
+    mixBarA.style.background = a;
+    mixBarA.style.width = `${ratio}%`;
+    mixBarB.style.background = b;
+    mixBarB.style.width = `${100 - Number(ratio)}%`;
+
+    const mixed = `color-mix(in srgb, ${a} ${ratio}%, ${b})`;
+    mixResultPreview.style.background = mixed;
+    mixResultLabel.textContent = mixed;
+
+    if (mixCode) {
+      mixCode.textContent = mixed;
+    }
+  }
+
+  mixColorA.addEventListener('input', updateMix);
+  mixColorB.addEventListener('input', updateMix);
+  mixRatioSlider.addEventListener('input', updateMix);
+  updateMix();
+</script>
+
+<style lang="scss">
+  @use './styles/shared' as *;
+
+  /* stylelint-disable custom-property-pattern */
+
+  .mix-playground {
+    @include section-card;
+  }
+
+  .mix-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+  }
+
+  .mix-ratio-group {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 120px;
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--_text-tertiary);
+    }
+
+    input[type='range'] {
+      @include range-slider;
+    }
+  }
+
+  .ratio-value {
+    font-family: var(--_mono);
+    font-size: 12px;
+    color: var(--_text-tertiary);
+    text-align: center;
+  }
+
+  .mix-result-area {
+    margin-top: 1.25rem;
+  }
+
+  .mix-result-bar {
+    display: flex;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .mix-bar-a,
+  .mix-bar-b {
+    height: 100%;
+    transition:
+      width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      background var(--_transition);
+  }
+
+  .mix-result-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    margin-top: 12px;
+    border-radius: 8px;
+    transition: background var(--_transition);
+  }
+
+  .result-label {
+    padding: 4px 10px;
+    font-family: var(--_mono);
+    font-size: 11px;
+    color: rgb(255 255 255 / 90%);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+    background: rgb(0 0 0 / 20%);
+    border-radius: 4px;
+  }
+</style>

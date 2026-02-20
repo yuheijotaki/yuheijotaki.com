@@ -37,6 +37,7 @@
     "baseline-status": "^1.1.1",
     "feather-icons": "^4.29.2",
     "focus-visible": "^5.2.1",
+    "google-auth-library": "^10.5.0",
     "gsap": "^3.14.2",
     "hast-util-from-html": "^2.0.3",
     "markdown-it": "^14.1.1",

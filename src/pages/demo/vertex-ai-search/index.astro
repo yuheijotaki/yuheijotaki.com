@@ -1,0 +1,105 @@
+---
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="vertex-ai-search">
+  <div class="page">
+    <nav aria-label="パンくずリスト">
+      <a href="/demo/">demo</a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">vertex-ai-search</span>
+    </nav>
+
+    <h1>Vertex AI Search</h1>
+
+    <form id="search-form" class="search-form">
+      <label for="search-input">検索キーワード</label>
+      <input id="search-input" type="search" name="q" class="search-input" />
+      <button type="submit">検索</button>
+    </form>
+
+    <section id="results-section" aria-live="polite" aria-atomic="true">
+      <p id="status-message"></p>
+      <ul id="results-list" class="results-list"></ul>
+    </section>
+  </div>
+</LayoutDemo>
+
+<script>
+  const form = document.getElementById('search-form') as HTMLFormElement;
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const statusMessage = document.getElementById('status-message') as HTMLParagraphElement;
+  const resultsList = document.getElementById('results-list') as HTMLUListElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const query = input.value.trim();
+    if (!query) return;
+
+    resultsList.innerHTML = '';
+    statusMessage.textContent = '検索中...';
+
+    try {
+      const res = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!res.ok) {
+        statusMessage.textContent = `エラーが発生しました (${res.status})`;
+        return;
+      }
+
+      const data = await res.json();
+      const results: {
+        document?: {
+          derivedStructData?: { title?: string; link?: string; snippets?: { snippet?: string }[] };
+        };
+      }[] = data.results ?? [];
+
+      if (results.length === 0) {
+        statusMessage.textContent = '結果が見つかりませんでした。';
+        return;
+      }
+
+      statusMessage.textContent = `${results.length} 件の結果`;
+
+      results.forEach((item) => {
+        const d = item.document?.derivedStructData ?? {};
+        const title = d.title ?? '(タイトルなし)';
+        const link = d.link ?? '';
+        const snippet = d.snippets?.[0]?.snippet ?? '';
+
+        const li = document.createElement('li');
+        li.className = 'result-item';
+        li.innerHTML = `
+          <a href="${link}">${title}</a>
+          ${snippet ? `<p>${snippet}</p>` : ''}
+        `;
+        resultsList.appendChild(li);
+      });
+    } catch {
+      statusMessage.textContent = 'ネットワークエラーが発生しました。';
+    }
+  });
+</script>
+
+<style>
+  .page {
+    max-width: 640px;
+    padding: 2rem 1rem;
+    margin: 0 auto;
+  }
+
+  .search-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-input {
+    flex: 1;
+  }
+</style>

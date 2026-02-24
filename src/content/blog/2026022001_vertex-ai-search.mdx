@@ -1,12 +1,12 @@
 ---
 title: Vertex AI Search でサイト内検索を実装してみる
-description: Google Cloud の Discovery Engine API（Vertex AI Search）を使い、Astro + Vercel でサイト内検索デモを実装してみる。
-pubDate: 2026-02-20T00:00:00
+description: Google Cloud の Vertex AI Search（Discovery Engine API）を使い、Astro でサイト内検索デモを実装してみる。
+pubDate: 2026-02-24T00:00:00
 ---
 
 ## 概要
 
-Google Cloud の [Discovery Engine API](https://docs.cloud.google.com/generative-ai-app-builder/docs?hl=ja)（Vertex AI Search）を使ったサイト内検索のデモを実装した。
+Google Cloud の [Vertex AI Search](https://docs.cloud.google.com/generative-ai-app-builder/docs?hl=ja)（Discovery Engine API）を使ったサイト内検索を作ってみた。
 
 - [デモ](/demo/vertex-ai-search/)
 - [コミット](https://github.com/yuheijotaki/yuheijotaki.com/commit/ceb6c4df2c8c68f3cc17414659a2a7bb164b572b)
@@ -18,12 +18,12 @@ Google Cloud の [Discovery Engine API](https://docs.cloud.google.com/generative
 - バックエンド
   - Vercel Functions（`api/search.ts`） が認証トークンを取得して Discovery Engine API に POST
 - 認証
-  - GCP サービスアカウントの JSON 鍵を Vercel 環境変数に保存し、`google-auth-library` でアクセストークンを取得
+  - Google Cloud サービスアカウントの JSON 鍵を Vercel 環境変数に保存し、`google-auth-library` でアクセストークンを取得
 
 ## Google Cloud 側の準備
 
 1. Discovery Engine API を有効化する
-   - GCP コンソールの API ライブラリから有効化
+   - Google Cloud コンソールの API ライブラリから有効化
 2. データストアを作成する
    - ウェブサイトクロール型を選択し、クロール対象を `yuheijotaki.com/*` に設定
 3. 検索アプリを作成する
@@ -35,11 +35,12 @@ Google Cloud の [Discovery Engine API](https://docs.cloud.google.com/generative
 
 ## 所感など
 
-- GCP のコンソールで毎回迷子になる
-- Discovery Engine API はデータストアへのウェブクロールが前提で、インデックス作成後に検索が可能となる
-- ページの取得順はデフォルトで関連度順になる。ランク付けをしたりすることも可能。
-- [料金](https://cloud.google.com/generative-ai-app-builder/pricing?hl=ja) は 1 回の API 呼び出しが 1 クエリとして計算（100 件の結果を返しても 1 クエリ）
-  - アカウントあたり月 10,000 クエリまで無料
-  - 有料プランは Standard Edition が $1.50 / 1,000 クエリ
-  - AI による回答要約付きの Enterprise Edition が $4.00 / 1,000 クエリ
-  - データストアの容量はウェブサイト型の場合 500 KiB x ページ数で計算、月 10 GiB まで無料
+- ウィジェット埋め込みと API 2種類の統合形式がある
+- ウェブクロール後（インデックス作成後）に検索が可能となる。だいたい8時間ほどかかる
+- ページの取得件数は上限は100件まで（[参考](https://docs.cloud.google.com/retail/docs/reference/rest/v2/projects.locations.catalogs.placements/predict#request-body)）
+  - `filter` 使えば特定階層のみに絞ったクエリも投げれそう
+- ページの取得順はデフォルトで関連度順になる。ランク付けをしたりすることも可能
+- サイト内検索の場合の料金（[参考](https://cloud.google.com/generative-ai-app-builder/pricing?hl=ja)）
+  - データストアの容量は月 10 GiB まで無料
+  - Standard Edition ではなく Enterprise Edition（$4.00 / 1,000 クエリ）が必須。月 10,000 クエリまで無料
+- データソースは今回はウェブサイトを選択しているが、BigQuery や Cloud Storage も選択可能で、データソースの種類に合わせてAIを使った検索や会話機能を作れるAPIといったものらしい

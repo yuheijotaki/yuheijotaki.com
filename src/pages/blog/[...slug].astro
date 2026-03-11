@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+import { type CollectionEntry, getCollection, render } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 import Layout from '@/layouts/Layout.astro';
 import Main from '@/components/Main.astro';
@@ -9,20 +9,20 @@ import Toc from '@/components/Toc.astro';
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: post,
   }));
 }
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
 
 const pageTitle = `${post.data.title} | ${SITE_TITLE}`;
 const pageDescription = post.data.description || SITE_DESCRIPTION;
 const ogImage =
-  new Date(post.data.pubDate) >= new Date('2024-01-01')
-    ? new URL(`/og/${post.slug}.png`, Astro.url.origin).toString()
+  post.data.pubDate && new Date(post.data.pubDate) >= new Date('2024-01-01')
+    ? new URL(`/og/${post.id}.png`, Astro.url.origin).toString()
     : new URL('/og.jpg', Astro.url.origin).toString();
 ---
 

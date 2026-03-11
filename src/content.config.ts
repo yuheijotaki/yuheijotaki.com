@@ -1,4 +1,6 @@
-import { z, defineCollection } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 import { rssSchema } from '@astrojs/rss';
 import { createClient } from 'microcms-js-sdk';
 import { loadEnv } from 'vite';
@@ -7,7 +9,7 @@ import { loadEnv } from 'vite';
 const env = loadEnv('', process.cwd(), '');
 
 const blog = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: rssSchema.extend({
     draft: z.optional(z.boolean()),
   }),

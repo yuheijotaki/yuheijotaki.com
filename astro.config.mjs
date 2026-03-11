@@ -6,14 +6,13 @@ import icon from 'astro-icon';
 import vercel from '@astrojs/vercel';
 import externalLinks from './src/rehype-plugins/external-links';
 import addHeadingLinks from './src/rehype-plugins/add-heading-links';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://yuheijotaki.com',
   adapter: vercel(),
-  experimental: {
-    liveContentCollections: true,
-  },
   server: {
     host: true,
     open: true,
@@ -36,13 +35,21 @@ export default defineConfig({
   markdown: {
     rehypePlugins: [externalLinks, addHeadingLinks],
   },
-  // vite: {
-  //   css: {
-  //     preprocessorOptions: {
-  //       scss: {
-  //         api: 'modern-compiler',
-  //       },
-  //     },
-  //   },
-  // },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+          importers: [
+            {
+              findFileUrl(url) {
+                if (!url.startsWith('@/')) return null;
+                return pathToFileURL(resolve('./src', url.slice(2)));
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
 });

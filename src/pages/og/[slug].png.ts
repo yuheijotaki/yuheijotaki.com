@@ -30,10 +30,10 @@ export async function getStaticPaths() {
   }
 
   return recentPosts.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: {
       title: entry.data.title,
-      slug: entry.slug,
+      slug: entry.id,
     },
   }));
 }

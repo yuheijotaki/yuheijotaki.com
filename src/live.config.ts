@@ -1,6 +1,6 @@
 import { defineLiveCollection } from 'astro:content';
 import { createClient } from 'microcms-js-sdk';
-import { z } from 'astro:content';
+import { z } from 'astro/zod';
 
 // microCMS レスポンスの型
 interface MicroCMSBlogPost {

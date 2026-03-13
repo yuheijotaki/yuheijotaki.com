@@ -1,0 +1,32 @@
+---
+import { Image } from '@unpic/astro';
+import LayoutDemo from '@/layouts/LayoutDemo.astro';
+---
+
+<LayoutDemo title="text-scale" textScale={false}>
+  <div class="wrapper">
+    <h1><a href="/demo/">demo</a> &raquo; text-scale: false</h1>
+    <Image
+      src="https://images.unsplash.com/photo-1557409518-691ebcd96038"
+      alt=""
+      width={240}
+      height={120}
+      placeholder="blurhash"
+    />
+    <h1>見出し1が入ります。</h1>
+    <h2>見出し2が入ります。</h2>
+    <h3>見出し3が入ります。</h3>
+    <h4>見出し4が入ります。</h4>
+    <h5>見出し5が入ります。</h5>
+    <h6>見出し6が入ります。</h6>
+    <p>
+      テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。テキストが入ります。
+    </p>
+  </div>
+</LayoutDemo>
+
+<style>
+  .wrapper {
+    margin: 2rem;
+  }
+</style>

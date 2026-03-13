@@ -1,9 +1,10 @@
 ---
 export interface Props {
   title?: string;
+  textScale?: boolean;
 }
 
-const { title = 'demo' } = Astro.props;
+const { title = 'demo', textScale = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -11,6 +12,7 @@ const { title = 'demo' } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    {textScale && <meta name="text-scale" content="scale" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>

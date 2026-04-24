@@ -1,6 +1,11 @@
 ---
 import '@/styles/globals.scss';
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL } from '@/consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
+import {
+  buildBlogPostingJsonLd,
+  buildBreadcrumbJsonLd,
+  buildWebsiteJsonLd,
+} from '@/utils/jsonLd';
 
 interface Props {
   title: string;
@@ -24,69 +29,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.url).toString();
 const isRootPage = Astro.url.pathname === '/';
 
-const articleJsonLd = article
-  ? {
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline: title,
+const jsonLdItems = [
+  article &&
+    buildBlogPostingJsonLd({
+      title,
       description,
-      image: imageURL,
-      url: canonicalURL.toString(),
-      datePublished: article.publishedTime.toISOString(),
-      dateModified: (article.modifiedTime ?? article.publishedTime).toISOString(),
-      author: {
-        '@type': 'Person',
-        name: SITE_TITLE,
-        url: SITE_URL,
-      },
-      publisher: {
-        '@type': 'Person',
-        name: SITE_TITLE,
-        url: SITE_URL,
-      },
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': canonicalURL.toString(),
-      },
-    }
-  : null;
-
-const breadcrumbJsonLd = article
-  ? {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        {
-          '@type': 'ListItem',
-          position: 1,
-          name: 'ホーム',
-          item: SITE_URL + '/',
-        },
-        {
-          '@type': 'ListItem',
-          position: 2,
-          name: 'ブログ記事一覧',
-          item: SITE_URL + '/blog/',
-        },
-        {
-          '@type': 'ListItem',
-          position: 3,
-          name: article.title,
-        },
-      ],
-    }
-  : null;
-
-const websiteJsonLd = isRootPage
-  ? {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      url: SITE_URL,
-      name: SITE_TITLE,
-      description: SITE_DESCRIPTION,
-      inLanguage: 'ja',
-    }
-  : null;
+      imageURL,
+      canonicalURL: canonicalURL.toString(),
+      publishedTime: article.publishedTime,
+      modifiedTime: article.modifiedTime,
+    }),
+  article && buildBreadcrumbJsonLd(article.title),
+  isRootPage && buildWebsiteJsonLd(),
+].filter(Boolean);
 ---
 
 <!-- Global Metadata -->
@@ -138,17 +93,7 @@ const websiteJsonLd = isRootPage
 <meta property="twitter:image" content={imageURL} />
 
 {
-  articleJsonLd && (
-    <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} is:inline />
-  )
-}
-{
-  breadcrumbJsonLd && (
-    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} is:inline />
-  )
-}
-{
-  websiteJsonLd && (
-    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} is:inline />
-  )
+  jsonLdItems.map((item) => (
+    <script type="application/ld+json" set:html={JSON.stringify(item)} is:inline />
+  ))
 }

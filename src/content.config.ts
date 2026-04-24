@@ -2,7 +2,7 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { rssSchema } from '@astrojs/rss';
-import { createClient } from 'microcms-js-sdk';
+import { createClient, type MicroCMSListResponse } from 'microcms-js-sdk';
 import { loadEnv } from 'vite';
 
 // 環境変数をロード
@@ -34,15 +34,15 @@ const staticMicroCMSBlog = defineCollection({
     });
 
     try {
-      const response = await client.get({
+      const response = await client.get<MicroCMSListResponse<{ title: string }>>({
         endpoint: 'blog',
       });
 
-      return response.contents.map((post: any) => ({
+      return response.contents.map((post) => ({
         id: post.id,
         title: post.title,
         updatedAt: new Date(post.updatedAt),
-        publishedAt: new Date(post.publishedAt),
+        publishedAt: new Date(post.publishedAt ?? post.createdAt),
       }));
     } catch (error) {
       console.error('Failed to fetch from microCMS:', error);

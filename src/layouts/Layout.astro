@@ -9,15 +9,19 @@ export interface Props {
   description: string;
   image?: string;
   isHome: boolean;
+  article?: {
+    publishedTime: Date;
+    modifiedTime?: Date;
+  };
 }
 
-const { title, description, image, isHome } = Astro.props;
+const { title, description, image, isHome, article } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
-    <Head title={title} description={description} image={image} />
+    <Head title={title} description={description} image={image} article={article} />
     <script is:inline>
       const colorMode = (() => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('color-mode')) {

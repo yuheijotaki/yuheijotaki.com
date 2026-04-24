@@ -26,7 +26,13 @@ const ogImage =
     : new URL('/og.jpg', Astro.url.origin).toString();
 ---
 
-<Layout title={pageTitle} description={pageDescription} isHome={false} image={ogImage}>
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  isHome={false}
+  image={ogImage}
+  article={{ publishedTime: post.data.pubDate }}
+>
   <Main>
     <Article {...post.data}>
       <Toc headings={headings} />

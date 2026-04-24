@@ -21,8 +21,9 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.url).toString();
+const isRootPage = Astro.url.pathname === '/';
 
-const jsonLd = article
+const articleJsonLd = article
   ? {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
@@ -46,6 +47,17 @@ const jsonLd = article
         '@type': 'WebPage',
         '@id': canonicalURL.toString(),
       },
+    }
+  : null;
+
+const websiteJsonLd = isRootPage
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      url: SITE_URL,
+      name: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+      inLanguage: 'ja',
     }
   : null;
 ---
@@ -99,7 +111,12 @@ const jsonLd = article
 <meta property="twitter:image" content={imageURL} />
 
 {
-  jsonLd && (
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  articleJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} is:inline />
+  )
+}
+{
+  websiteJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} is:inline />
   )
 }

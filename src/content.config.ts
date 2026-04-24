@@ -11,6 +11,8 @@ const env = loadEnv('', process.cwd(), '');
 const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: rssSchema.extend({
+    title: z.string(),
+    pubDate: z.coerce.date(),
     draft: z.optional(z.boolean()),
   }),
 });

@@ -11,7 +11,7 @@ import Button from '@/components/Button.astro';
     <li><a href="/blog/">ブログ記事一覧</a></li>
     <li><a href="/feed.xml">RSSフィード</a></li>
   </Block>
-  <Button type="button" text="ダークモードに切り替える" data-toggle-theme />
+  <Button type="button" text="ダークモードに切り替える" aria-pressed="false" data-toggle-theme />
 </footer>
 
 <script>
@@ -33,6 +33,7 @@ import Button from '@/components/Button.astro';
     updateToggleButton(mode: string) {
       const button = document.querySelector('[data-toggle-theme]') as HTMLButtonElement;
       button.innerHTML = mode === 'dark' ? 'ライトモードに切り替える' : 'ダークモードに切り替える';
+      button.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
     }
 
     setColorMode(mode: string) {

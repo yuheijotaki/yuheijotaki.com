@@ -2,8 +2,8 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { rssSchema } from '@astrojs/rss';
-import { createClient, type MicroCMSListResponse } from 'microcms-js-sdk';
 import { loadEnv } from 'vite';
+import { createBlogClient, fetchBlogList } from '@/utils/microcms';
 
 // 環境変数をロード
 const env = loadEnv('', process.cwd(), '');
@@ -28,15 +28,10 @@ const staticMicroCMSBlog = defineCollection({
       return [];
     }
 
-    const client = createClient({
-      serviceDomain,
-      apiKey,
-    });
+    const client = createBlogClient(serviceDomain, apiKey);
 
     try {
-      const response = await client.get<MicroCMSListResponse<{ title: string }>>({
-        endpoint: 'blog',
-      });
+      const response = await fetchBlogList(client);
 
       return response.contents.map((post) => ({
         id: post.id,

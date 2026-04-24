@@ -1,22 +1,6 @@
 import { defineLiveCollection } from 'astro:content';
-import { createClient } from 'microcms-js-sdk';
 import { z } from 'astro/zod';
-
-// microCMS レスポンスの型
-interface MicroCMSBlogPost {
-  id: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
-  title: string;
-}
-
-interface MicroCMSResponse {
-  contents: MicroCMSBlogPost[];
-  totalCount: number;
-  offset: number;
-  limit: number;
-}
+import { createBlogClient, fetchBlogList, fetchBlogEntry } from '@/utils/microcms';
 
 // スキーマ定義
 const blogSchema = z.object({
@@ -44,14 +28,8 @@ const liveBlog = defineLiveCollection({
           return { error };
         }
 
-        const client = createClient({
-          serviceDomain,
-          apiKey,
-        });
-
-        const response = await client.get<MicroCMSResponse>({
-          endpoint: 'blog',
-        });
+        const client = createBlogClient(serviceDomain, apiKey);
+        const response = await fetchBlogList(client);
 
         return {
           entries: response.contents.map((post) => ({
@@ -59,7 +37,7 @@ const liveBlog = defineLiveCollection({
             data: {
               title: post.title,
               updatedAt: new Date(post.updatedAt),
-              publishedAt: new Date(post.publishedAt),
+              publishedAt: new Date(post.publishedAt ?? post.createdAt),
             },
           })),
           cacheHint: {
@@ -93,22 +71,15 @@ const liveBlog = defineLiveCollection({
           return { error };
         }
 
-        const client = createClient({
-          serviceDomain,
-          apiKey,
-        });
-
-        const post = await client.get<MicroCMSBlogPost>({
-          endpoint: 'blog',
-          contentId: id,
-        });
+        const client = createBlogClient(serviceDomain, apiKey);
+        const post = await fetchBlogEntry(client, id);
 
         return {
           id: post.id,
           data: {
             title: post.title,
             updatedAt: new Date(post.updatedAt),
-            publishedAt: new Date(post.publishedAt),
+            publishedAt: new Date(post.publishedAt ?? post.createdAt),
           },
           cacheHint: {
             tags: [`microcms-blog-${id}`],

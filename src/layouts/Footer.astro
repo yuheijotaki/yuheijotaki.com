@@ -45,10 +45,10 @@ import Button from '@/components/Button.astro';
       if (window.colorMode) {
         return window.colorMode;
       }
-      let storedMode: string | null = null;
+      let storedMode: string | null;
       try {
         storedMode = localStorage.getItem('color-mode');
-      } catch (error) {
+      } catch {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
       return (

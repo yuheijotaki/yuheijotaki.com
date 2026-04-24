@@ -33,35 +33,6 @@ export default [
       ...tseslint.configs['eslint-recommended'].rules,
       ...tseslint.configs.recommended.rules,
       'require-jsdoc': 'off',
-      // TODO: Re-enable when eslint-plugin-import supports ESLint 10
-      // 'import/order': [
-      //   'error',
-      //   {
-      //     groups: [
-      //       'builtin',
-      //       'external',
-      //       'internal',
-      //       'parent',
-      //       'sibling',
-      //       'index',
-      //       'type',
-      //       'unknown',
-      //     ],
-      //     pathGroups: [
-      //       {
-      //         pattern: '{astro,astro/**}',
-      //         group: 'builtin',
-      //         position: 'after',
-      //       },
-      //       {
-      //         pattern: '*.scss',
-      //         patternOptions: { matchBase: true },
-      //         group: 'unknown',
-      //         position: 'after',
-      //       },
-      //     ],
-      //   },
-      // ],
       '@typescript-eslint/no-explicit-any': 0,
       'no-console': 'off',
       'no-undef': 'off',

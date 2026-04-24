@@ -77,6 +77,13 @@ const groupedHeadings = headings.reduce((array, heading) => {
 
       targetElement.setAttribute('tabindex', '-1');
       targetElement.focus();
+      targetElement.addEventListener(
+        'blur',
+        () => {
+          targetElement.removeAttribute('tabindex');
+        },
+        { once: true },
+      );
     }
   }
 

@@ -35,10 +35,6 @@ const liveBlog = defineLiveCollection({
         const serviceDomain = import.meta.env.MICROCMS_DOMAIN;
         const apiKey = import.meta.env.MICROCMS_PRODUCTION_API_KEY;
 
-        console.log('[Live Collection] loadCollection called');
-        console.log('[Live Collection] serviceDomain exists:', !!serviceDomain);
-        console.log('[Live Collection] apiKey exists:', !!apiKey);
-
         if (!serviceDomain || !apiKey) {
           const error = new Error(
             'MICROCMS_DOMAIN and MICROCMS_PRODUCTION_API_KEY are required. ' +
@@ -53,12 +49,9 @@ const liveBlog = defineLiveCollection({
           apiKey,
         });
 
-        console.log('[Live Collection] Fetching from microCMS...');
         const response = await client.get<MicroCMSResponse>({
           endpoint: 'blog',
         });
-
-        console.log('[Live Collection] Fetched entries:', response.contents.length);
 
         return {
           entries: response.contents.map((post) => ({
@@ -85,9 +78,6 @@ const liveBlog = defineLiveCollection({
         const id =
           typeof idOrFilter === 'string' ? idOrFilter : idOrFilter?.id || idOrFilter?.filter?.id;
 
-        console.log('[Live Collection] loadEntry called with:', idOrFilter);
-        console.log('[Live Collection] Extracted id:', id);
-
         if (!id) {
           return {
             error: new Error('ID is required'),
@@ -112,8 +102,6 @@ const liveBlog = defineLiveCollection({
           endpoint: 'blog',
           contentId: id,
         });
-
-        console.log('[Live Collection] Fetched entry:', post.id);
 
         return {
           id: post.id,

@@ -1,18 +1,21 @@
 ---
-import dayjs from 'dayjs';
-import ja from 'dayjs/locale/ja';
-dayjs.locale(ja);
-
 interface Props {
   date: Date;
 }
 
 const { date } = Astro.props;
-const d = dayjs(date);
-const formattedDate = `${d.format('YYYY')}年${d.format('M')}月${d.format('D')}日（${d.format('ddd')}）`;
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const year = date.getFullYear();
+const month = date.getMonth() + 1;
+const day = date.getDate();
+const weekday = new Intl.DateTimeFormat('ja-JP', { weekday: 'short' }).format(date);
+
+const isoDate = `${year}-${pad(month)}-${pad(day)}`;
+const formattedDate = `${year}年${month}月${day}日（${weekday}）`;
 ---
 
-<time datetime={d.format('YYYY-MM-DD')}>
+<time datetime={isoDate}>
   {formattedDate}
 </time>
 

@@ -79,54 +79,70 @@ IMPORTANT:
 
 ## プロジェクト概要
 
-Astro で構築し、Vercel にデプロイしている個人ブログサイト（yuheijotaki.com）。コンテンツは日本語。
+Astro で構築し、Vercel にデプロイしている個人ブログサイト（yuheijotaki.com）。コンテンツは日本語。Node バージョンは `.node-version` で 24.14.1 に固定。
 
 ## コマンド
 
 - **開発サーバー:** `npm run dev`（localhost:4321 で起動）
 - **ビルド:** `npm run build`
 - **プレビュー:** `npm run preview`
-- **リント一括実行:** `npm run lint`（ESLint, Stylelint, Prettier を順次実行）
-- **自動修正:** `npm run fix`
+- **リント一括実行:** `npm run lint`（`lint:ts` → `lint:style` → `lint:prettier` を順次実行）
+- **個別 lint:** `npm run lint:ts` / `npm run lint:style` / `npm run lint:prettier`
+- **自動修正:** `npm run fix`（または `fix:ts` / `fix:style` / `fix:prettier`）
 - **a11y テスト:** `npm run test:a11y`（Playwright + axe-core、ポート 4321 で開発サーバーが必要）
 
 ## アーキテクチャ
 
 ### コンテンツ管理
 
-- ブログ記事は `src/content/blog/` に Markdown ファイルとして格納（約510記事、2013年〜）
-- ファイル名規約: `YYYYMMDDNN.md`（日付 + 連番）
+- ブログ記事は `src/content/blog/` に Markdown ファイルとして格納（511 記事、2013 年〜）
+- ファイル名規約: `YYYYMMDDNN.md`（日付 + 連番）。`_` 始まりのファイルはローダー対象外
 - フロントマター: `title`, `description`, `pubDate`, 任意で `draft`
-- スキーマは `src/content/config.ts` で `@astrojs/rss` の `rssSchema` を使用して定義
-- microCMS 連携用の `staticMicroCMSBlog` コレクションローダーもあり（環境変数 `MICROCMS_DOMAIN` と `MICROCMS_PRODUCTION_API_KEY` が必要）
+- スキーマは `src/content.config.ts`（Astro v5+ のルート配置）で `@astrojs/rss` の `rssSchema` を使用して定義
+- ビルド時取得用の `staticMicroCMSBlog` コレクションも `src/content.config.ts` に同居（`MICROCMS_DOMAIN` / `MICROCMS_PRODUCTION_API_KEY` 必要）
+- 別途 `src/live.config.ts` で **Live Content Collections**（`liveBlog`）も定義。microCMS をリクエスト時に取得するルートで利用
 
 ### ルーティング
 
 - `/` — トップページ
 - `/blog/` — ブログ一覧
 - `/blog/[...slug]` — ブログ記事詳細（コンテンツコレクションから静的パスを生成）
-- `/og/[slug].png` — 記事ごとの OG 画像動的生成（2024年以降の記事のみ）
+- `/og/[slug].png` — 記事ごとの OG 画像動的生成（2024 年以降の記事のみ）
 - `/feed.xml` — RSS フィード
+- `/robots.txt`, `/404` — ユーティリティルート
+- `/demo/*` — 実験用ページ群（CSS/JS 機能のデモ）。sitemap から除外される
+- `api/search.ts` — Vercel サーバーレス関数。Google Vertex AI Search を呼ぶ検索 API（`GOOGLE_SERVICE_ACCOUNT_KEY` と `VERTEX_AI_SEARCH_ENGINE_ID` 必要）
+
+### sitemap カスタマイズ（`astro.config.mjs`）
+
+- `src/content/blog/` の各 md/mdx を起動時にスキャンし、`pubDate` を Map にキャッシュ → sitemap の `lastmod` に反映
+- slug 生成時は `@` を除去（Astro が URL に `@` を含めないため、突合キーも揃える）
+- `/demo/` を含む URL は sitemap から除外
 
 ### スタイリング
 
 - Astro コンポーネント内のスコープド `<style lang="scss">` ブロックで SCSS を使用
 - `@use` で `@/styles/variables` と `@/styles/extension` をパスエイリアスで参照
+- SCSS の `@/` 解決は **Vite 側のカスタムインポータ**（`astro.config.mjs` の `vite.css.preprocessorOptions.scss.importers`）で `./src` に解決している。tsconfig の `paths` だけでは効かないので、SCSS 用に別途必要
 - グローバルスタイルは `src/styles/globals.scss`、変数は `src/styles/_variables.scss`
 
 ### Rehype プラグイン
 
-`src/rehype-plugins/` にカスタム rehype プラグインが2つ:
+`src/rehype-plugins/` にカスタム rehype プラグインが 2 つ（`astro.config.mjs` の `markdown.rehypePlugins` で適用）:
 
 - `external-links.ts` — 外部リンクに target/rel 属性を付与
 - `add-heading-links.ts` — 見出しにアンカーリンクを追加
 
+### アイコン
+
+- `astro-icon` を使用。`iconDir` は `src/icons`（デフォルトの `src/assets/icons` ではない）
+
 ### パスエイリアス
 
-`@/*` は `./src/*` にマッピング（tsconfig.json で設定）。
+`@/*` は `./src/*` にマッピング（tsconfig.json で設定）。SCSS 側は Vite のカスタムインポータで別途解決。
 
 ### 主要な規約
 
-- コンポーネントは `.astro` ファイルを使用。React（`.tsx`）は OG 画像コンポーネントのみ
+- コンポーネントは `.astro` ファイルを使用。React（`.tsx`）は OG 画像コンポーネント（`src/components/OgImage.tsx`）のみ
 - ESLint に `jsx-a11y` ルールを含めてアクセシビリティを担保
 - Astro の prefetch を `hover` 戦略で使用

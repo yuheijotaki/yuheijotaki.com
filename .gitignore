@@ -27,3 +27,6 @@ test-results/
 playwright-report/
 .vercel
 .env*.local
+
+# Claude Code local settings (per-machine, not shared)
+.claude/settings.local.json

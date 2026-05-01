@@ -83,7 +83,6 @@
     "typescript": "^6.0.3"
   },
   "overrides": {
-    "glob": "^13.0.6",
     "minimatch": "^10.2.5",
     "path-to-regexp": ">=8.0.0",
     "yaml": "2.8.3"

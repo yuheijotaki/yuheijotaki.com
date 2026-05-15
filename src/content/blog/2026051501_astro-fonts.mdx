@@ -1,0 +1,132 @@
+---
+title: Astro Fonts API を試してみる
+description: Astro の Fonts API について、Google プロバイダーで Noto Sans JP を読み込んだときに何が起きるかと、日本語フォントのサブセット周りを試した記事です。
+pubDate: 2026-05-15T00:00:00
+---
+
+## Astro Fonts API とは
+
+`astro.config.mjs` の `fonts` 配列でフォントを宣言し、`<Font />` コンポーネントを `<head>` に置くと `@font-face` と preload link が出力される。
+
+取得したフォントはローカル化されて、fallback フォントもメトリクス込みで自動生成される。組み込みプロバイダーは `adobe` / `bunny` / `fontshare` / `fontsource` / `google` / `googleicons` / `local` / `npm` の 8 種。
+
+今回は Google プロバイダーで Noto Sans JP を読み込んで、生成される `<head>` と日本語フォントのサブセットがどう扱われるかを見ていく。動作確認は `astro@6.3.3`。
+
+## 設定
+
+```js
+import { defineConfig, fontProviders } from 'astro/config';
+
+export default defineConfig({
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'Noto Sans JP',
+      cssVariable: '--font-noto-sans-jp',
+      weights: [400, 700],
+      subsets: ['japanese'],
+    },
+  ],
+});
+```
+
+`<head>` 側：
+
+```astro
+---
+import { Font } from 'astro:assets';
+---
+
+<Font cssVariable="--font-noto-sans-jp" preload />
+```
+
+## 生成された出力
+
+`npm run build` 後の `dist/client/_astro/fonts/` を見ると、woff2 が **120 ファイル / 合計 5.2 MB**。`weights` 2 種 × `unicode-range` で 60 分割されている計算で各ファイルは 12〜88KB。
+
+`<head>` には `unicode-range` 付きの `@font-face` が並ぶ。
+
+```html
+<style>
+  @font-face {
+    font-family: 'Noto Sans JP-86c17494f12e7c6c';
+    src: url('/_astro/fonts/5bcf9a2144f25cf1.woff2') format('woff2');
+    font-display: swap;
+    unicode-range: U+25ee8, U+25f23, U+25f5c, U+25fd4, /* ... 多数 ... */;
+    font-weight: 400;
+    font-style: normal;
+  }
+  /* ...同じ要領で 120 個続く... */
+</style>
+```
+
+font-family 名にハッシュのサフィックスが付いて、同じファミリー名が複数の `<Font />` 設定で衝突しないようになっている。
+
+fallback も自動で出力される。
+
+```css
+@font-face {
+  font-family: 'Noto Sans JP-86c17494f12e7c6c fallback: Arial';
+  src: local('Arial');
+  font-display: swap;
+  size-adjust: 197.1733%;
+  ascent-override: 58.8315%;
+  descent-override: 14.6064%;
+  line-gap-override: 0%;
+}
+```
+
+`src: local('Arial')` でローカルにある Arial を使い、`size-adjust` と `ascent-override` 等でメトリクスを Noto Sans JP に合わせて、ロード前後の見た目のズレを抑えてくれる。
+
+preload link は `<Font preload />` のままだと **120 個ぜんぶ** に `<link rel="preload">` が並ぶ。日本語のように分割数が多いフォントではここを絞らないと過剰。
+
+## 内部の挙動
+
+`preload` プロパティは boolean だけでなく filter を渡せる。[`filter-preloads.ts`](https://github.com/withastro/astro/blob/main/packages/astro/src/assets/fonts/core/filter-preloads.ts) を読むと、`weight` / `style` / `subset` で絞り込めるのが分かる。
+
+<details>
+  <summary>コードを開閉する</summary>
+
+```ts
+export function filterPreloads(
+  data: Array<PreloadData>,
+  preload: PreloadFilter,
+): Array<PreloadData> | null {
+  if (!preload) {
+    return null;
+  }
+  if (preload === true) {
+    return data;
+  }
+  return data.filter(({ weight, style, subset }) =>
+    preload.some((p) => {
+      if (
+        p.weight !== undefined &&
+        weight !== undefined &&
+        !checkWeight(p.weight.toString(), weight)
+      ) {
+        return false;
+      }
+      if (p.style !== undefined && p.style !== style) {
+        return false;
+      }
+      if (p.subset !== undefined && p.subset !== subset) {
+        return false;
+      }
+      return true;
+    }),
+  );
+}
+```
+
+</details>
+
+`<Font preload={[{ weight: 400, subset: 'japanese' }]} />` のように書くと、特定の組み合わせだけに preload を絞れる。日本語フォントでは全 chunk を preload するのは過剰なので、こうした filter で絞る前提になりそう。
+
+## 日本語フォントとサブセット
+
+Noto Sans JP のフルセットは数 MB あって、何の工夫もなしに読ませると重い。Google プロバイダーで `subsets: ['japanese']` を指定した場合、Google Fonts の CSS2 API がそもそも `unicode-range` で 60 分割した CSS を返してくる。Astro はそれをそのまま読んで、各 chunk の woff2 をローカルへコピーしている。つまり、Astro 自身が分割しているわけではなく、Google 側の分割をそのまま使っているということ。ブラウザは表示する文字に応じて必要な chunk だけ取りに行く動きになる。
+
+## 所感
+
+同一オリジンから配信してくれる、且つサブセット分割なども処理されるので、要件でリソースはセルフホストが必要な場合などに使えそう。

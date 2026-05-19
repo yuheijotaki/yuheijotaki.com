@@ -45,18 +45,17 @@ paths:
 
 ## 実行コスト
 
-`claude-code-action` はジョブの末尾に実行結果を JSON 形式で出力する。動作確認用 PR（`src/pages/index.astro` にコメント 1 行追加だけ）でのレビュー 1 回の実測値:
+`claude-code-action` はジョブの末尾に実行結果を JSON 形式で出力する。動作確認用 PR（`src/pages/index.astro` にコメント 1 行追加だけ）でのレビュー 1 回の実測値を、デフォルトの Opus 4.7 と、`claude_args` に `--model claude-sonnet-4-6` を渡して指定した Sonnet 4.6 で比較した。
 
-| 項目       | 値              |
-| ---------- | --------------- |
-| Model      | Claude Opus 4.7 |
-| Duration   | 約 76 秒        |
-| Turns      | 13              |
-| Total cost | $0.37           |
+| 項目       | Opus 4.7 | Sonnet 4.6 |
+| ---------- | -------- | ---------- |
+| Duration   | 約 76 秒 | 約 59 秒   |
+| Turns      | 13       | 11         |
+| Total cost | $0.37    | $0.17      |
 
 Anthropic API は入力トークン / 出力トークン / プロンプトキャッシュの読み書きそれぞれに単価が設定されていて、消費したトークン量 × モデルの単価で課金される（[料金 - Claude API Docs](https://platform.claude.com/docs/ja/about-claude/pricing)）。
 
-`claude-code-action` は 1 回の起動の中で複数回 API リクエストを走らせる（上の例では 13 turns）ので、`total_cost_usd` はそれらの合計値。
+`claude-code-action` は 1 回の起動の中で複数回 API リクエストを走らせる（Opus 4.7 は 13 turns、Sonnet 4.6 は 11 turns）ので、`total_cost_usd` はそれらの合計値。同じく 1 行追加だけの PR でも、Sonnet 4.6 に切り替えるとレビュー 1 回あたり半分以下のコストに収まった。
 
 ## 所感
 

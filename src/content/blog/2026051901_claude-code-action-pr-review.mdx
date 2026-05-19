@@ -1,0 +1,63 @@
+---
+title: Claude Code Action で PR を自動レビューしてみる
+description: このリポジトリに Claude Code Action を導入して、@claude メンション応答と PR 自動レビューを設定した記事です。
+pubDate: 2026-05-19T00:00:00
+---
+
+## 概要
+
+このリポジトリに [anthropics/claude-code-action](https://github.com/anthropics/claude-code-action) を導入して、PR の自動レビューと `@claude` メンションへの応答が動くようにしてみる。
+
+## 2 つのワークフローの役割
+
+`.github/workflows/` に 2 つのワークフローを置く。
+
+- [`claude.yml`](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/.github/workflows/claude.yml)
+  - Issue / PR / レビューコメントの本文に `@claude` を含む投稿があったとき
+- [`claude-code-review.yml`](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/.github/workflows/claude-code-review.yml)
+  - PR が `opened` / `synchronize` されたとき
+
+## paths フィルタで対象を絞る
+
+`pull_request` の `paths` で、コードとビルド系の変更だけに絞る。
+
+```yaml
+paths:
+  - 'src/**'
+  - 'api/**'
+  - 'astro.config.mjs'
+  - 'package.json'
+  - 'package-lock.json'
+  - 'tsconfig.json'
+  - 'eslint.config.mjs'
+  - 'playwright.config.ts'
+  - '.github/workflows/**'
+```
+
+## 動作確認
+
+それぞれテスト用に Issue / PR を作って動かしてみた。
+
+- `@claude` メンション:
+  - 本文に `@claude` を含む [Issue #7](https://github.com/yuheijotaki/yuheijotaki.com/issues/7) を立てると `claude.yml` がトリガーされ、コメントが返ってきた
+- PR 自動レビュー:
+  - コメント 1 行を追加した [PR #8](https://github.com/yuheijotaki/yuheijotaki.com/pull/8) を作って、`claude-code-review.yml` が走り PR コメントで指摘が返ってきた
+
+## 実行コスト
+
+`claude-code-action` はジョブの末尾に実行結果を JSON 形式で出力する。動作確認用 PR（`src/pages/index.astro` にコメント 1 行追加だけ）でのレビュー 1 回の実測値:
+
+| 項目       | 値              |
+| ---------- | --------------- |
+| Model      | Claude Opus 4.7 |
+| Duration   | 約 76 秒        |
+| Turns      | 13              |
+| Total cost | $0.37           |
+
+Anthropic API は入力トークン / 出力トークン / プロンプトキャッシュの読み書きそれぞれに単価が設定されていて、消費したトークン量 × モデルの単価で課金される（[料金 - Claude API Docs](https://platform.claude.com/docs/ja/about-claude/pricing)）。
+
+`claude-code-action` は 1 回の起動の中で複数回 API リクエストを走らせる（上の例では 13 turns）ので、`total_cost_usd` はそれらの合計値。
+
+## 所感
+
+CLAUDE.md にコーディング規約・コミット規約を書いておけば、レビューでもその文脈を踏まえた指摘が返ってくるのは便利だがコストとの兼ね合いかな。

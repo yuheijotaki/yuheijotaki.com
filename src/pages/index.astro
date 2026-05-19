@@ -12,6 +12,7 @@ const allPosts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+// トップページに表示する記事数
 const postsPerPage = 3;
 const postList = allPosts.slice(0, postsPerPage);
 ---

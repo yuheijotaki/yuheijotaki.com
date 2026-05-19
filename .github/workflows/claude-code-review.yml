@@ -48,4 +48,5 @@ jobs:
             ブランチは既にチェックアウト済みです。重要な指摘はインラインコメントで、全体サマリは PR コメントとしてまとめてください。建設的・簡潔に。
 
           claude_args: |
+            --model claude-sonnet-4-6
             --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"

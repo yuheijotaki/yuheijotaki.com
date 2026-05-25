@@ -5,6 +5,7 @@ import {
   buildBlogPostingJsonLd,
   buildBreadcrumbJsonLd,
   buildWebsiteJsonLd,
+  serializeJsonLd,
 } from '@/utils/jsonLd';
 
 interface Props {
@@ -94,6 +95,6 @@ const jsonLdItems = [
 
 {
   jsonLdItems.map((item) => (
-    <script type="application/ld+json" set:html={JSON.stringify(item)} is:inline />
+    <script type="application/ld+json" set:html={serializeJsonLd(item)} is:inline />
   ))
 }

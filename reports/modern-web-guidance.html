@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Modern Web Guidance Audit — yuheijotaki.com</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #fffcf0;
+        --fg: #100f0f;
+        --muted: #6f6e6a;
+        --accent: #0018ee;
+        --subtle: #e5e3da;
+        --code-bg: #f1efe5;
+        --adopt: #2f7a3b;
+        --improve: #b56a00;
+        --skip: #6b6b6b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1c1a1a;
+          --fg: #fffcf0;
+          --muted: #b6b3a8;
+          --accent: #d1feff;
+          --subtle: #40403d;
+          --code-bg: #2a2727;
+          --adopt: #7ac98d;
+          --improve: #f0b75e;
+          --skip: #b6b3a8;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        font-size: 62.5%;
+      }
+      body {
+        max-width: 78rem;
+        padding: 4rem 2rem;
+        margin-inline: auto;
+        font-family:
+          'Helvetica Neue', arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', meiryo, sans-serif;
+        font-size: 1.5rem;
+        line-height: 1.8;
+        color: var(--fg);
+        background-color: var(--bg);
+      }
+      h1 {
+        font-size: 2.8rem;
+        line-height: 1.4;
+        text-wrap: balance;
+      }
+      h2 {
+        margin-top: 4rem;
+        padding-bottom: 0.4rem;
+        font-size: 2.2rem;
+        line-height: 1.4;
+        border-bottom: 2px solid var(--subtle);
+        text-wrap: balance;
+      }
+      h3 {
+        margin-top: 2.6rem;
+        font-size: 1.7rem;
+        line-height: 1.5;
+        text-wrap: balance;
+      }
+      p {
+        text-wrap: pretty;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 0.25em;
+      }
+      code {
+        padding: 0.1em 0.35em;
+        font-family: menlo, monaco, consolas, monospace;
+        font-size: 0.92em;
+        background-color: var(--code-bg);
+        border-radius: 3px;
+      }
+      pre {
+        padding: 1.2rem 1.4rem;
+        overflow-x: auto;
+        font-size: 1.3rem;
+        line-height: 1.6;
+        background-color: var(--code-bg);
+        border-radius: 4px;
+      }
+      pre code {
+        padding: 0;
+        background: none;
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 1.3rem;
+      }
+      .meta dt {
+        display: inline-block;
+        min-width: 7em;
+        font-weight: bold;
+      }
+      .meta dd {
+        display: inline;
+        margin: 0;
+      }
+      .meta dd::after {
+        display: block;
+        content: '';
+      }
+      .summary {
+        padding: 1.4rem 1.8rem;
+        margin-block: 2rem;
+        border: 1px solid var(--subtle);
+        border-radius: 6px;
+      }
+      .summary ul {
+        padding-left: 1.2em;
+        margin: 0.4rem 0 0;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.1em 0.6em;
+        margin-right: 0.6em;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--bg);
+        vertical-align: middle;
+        border-radius: 999px;
+      }
+      .badge.adopt {
+        background-color: var(--adopt);
+      }
+      .badge.improve {
+        background-color: var(--improve);
+      }
+      .badge.skip {
+        background-color: var(--skip);
+      }
+      .finding {
+        padding: 1.4rem 1.8rem;
+        margin-block: 1.6rem;
+        background-color: color-mix(in srgb, currentcolor 3%, transparent);
+        border-left: 4px solid var(--subtle);
+        border-radius: 4px;
+      }
+      .finding.adopt {
+        border-left-color: var(--adopt);
+      }
+      .finding.improve {
+        border-left-color: var(--improve);
+      }
+      .finding.skip {
+        border-left-color: var(--skip);
+      }
+      .finding h3 {
+        margin-top: 0;
+      }
+      .finding p:last-child,
+      .finding pre:last-child,
+      .finding ul:last-child {
+        margin-bottom: 0;
+      }
+      .file {
+        display: inline-block;
+        padding: 0.05em 0.5em;
+        font-family: menlo, monaco, consolas, monospace;
+        font-size: 0.9em;
+        color: var(--muted);
+        background-color: var(--code-bg);
+        border-radius: 3px;
+      }
+      .label {
+        display: inline-block;
+        min-width: 5em;
+        margin-right: 0.4em;
+        font-weight: bold;
+        color: var(--muted);
+      }
+      footer {
+        padding-top: 2rem;
+        margin-top: 5rem;
+        color: var(--muted);
+        font-size: 1.3rem;
+        border-top: 1px solid var(--subtle);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Modern Web Guidance Audit<br />— yuheijotaki.com</h1>
+      <dl class="meta">
+        <div><dt>監査対象</dt><dd><code>src/</code>, <code>api/</code>, ルート設定（<code>/demo/</code> 配下と <code>src/content/blog/*</code> 本文を除外）</dd></div>
+        <div><dt>監査日</dt><dd>2026-05-25</dd></div>
+        <div>
+          <dt>監査ツール</dt>
+          <dd>
+            <a href="https://github.com/GoogleChrome/modern-web-guidance">GoogleChrome/modern-web-guidance</a>
+            （Skill v0.0.169 / 2026_05_16-c5e7870）
+          </dd>
+        </div>
+      </dl>
+
+      <div class="summary">
+        <strong>サマリ</strong>
+        <ul>
+          <li><span class="badge adopt">採用済み</span> 21 項目</li>
+          <li><span class="badge improve">改善案</span> 10 項目</li>
+          <li><span class="badge skip">見送り</span> 11 項目</li>
+        </ul>
+        <p style="margin-bottom: 0">
+          全体的にロジカルプロパティ・<code>color-mix()</code>・<code>:has()</code>・<code>&lt;details&gt;</code>
+          など Baseline Widely Available なモダン機能を素直に採用できており、地力の高い実装。改善余地は主に
+          <strong>過去の polyfill 整理</strong>・<strong>Astro 6 View Transitions の活用</strong>・<strong>511
+          記事ある blog 一覧の <code>content-visibility: auto</code> による軽量化</strong>に集約される。
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <!-- ===================== 採用済み ===================== -->
+      <h2><span class="badge adopt">採用済み</span>既に取り入れているモダンな機能</h2>
+
+      <div class="finding adopt">
+        <h3>CSS Logical Properties</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/styles/foundation/_variables.scss</span>、各コンポーネント
+        </p>
+        <p>
+          <code>margin-block-start</code> / <code>margin-block-end</code> /
+          <code>padding-block</code> / <code>padding-inline</code> /
+          <code>margin-inline: auto</code> を全面採用。`top/right/bottom/left` 系を避けることで
+          縦書きや RTL に対する将来耐性がある。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>color-mix()</code> 関数</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/Button.astro</span>,
+          <span class="file">src/components/Article.astro</span>,
+          <span class="file">src/styles/extension/_mixin.scss</span>
+        </p>
+        <pre><code>background-color: color-mix(in srgb, currentcolor 15%, transparent);</code></pre>
+        <p>
+          `rgba()` で透明度違いの色を手書きせず、<code>currentcolor</code>
+          を起点に派生色を合成。ダーク/ライトモード共通で機能。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>CSS Custom Properties によるデザイントークン</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/styles/foundation/_variables.scss</span>
+        </p>
+        <p>
+          色・間隔・タイポ・トランジションをすべて <code>:root</code> の CSS 変数で集中管理。
+          コンポーネント側は <code>var(--spacing-sm)</code> 等の参照のみで責務が薄い。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>@media (prefers-color-scheme: dark)</code> + <code>color-scheme</code> meta</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/layouts/Head.astro</span>
+        </p>
+        <pre><code>&lt;meta name="color-scheme" content="light dark" /&gt;
+&lt;meta name="theme-color" content="#fffcf0" media="(prefers-color-scheme: light)" /&gt;
+&lt;meta name="theme-color" content="#1c1a1a" media="(prefers-color-scheme: dark)" /&gt;</code></pre>
+        <p>
+          <code>theme-color</code> をメディアクエリで切替、初期描画でブラウザ UI（ステータスバー等）を整える。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>@media (prefers-reduced-motion: reduce)</code></h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/styles/foundation/_variables.scss</span>
+        </p>
+        <pre><code>@media (prefers-reduced-motion: reduce) {
+  --transition-duration: 0s;
+}</code></pre>
+        <p>
+          CSS 変数を一箇所で上書きすることで、`hover` mixin やボタン
+          transition が自動的に無効化される設計。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>@media (hover: hover)</code> によるホバー分岐</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/Button.astro</span>,
+          <span class="file">src/styles/extension/_mixin.scss</span>
+        </p>
+        <p>
+          タッチデバイスで sticky hover にならないよう、ホバー演出を <code>(hover: hover)</code> でガード。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>:focus-visible</code> セレクタ</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/styles/foundation/_base.scss</span>
+        </p>
+        <pre><code>:focus-visible {
+  outline: 3px solid var(--color-link);
+  outline-offset: 2px;
+}</code></pre>
+        <p>
+          キーボード操作時のみフォーカスリングを出す現行のベストプラクティス。
+          ※ 別途 <code>focus-visible</code> polyfill が併用されているのは改善案で言及。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>:has()</code> 親セレクタ</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/Article.astro</span>
+        </p>
+        <pre><code>:global(pre) {
+  &amp;:has(code) {
+    padding: 1rem 2rem;
+    line-height: 1.6;
+  }
+}</code></pre>
+        <p>
+          コード塊だけ余白を変える「子要素に応じて親を装飾」の典型ユースケース。Baseline 2023 で安全。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>Native <code>&lt;details&gt;</code> / <code>&lt;summary&gt;</code></h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/Toc.astro</span>
+        </p>
+        <p>
+          目次（ToC）を JS なしの折りたたみで実装。<code>aria-label="目次"</code> も付与済みで
+          a11y も問題なし。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>Astro Prefetch（hover ストラテジ）</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">astro.config.mjs</span>
+        </p>
+        <pre><code>prefetch: { defaultStrategy: 'hover' }</code></pre>
+        <p>
+          リンクホバー時にプリフェッチ。次ページの初回表示が体感的に速い。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>compressHTML: true</code></h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">astro.config.mjs</span>
+        </p>
+        <p>
+          ビルド時に HTML 内の余分な空白を除去。転送量とパース時間の両方に効く。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>Sitemap カスタマイズ（demo 除外 + lastmod 反映）</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">astro.config.mjs</span>
+        </p>
+        <p>
+          <code>filter: (page) =&gt; !page.includes('/demo/')</code> で実験ページを除外し、
+          <code>blogPubDates</code> Map から <code>lastmod</code> を反映。SEO 観点で素直に正しい実装。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>JSON-LD 構造化データ</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/utils/jsonLd.ts</span>,
+          <span class="file">src/layouts/Head.astro</span>
+        </p>
+        <p>
+          <code>BlogPosting</code> / <code>BreadcrumbList</code> / <code>WebSite</code> を
+          ページコンテキストに応じて出し分け。検索エンジン向けに必要十分。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>&lt;time datetime&gt;</code> による機械可読日付</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/FormattedDate.astro</span>
+        </p>
+        <pre><code>&lt;time datetime={isoDate}&gt;{formattedDate}&lt;/time&gt;</code></pre>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>Intl.DateTimeFormat</code> による国際化対応の日付処理</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/utils/formatDate.ts</span>,
+          <span class="file">src/components/FormattedDate.astro</span>
+        </p>
+        <p>
+          `Date#toLocaleString` ではなく <code>Intl.DateTimeFormat('ja-JP', { timeZone: 'Asia/Tokyo' })</code>
+          で実行環境（Vercel）の TZ ずれを排除している。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>text-size-adjust</code> / <code>overflow-wrap: anywhere</code></h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/styles/foundation/_base.scss</span>,
+          <span class="file">src/styles/foundation/_reset.scss</span>
+        </p>
+        <p>
+          モバイル Safari の自動文字拡大を抑制（<code>text-size-adjust: 100%</code>）、長い英語 URL の折り返し許可（<code>overflow-wrap: anywhere</code>）。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3><code>text-decoration-skip-ink: auto</code></h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/styles/foundation/_reset.scss</span>
+        </p>
+        <p>
+          下線が文字ディセンダ（p, g, j）と重ならないように回避。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>外部リンクの <code>rel="noopener noreferrer"</code> + アイコン付与</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/rehype-plugins/external-links.ts</span>
+        </p>
+        <p>
+          外部リンクに自動で <code>target="_blank"</code> + <code>rel</code> 属性 + 装飾アイコン（feather）を付与。
+          アイコン SVG には <code>role="img"</code> と <code>aria-label="新規タブまたはウィンドウで開く"</code> も付与済みで a11y にも配慮。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>RSS コンテンツの sanitize-html</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/pages/feed.xml.js</span>
+        </p>
+        <pre><code>content: sanitizeHtml(parser.render(post.body)),</code></pre>
+        <p>
+          Markdown → HTML 変換後に sanitize を通すことで、RSS リーダー側で実行されうる悪意ある要素を除去。
+        </p>
+      </div>
+
+      <div class="finding adopt">
+        <h3>a11y 属性の地道な付与</h3>
+        <ul>
+          <li><code>&lt;html lang="ja"&gt;</code>（Layout.astro）</li>
+          <li><code>aria-label="目次"</code>（Toc.astro の nav）</li>
+          <li><code>aria-pressed</code>（テーマトグルボタン）と表示テキストの同期更新</li>
+          <li><code>translate="no"</code>（サイトタイトル）— Google 翻訳の暴走を抑制</li>
+          <li>外部リンクアイコンへの <code>role="img"</code> + <code>aria-label</code></li>
+        </ul>
+      </div>
+
+      <div class="finding adopt">
+        <h3>OG 画像のビルド時キャッシュ</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/utils/ogImageCache.ts</span>,
+          <span class="file">src/pages/og/[slug].png.ts</span>
+        </p>
+        <p>
+          記事タイトルの SHA-256 ハッシュをキーに <code>node_modules/.cache/astro-og/</code> に画像を持ち越し、変更されていない記事のビルド時 satori 実行を回避。
+        </p>
+      </div>
+
+      <!-- ===================== 改善案 ===================== -->
+      <h2><span class="badge improve">改善案</span>取り入れるとさらに良くなる機能</h2>
+
+      <div class="finding improve">
+        <h3>1. <code>focus-visible</code> polyfill を削除する</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/layouts/Layout.astro:50</span>,
+          <span class="file">package.json</span> の <code>focus-visible: ^5.2.1</code>
+        </p>
+        <p>
+          <code>:focus-visible</code> は Baseline Widely Available（2022〜、全モダンブラウザで対応済）。
+          にもかかわらず <code>import 'focus-visible/dist/focus-visible.min.js'</code>
+          を読み込み続けているため、無条件で 1.5 KB 程度の JS が全ページに配信されている。
+          <code>:focus:not(.focus-visible)</code> も <code>_base.scss</code>
+          に残っており、両者を一緒に削除できる。
+        </p>
+        <p>
+          <span class="label">提案</span>
+          ① <code>Layout.astro</code> の <code>import 'focus-visible/...'</code> を削除
+          ② <code>_base.scss</code> の <code>:focus:not(.focus-visible) { outline: none; }</code> を削除
+          ③ <code>npm uninstall focus-visible</code>
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>2. <code>text-wrap: balance</code> / <code>pretty</code> で日本語の改行品質を上げる</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/Heading.astro</span>,
+          <span class="file">src/components/Article.astro</span> の <code>:global(h1)〜h6</code>,
+          <code>:global(p)</code>
+        </p>
+        <p>
+          見出しに <code>text-wrap: balance</code>、本文段落に <code>text-wrap: pretty</code>
+          を当てると、日本語タイトルでありがちな「最終行に一文字だけ落ちる」現象や、段落末尾の孤児（runt）を抑制できる。
+          <code>balance</code> は Baseline 2024-05-13、<code>pretty</code> は Chrome/Safari 対応・Firefox 未対応だが
+          progressive enhancement として無害。
+        </p>
+        <pre><code>/* Heading.astro */
+.heading { text-wrap: balance; }
+
+/* Article.astro */
+:global(:where(h1, h2, h3, h4, h5, h6)) { text-wrap: balance; }
+:global(:where(p, blockquote, li)) { text-wrap: pretty; }</code></pre>
+        <p>
+          <span class="label">注意</span> 全要素にグローバル適用しない（CPU コストが高い）。短い見出し・段落のみに限定。
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>3. <code>content-visibility: auto</code> で 511 記事ある blog 一覧を軽量化</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/PostItem.astro</span>（および
+          <span class="file">src/pages/blog/index.astro</span> 経由でレンダリングされる箇所）
+        </p>
+        <p>
+          <code>/blog/</code> は draft でない記事を全件描画する作りで、現状 500 を超える <code>&lt;li&gt;</code>
+          を SSG が出力している。各 PostItem は単純構造とはいえ DOM ノード数 × レイアウトコストはバカにならず、
+          初回ペイント後のスクロール時にスタイル再計算が走るリスクがある。
+        </p>
+        <p>
+          初期ビューポート外の PostItem に対し <code>content-visibility: auto</code> ＋
+          <code>contain-intrinsic-size</code> を当てることで、未描画分のレイアウト/ペイントを完全に skip できる。
+        </p>
+        <pre><code>/* PostItem.astro */
+.post-item {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 4rem; /* 1 行分の想定高 */
+}</code></pre>
+        <p>
+          <span class="label">注意</span> 初期表示の above-the-fold（先頭数件）まで適用すると逆効果なので、
+          <code>:nth-child(n + 11)</code> 等でフォルトを切る方が安全。
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>4. <code>color-scheme</code> + <code>light-dark()</code> でテーマ実装を簡素化</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/styles/foundation/_variables.scss</span>,
+          <span class="file">src/layouts/Layout.astro</span> の inline script
+        </p>
+        <p>
+          現状の作りは
+          <code>:root[style*='--color-mode: dark']</code> を inline JS で attribute 操作し、その属性セレクタで
+          CSS 変数群をオーバーライドする独自実装になっている。Baseline 2024 の <code>light-dark()</code>
+          と <code>color-scheme: light dark</code> を組み合わせれば、CSS 側のオーバーライドブロックは不要になる。
+        </p>
+        <pre><code>:root {
+  color-scheme: light dark; /* 既に meta だけにある。CSS にも入れる */
+  --color-primary: light-dark(#100f0f, #fffcf0);
+  --color-secondary: light-dark(#fffcf0, #1c1a1a);
+  /* ... 他のペアも同様に1行で定義 */
+}</code></pre>
+        <p>
+          ユーザートグルの実装は、ガイドの推奨通り「<code>&lt;meta name="color-scheme"&gt;</code> の <code>content</code>
+          を <code>light</code> / <code>dark</code> / <code>light dark</code> で書き換える」方式に揃えると、
+          <code>style="--color-mode: dark"</code> を直接 root に書く現方針より副作用が少ない。
+        </p>
+        <p>
+          <span class="label">参考</span>
+          <code>npx -y modern-web-guidance@latest retrieve "dark-mode"</code>
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>5. Astro <code>&lt;ClientRouter /&gt;</code> で View Transitions を有効化</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/layouts/Layout.astro</span>,
+          <span class="file">src/components/Main.astro</span>（<code>.transition-fade</code> クラス）,
+          <span class="file">src/layouts/Footer.astro</span>（<code>.transition-fade</code> クラス）
+        </p>
+        <p>
+          すでに <code>transition-fade</code> という命名のクラスが Main / Footer に振られており、
+          フェード遷移を意図した痕跡がある。一方で Astro 6 の
+          <code>&lt;ClientRouter /&gt;</code>（Astro &lt; 5 の <code>&lt;ViewTransitions /&gt;</code> 後継）は
+          現状未導入。ヘッダの <code>&lt;Head&gt;</code> 直後に置くだけで、サブセカンドのページ遷移と View Transitions API のフェードが有効になる。
+        </p>
+        <pre><code>// Layout.astro
+import { ClientRouter } from 'astro:transitions';
+
+&lt;head&gt;
+  &lt;Head ... /&gt;
+  &lt;ClientRouter /&gt;
+&lt;/head&gt;</code></pre>
+        <p>
+          <span class="label">参考</span>
+          <code>npx -y modern-web-guidance@latest retrieve "cross-document-transitions"</code>
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>6. Markdown 内 <code>&lt;img&gt;</code> へ自動属性付与の rehype プラグイン</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/rehype-plugins/</span>（新規プラグイン追加候補）
+        </p>
+        <p>
+          <code>Article.astro</code> 内の <code>:global(img)</code> は <code>max-width: 100%; height: auto;</code>
+          までは設定するが、<code>loading="lazy"</code> / <code>decoding="async"</code> は付与されていない。
+          ブログ記事 511 本に手で属性追加するより、<code>external-links.ts</code> 同様の rehype プラグインで
+          <code>img</code> 要素を visit して属性を付ける方が運用負荷が低い。
+        </p>
+        <pre><code>// src/rehype-plugins/optimize-images.ts（新規）
+import { visit } from 'unist-util-visit';
+
+export default function optimizeImages() {
+  return (tree) =&gt; {
+    visit(tree, 'element', (node) =&gt; {
+      if (node.tagName !== 'img') return;
+      node.properties.loading ??= 'lazy';
+      node.properties.decoding ??= 'async';
+    });
+  };
+}</code></pre>
+        <p>
+          LCP 候補の hero イメージにだけ <code>fetchpriority="high"</code> を当てたい場合は、
+          記事先頭の最初の <code>img</code> を判定するロジックを追加する。
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>7. <code>gsap</code> / <code>@unpic/astro</code> は <code>/demo/</code> 専用 — 本番依存からの分離検討</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">package.json</span> の dependencies,
+          <span class="file">src/pages/demo/gsap.astro</span>,
+          <span class="file">src/pages/demo/unpic.astro</span>
+        </p>
+        <p>
+          src/api/ 配下を grep した結果、<code>gsap</code> と <code>@unpic/*</code> は demo ページからのみ参照されており、
+          本番経路（トップ・ブログ・OG）から使われていない。<code>/demo/*</code> は本番ビルド成果物に含まれるかぎり
+          GSAP の JS（〜80 KB gzip）は読み込まれる可能性がある。
+        </p>
+        <p>
+          <span class="label">提案</span>
+          ① demo 配下を <code>src/pages/demo/</code> から動的 import に切り替え、本番チャンクから分離
+          ② または <code>/demo/</code> を本番ビルドから除外（dev だけで配信）するルーティング設定を入れる
+          ③ それが難しい場合でも <code>gsap</code> を devDependencies に降格する選択肢を検討
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>8. OG 画像の Google Fonts 取得をビルド時に 1 回だけにする</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/components/OgImage.tsx</span>（<code>getFontData()</code>）
+        </p>
+        <p>
+          現在の <code>getOgImage()</code> は呼ばれるたびに <code>fonts.googleapis.com/css2</code>
+          を fetch して URL を正規表現抽出 →
+          フォントファイルを再 fetch という構造。記事ごとにキャッシュミスすると Google Fonts への
+          往復が増える。画像キャッシュは効いているのでヒット時は問題ないが、初回ビルド時にぶれやすい。
+        </p>
+        <p>
+          <span class="label">提案</span>
+          フォント ArrayBuffer をモジュールスコープにメモ化、または
+          <code>node_modules/.cache/astro-og/font.ttf</code>
+          として OG 画像キャッシュ同様にディスクキャッシュ。
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>9. テーマ初期化 inline script の簡素化</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/layouts/Layout.astro:26-38</span>,
+          <span class="file">src/layouts/Footer.astro</span> の <code>ThemeManager</code>
+        </p>
+        <p>
+          現状は inline script で <code>localStorage</code>
+          を読み取り <code>--color-mode</code> という CSS 変数を root.style に書き、Footer の TypeScript クラスでトグルを管理。
+          ガイド推奨の方式（<code>&lt;meta name="color-scheme"&gt; content</code> を inline で書き換え＋ CSS 側で
+          <code>:root</code> に <code>color-scheme</code> を設定）に揃えると、`window.colorMode` の global
+          副作用も取り払える。改善案 4 とセットで進めるのが筋。
+        </p>
+      </div>
+
+      <div class="finding improve">
+        <h3>10. 見出し ID のハッシュ短縮（衝突回避）</h3>
+        <p>
+          <span class="label">場所</span>
+          <span class="file">src/rehype-plugins/add-heading-links.ts</span>
+        </p>
+        <p>
+          SHA-256 の頭 8 文字（32 bit）を ID にしているため、生涯 511 記事のあいだに衝突確率は十分低いが、
+          鳩の巣的に 2 個目以降はぶつかる可能性ゼロではない。ガイドではないが
+          実装上のロバストネスとして 12 文字（48 bit）まで広げる、もしくは記事内で衝突検知してサフィックスを足す
+          ロジックを足してもよい。優先度は低い。
+        </p>
+      </div>
+
+      <!-- ===================== 見送り ===================== -->
+      <h2><span class="badge skip">見送り</span>このサイトでは採用しない方が良い機能</h2>
+
+      <div class="finding skip">
+        <h3>Scroll-driven Animations（<code>animation-timeline</code>）</h3>
+        <p>
+          <code>prefers-reduced-motion: reduce</code>
+          を尊重する明確な方針を採っているサイトであり、長文の読み物ブログという特性上、
+          スクロール連動の派手な演出は読書体験を阻害する。導入機会なし。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>Anchor Positioning（<code>anchor-name</code> / <code>position-anchor</code>）</h3>
+        <p>
+          ツールチップ・ポップオーバー UI は <code>&lt;details&gt;</code> ベースの ToC のみで完結。
+          Anchor Positioning が活きる UI コンポーネントが現状存在しない。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>CSS Container Queries（<code>@container</code>）</h3>
+        <p>
+          レイアウトは <code>max-width: var(--container-width)</code> で中央寄せ縦並びの単一カラム構成。
+          コンポーネントが多サイズの親に置かれることがなく、メディアクエリ / 固定幅で十分。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>Native <code>&lt;dialog&gt;</code> / Popover API</h3>
+        <p>
+          モーダルダイアログやコンテキストメニューが存在しない。テーマ切り替えはトグルボタンで完結しており、
+          ダイアログ化する動機がない。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>WebMCP（<code>mcp-tool</code>）</h3>
+        <p>
+          ブラウザ上で AI エージェントにツールを公開する要件なし。読み物のブログサイト。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>Built-in AI APIs（Prompt / Summarizer / Translator）</h3>
+        <p>
+          検索は別途 Vertex AI Search（サーバーサイド）に投げる構成があるが、クライアントサイドの
+          on-device 推論を活かすユースケースがない。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>Passkeys / WebAuthn</h3>
+        <p>認証フローが存在しない。</p>
+      </div>
+
+      <div class="finding skip">
+        <h3>Form 系ガイド全般</h3>
+        <p>
+          フォームが事実上存在しない（テーマ切替ボタンのみ）。autocomplete・autofill 関連ガイドは適用機会なし。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3><code>hidden=until-found</code></h3>
+        <p>
+          長文を折りたたむアコーディオン UI が存在せず、ToC は <code>&lt;details&gt;</code> で十分機能している。
+          Find-in-page で発見させたい隠しコンテンツが無い。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>Subgrid</h3>
+        <p>
+          単純な縦並びレイアウト中心で grid を本格活用していないため、subgrid の出番がない。
+        </p>
+      </div>
+
+      <div class="finding skip">
+        <h3>WebUSB / Filesystem Access API</h3>
+        <p>ブログサイトの性質上、無関係。</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        本レポートは
+        <a href="https://github.com/GoogleChrome/modern-web-guidance">GoogleChrome/modern-web-guidance</a>
+        の Skill を Claude Code に適用して生成。セキュリティ観点の指摘は
+        <code>reports/security.md</code> に別出ししています。
+      </p>
+    </footer>
+  </body>
+</html>

@@ -30,3 +30,11 @@ playwright-report/
 
 # Claude Code local settings (per-machine, not shared)
 .claude/settings.local.json
+
+# Modern Web Guidance security audit (private; not for public publishing)
+reports/security.md
+
+# Modern Web Guidance Skill — installed via `npx modern-web-guidance@latest install`
+# Track skills-lock.json (version pin) but not the cloned skill content.
+.agents/
+.claude/skills/modern-web-guidance

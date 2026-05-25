@@ -32,7 +32,20 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return;
   }
 
-  const key = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY!) as object;
+  const rawKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  if (!rawKey) {
+    res.statusCode = 500;
+    res.end(JSON.stringify({ error: 'Service unavailable' }));
+    return;
+  }
+  let key: object;
+  try {
+    key = JSON.parse(rawKey) as object;
+  } catch {
+    res.statusCode = 500;
+    res.end(JSON.stringify({ error: 'Service unavailable' }));
+    return;
+  }
   const auth = new GoogleAuth({
     credentials: key,
     scopes: ['https://www.googleapis.com/auth/cloud-platform'],

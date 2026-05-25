@@ -2,6 +2,8 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import { GoogleAuth } from 'google-auth-library';
 
 const projectId = 'vertex-ai-search-488002';
+const ALLOWED_ORIGIN = 'https://yuheijotaki.com';
+const MAX_QUERY_LENGTH = 200;
 
 function readBody(req: IncomingMessage): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -17,6 +19,12 @@ function readBody(req: IncomingMessage): Promise<string> {
 export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
   res.setHeader('Content-Type', 'application/json');
 
+  if (req.headers.origin !== ALLOWED_ORIGIN) {
+    res.statusCode = 403;
+    res.end(JSON.stringify({ error: 'Forbidden' }));
+    return;
+  }
+
   if (req.method !== 'POST') {
     res.statusCode = 405;
     res.end(JSON.stringify({ error: 'Method not allowed' }));
@@ -26,9 +34,9 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const rawBody = await readBody(req);
   const { query } = JSON.parse(rawBody) as { query?: string };
 
-  if (!query) {
+  if (typeof query !== 'string' || query.length === 0 || query.length > MAX_QUERY_LENGTH) {
     res.statusCode = 400;
-    res.end(JSON.stringify({ error: 'query is required' }));
+    res.end(JSON.stringify({ error: 'invalid query' }));
     return;
   }
 

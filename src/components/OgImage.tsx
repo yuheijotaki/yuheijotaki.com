@@ -1,8 +1,21 @@
 import satori from 'satori';
 import sharp from 'sharp';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+
+const FONT_CACHE_PATH = join(
+  process.cwd(),
+  'node_modules',
+  '.cache',
+  'astro-og',
+  'noto-sans-jp-700.ttf',
+);
+
+let fontDataPromise: Promise<ArrayBuffer> | null = null;
 
 export async function getOgImage(title: string) {
-  const fontData = (await getFontData()) as ArrayBuffer;
+  const fontData = await getFontData();
 
   const titleMaxNum = 38;
   const titleLength = title.length;
@@ -51,7 +64,19 @@ export async function getOgImage(title: string) {
   return await sharp(Buffer.from(svg)).png().toBuffer();
 }
 
-async function getFontData() {
+function getFontData(): Promise<ArrayBuffer> {
+  if (!fontDataPromise) {
+    fontDataPromise = loadFontData();
+  }
+  return fontDataPromise;
+}
+
+async function loadFontData(): Promise<ArrayBuffer> {
+  if (existsSync(FONT_CACHE_PATH)) {
+    const buf = await readFile(FONT_CACHE_PATH);
+    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer;
+  }
+
   const API = `https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700`;
 
   const css = await (
@@ -65,7 +90,17 @@ async function getFontData() {
 
   const resource = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/);
 
-  if (!resource) return;
+  if (!resource) {
+    throw new Error('Failed to extract font URL from Google Fonts CSS response');
+  }
 
-  return await fetch(resource[1]).then((res) => res.arrayBuffer());
+  const fontBuffer = await fetch(resource[1]).then((res) => res.arrayBuffer());
+
+  const cacheDir = dirname(FONT_CACHE_PATH);
+  if (!existsSync(cacheDir)) {
+    await mkdir(cacheDir, { recursive: true });
+  }
+  await writeFile(FONT_CACHE_PATH, Buffer.from(fontBuffer));
+
+  return fontBuffer;
 }

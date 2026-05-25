@@ -4,6 +4,8 @@ import { createHash } from 'crypto';
 
 export default function addHeadingLinks() {
   return (tree: HastRoot) => {
+    const seenCounts = new Map<string, number>();
+
     visit(tree, 'element', (node: HastElement) => {
       if (node.tagName.match(/^h[1-6]$/)) {
         const text = node.children
@@ -16,7 +18,10 @@ export default function addHeadingLinks() {
 
         if (!text) return;
 
-        const id = createHash('sha256').update(text).digest('hex').substring(0, 8);
+        const baseId = createHash('sha256').update(text).digest('hex').substring(0, 8);
+        const seen = seenCounts.get(baseId) ?? 0;
+        const id = seen === 0 ? baseId : `${baseId}-${seen}`;
+        seenCounts.set(baseId, seen + 1);
 
         node.properties = node.properties || {};
         node.properties.id = id;

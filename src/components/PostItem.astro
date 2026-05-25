@@ -25,5 +25,10 @@ const { date, href, title } = Astro.props;
     & + li {
       margin-block-start: var(--spacing-xs);
     }
+
+    &:nth-child(n + 11) {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 4rem;
+    }
   }
 </style>

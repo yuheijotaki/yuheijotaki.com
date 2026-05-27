@@ -85,6 +85,6 @@
   "overrides": {
     "minimatch": "^10.2.5",
     "path-to-regexp": ">=8.0.0",
-    "yaml": "2.8.3"
+    "yaml": "2.9.0"
   }
 }

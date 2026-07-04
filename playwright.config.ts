@@ -21,6 +21,8 @@ export default defineConfig({
     command: 'npm run serve',
     port: 4321,
     reuseExistingServer: true,
+    // `serve` はビルドを含むためデフォルトの 60 秒では足りない
+    timeout: 300_000,
   },
   reporter: 'html',
   /* Configure projects for major browsers */

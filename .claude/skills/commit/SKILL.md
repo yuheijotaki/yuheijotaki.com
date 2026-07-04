@@ -16,7 +16,7 @@ description: 変更内容を Conventional Commits 形式でコミットする。
 
 - ブランチ運用: **`main` に直接コミット**
 - 言語: **英語**（件名・本文とも）。小文字始まり・末尾ピリオドなし・件名 50 字以内目安・本文は 72 字で改行
-- 末尾に `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` を付与
+- 末尾に `Co-Authored-By: Claude <noreply@anthropic.com>` を付与
 - push は **しない**（ユーザーが明示的に頼まない限り）
 
 ---
@@ -136,7 +136,7 @@ git log -n 5 --pretty=format:'%s'   # 直近のスタイル参照
 
 <body>
 
-Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+Co-Authored-By: Claude <noreply@anthropic.com>
 ---
 
 ステージ対象:
@@ -165,7 +165,7 @@ git commit -m "$(cat <<'EOF'
 
 <body>
 
-Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+Co-Authored-By: Claude <noreply@anthropic.com>
 EOF
 )"
 

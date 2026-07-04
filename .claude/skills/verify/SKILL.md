@@ -153,7 +153,8 @@ build 失敗状態で a11y / dev server へ進むのは原則禁止（dev server
 
 ## Step 3: a11y テスト（**UI 影響あり (a11y + dev server)** の判定時のみ）
 
-playwright + axe-core によるテスト。実行には dev server が **ポート 4321 で起動済み** である必要がある（`playwright.config.ts` 参照）。
+playwright + axe-core によるテスト。単体で実行した場合は webServer 設定（`playwright.config.ts`）が `npm run serve`（build + 静的サーブ）を自動実行するので手動起動は不要。
+ただしこのスキルでは **Step 4 の目視確認でも dev server を使う** ため、先に dev server を起動してそれを再利用させる（`reuseExistingServer: true`）。再ビルドが走らないぶん速い。dev ビルドに対するテストになるが、本番 build は Step 2 で検証済み。
 
 ### 3-1. dev server をバックグラウンド起動（Step 4 と共有）
 
@@ -236,10 +237,10 @@ NG なら何が問題だったか教えてください。
 dev server のバックグラウンドプロセスを **必ず停止** する（孤立プロセス防止）。
 
 ```bash
-# Bash run_in_background で起動した場合は KillShell ツールで shell ID 指定が第一選択
+# Bash run_in_background で起動した場合は TaskStop ツールでタスク ID 指定が第一選択
 # （シェルジョブ %1 は別シェルからは効かないため信頼しない）
 #
-# KillShell が使えない / 確実性を上げたい場合のフォールバック:
+# TaskStop が使えない / 確実性を上げたい場合のフォールバック:
 pkill -f "astro dev" 2>/dev/null || true
 ```
 

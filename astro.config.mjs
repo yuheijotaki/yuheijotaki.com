@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
@@ -60,7 +61,8 @@ export default defineConfig({
     enabled: false,
   },
   markdown: {
-    rehypePlugins: [externalLinks, addHeadingLinks],
+    // Astro v7 のデフォルトは Sätteri。既存の rehype プラグインを使うため unified を維持
+    processor: unified({ rehypePlugins: [externalLinks, addHeadingLinks] }),
   },
   vite: {
     css: {

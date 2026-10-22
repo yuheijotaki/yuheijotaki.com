@@ -150,12 +150,7 @@ Astro で構築し、Vercel にデプロイしている個人ブログサイト�
 
 ## CI / GitHub Actions
 
-`.github/workflows/` に Claude Code Action（`anthropics/claude-code-action@v1`）連携を 2 ファイル配置:
-
-- **`claude.yml`** — Issue / PR / レビューコメントで `@claude` メンションされたときに応答
-- **`claude-code-review.yml`** — `pull_request` (opened / synchronize) で自動レビュー。`paths` フィルタで `src/**` / `api/**` / 主要設定ファイル（`astro.config.mjs`, `package.json`, `package-lock.json`, `tsconfig.json`, `eslint.config.mjs`, `playwright.config.ts`, `.github/workflows/**`）のみを対象。`public/`, `tests/`, `dist/`, `README.md` 等の変更単独では発火しない
-
-リポジトリ Secrets に **`ANTHROPIC_API_KEY`**（個人 Anthropic API キー）が必要。`main` 直 push 運用のため、PR を切らない限り発火しない。
+GitHub Actions は使っていない（2026-10 に Claude Code Action 連携と Renovate を廃止）。lint / build / a11y の検証はローカルで行う（`.claude/skills/verify/SKILL.md`）。
 
 ### 依存パッケージの更新
 

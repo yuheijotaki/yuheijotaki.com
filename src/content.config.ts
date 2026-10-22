@@ -2,11 +2,6 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { rssSchema } from '@astrojs/rss';
-import { loadEnv } from 'vite';
-import { createBlogClient, fetchBlogList } from '@/utils/microcms';
-
-// 環境変数をロード
-const env = loadEnv('', process.cwd(), '');
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
@@ -17,38 +12,4 @@ const blog = defineCollection({
   }),
 });
 
-// 静的版用のmicroCMS Content Collection（ビルド時に取得）
-const staticMicroCMSBlog = defineCollection({
-  loader: async () => {
-    const serviceDomain = env.MICROCMS_DOMAIN;
-    const apiKey = env.MICROCMS_PRODUCTION_API_KEY;
-
-    if (!serviceDomain || !apiKey) {
-      console.error('MICROCMS_DOMAIN and MICROCMS_PRODUCTION_API_KEY are required');
-      return [];
-    }
-
-    const client = createBlogClient(serviceDomain, apiKey);
-
-    try {
-      const response = await fetchBlogList(client);
-
-      return response.contents.map((post) => ({
-        id: post.id,
-        title: post.title,
-        updatedAt: new Date(post.updatedAt),
-        publishedAt: new Date(post.publishedAt ?? post.createdAt),
-      }));
-    } catch (error) {
-      console.error('Failed to fetch from microCMS:', error);
-      return [];
-    }
-  },
-  schema: z.object({
-    title: z.string(),
-    updatedAt: z.date(),
-    publishedAt: z.date(),
-  }),
-});
-
-export const collections = { blog, staticMicroCMSBlog };
+export const collections = { blog };

@@ -78,8 +78,6 @@ git log -n 5 --pretty=format:'%s'   # 直近のスタイル参照
 - `seo` — JSON-LD、meta、sitemap、robots、OG
 - `a11y` — アクセシビリティ
 - `og` — OG 画像生成
-- `search` — `api/search.ts` や Vertex AI Search 関連
-- `microcms` — microCMS 連携、Live Content Collections
 - `config` — `astro.config.mjs`, `tsconfig.json`, lint 設定など
 
 スコープを付けるか迷ったら付けない。**間違った scope は no scope より悪い**。

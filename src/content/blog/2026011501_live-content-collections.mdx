@@ -6,6 +6,8 @@ pubDate: 2026-01-15T00:00:00
 
 ## 概要
 
+※ デモページとソースコードは削除済み
+
 Astro 5.10 で追加された [Live Content Collections](https://docs.astro.build/en/reference/experimental-flags/live-content-collections/) を試してみた。Live Content Collections はビルド時ではなくリクエスト時にデータを取得できる機能（v5 系だと要 experimental フラグ）。
 
 ## Live Content Collections とは
@@ -42,7 +44,7 @@ export default defineConfig({
 });
 ```
 
-[src/live.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/live.config.ts) にライブコレクションを定義する。（従来の `src/content.config.ts` とは別ファイル）
+[src/live.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/39df1a5/src/live.config.ts) にライブコレクションを定義する。（従来の `src/content.config.ts` とは別ファイル）
 
 ポイントいくつか
 
@@ -57,13 +59,11 @@ export default defineConfig({
 ### デモページ、ソースコード
 
 - 静的版（従来の Content Collections）
-  - [デモページ](/demo/live-content-collections/static/)
-  - [src/content.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/content/config.ts)
-  - [src/pages/demo/live-content-collections/static/](https://github.com/yuheijotaki/yuheijotaki.com/tree/main/src/pages/demo/live-content-collections/static)
+  - [src/content.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/39df1a5/src/content.config.ts)
+  - [src/pages/demo/live-content-collections/static/](https://github.com/yuheijotaki/yuheijotaki.com/tree/39df1a5/src/pages/demo/live-content-collections/static)
 - 動的版（Live Content Collections）
-  - [デモページ](/demo/live-content-collections/dynamic/)
-  - [src/live.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/main/src/live.config.ts)
-  - [src/pages/demo/live-content-collections/dynamic/](https://github.com/yuheijotaki/yuheijotaki.com/tree/main/src/pages/demo/live-content-collections/dynamic)
+  - [src/live.config.ts](https://github.com/yuheijotaki/yuheijotaki.com/blob/39df1a5/src/live.config.ts)
+  - [src/pages/demo/live-content-collections/dynamic/](https://github.com/yuheijotaki/yuheijotaki.com/tree/39df1a5/src/pages/demo/live-content-collections/dynamic)
 
 ### 静的版（Content Collections）
 

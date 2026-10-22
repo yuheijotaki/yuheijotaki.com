@@ -99,8 +99,6 @@ Astro で構築し、Vercel にデプロイしている個人ブログサイト�
 - ファイル名規約: `YYYYMMDDNN.md`（日付 + 連番）。`_` 始まりのファイルはローダー対象外
 - フロントマター: `title`, `description`, `pubDate`, 任意で `draft`
 - スキーマは `src/content.config.ts`（Astro v5+ のルート配置）で `@astrojs/rss` の `rssSchema` を使用して定義
-- ビルド時取得用の `staticMicroCMSBlog` コレクションも `src/content.config.ts` に同居（`MICROCMS_DOMAIN` / `MICROCMS_PRODUCTION_API_KEY` 必要）
-- 別途 `src/live.config.ts` で **Live Content Collections**（`liveBlog`）も定義。microCMS をリクエスト時に取得するルートで利用
 
 ### ルーティング
 
@@ -111,7 +109,6 @@ Astro で構築し、Vercel にデプロイしている個人ブログサイト�
 - `/feed.xml` — RSS フィード
 - `/robots.txt`, `/404` — ユーティリティルート
 - `/demo/*` — 実験用ページ群（CSS/JS 機能のデモ）。sitemap から除外される
-- `api/search.ts` — Vercel サーバーレス関数。Google Vertex AI Search を呼ぶ検索 API（`GOOGLE_SERVICE_ACCOUNT_KEY` と `VERTEX_AI_SEARCH_ENGINE_ID` 必要）
 
 ### sitemap カスタマイズ（`astro.config.mjs`）
 

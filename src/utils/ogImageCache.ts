@@ -62,7 +62,10 @@ export function getCacheEntry(cache: OgImageCache, slug: string): CacheEntry | u
 /**
  * キャッシュが有効かどうかをチェック
  */
-export function isCacheValid(cacheEntry: CacheEntry | undefined, currentTitleHash: string): boolean {
+export function isCacheValid(
+  cacheEntry: CacheEntry | undefined,
+  currentTitleHash: string,
+): boolean {
   if (!cacheEntry) {
     return false;
   }

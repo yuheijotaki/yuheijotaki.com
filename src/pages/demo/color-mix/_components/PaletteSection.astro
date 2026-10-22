@@ -38,21 +38,17 @@ import CodeBlock from './CodeBlock.astro';
   </div>
 
   <div class="palette" id="palette-row" role="list" aria-label="カラーパレット">
-    {
-      [95, 85, 75, 65, 50, 35, 25, 15, 5].map((mix, i) => {
-        const label = i === 4 ? '500' : `${(i + 1) * 100}`;
-        return (
-          <div
-            class="palette-chip"
-            style={`--_mix: ${mix}%;`}
-            data-mix={mix}
-            role="listitem"
-            aria-label={`${label}`}>
-            <span class="chip-label">{label}</span>
-          </div>
-        );
-      })
-    }
+    {[95, 85, 75, 65, 50, 35, 25, 15, 5].map((mix, i) => {
+      const label = i === 4 ? '500' : `${(i + 1) * 100}`;
+      return <div
+        class="palette-chip"
+        style={`--_mix: ${mix}%;`}
+        data-mix={mix}
+        role="listitem"
+        aria-label={`${label}`}>
+        <span class="chip-label">{label}</span>
+      </div>;
+    })}
   </div>
 
   <CodeBlock

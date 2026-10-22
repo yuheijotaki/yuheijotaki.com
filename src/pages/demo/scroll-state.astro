@@ -19,13 +19,9 @@ import LayoutDemo from '@/layouts/LayoutDemo.astro';
     <h2>2. snapped - スナップ時の強調</h2>
     <div class="section">
       <div class="demo2">
-        {
-          Array.from({ length: 8 }, (_, i) => (
-            <div class="card-wrapper">
-              <div class="card">カード {i + 1}</div>
-            </div>
-          ))
-        }
+        {Array.from({ length: 8 }, (_, i) => <div class="card-wrapper">
+          <div class="card">カード {i + 1}</div>
+        </div>)}
       </div>
     </div>
 

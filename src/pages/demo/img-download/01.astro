@@ -24,20 +24,16 @@ const images = [
     <h2>img loading="lazy"</h2>
 
     <ul class="images">
-      {
-        images.map((image) => (
-          <li class="item">
-            <p class="info" set:html={`${image.src}<br />loading="${image.loading}"`} />
-            <img
-              src={`/images/${image.src}`}
-              alt=""
-              width="1200"
-              height="800"
-              loading={image.loading as 'lazy' | 'eager' | undefined}
-            />
-          </li>
-        ))
-      }
+      {images.map((image) => <li class="item">
+        <p class="info" set:html={`${image.src}<br />loading="${image.loading}"`} />
+        <img
+          src={`/images/${image.src}`}
+          alt=""
+          width="1200"
+          height="800"
+          loading={image.loading as 'lazy' | 'eager' | undefined}
+        />
+      </li>)}
     </ul>
   </div>
 </LayoutDemo>

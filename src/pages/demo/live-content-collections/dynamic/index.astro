@@ -15,32 +15,28 @@ const { entries, error } = await getLiveCollection('liveBlog');
       <a href="/demo/live-content-collections/">live-content-collections</a> &raquo; dynamic
     </h1>
 
-    {
-      error ? (
-        <div>
-          <strong>エラーが発生しました:</strong>
-          <p>{error.message}</p>
-        </div>
-      ) : entries && entries.length > 0 ? (
-        <div>
-          <p>posts: {entries.length}</p>
-          <ul>
-            {entries.map((post) => (
-              <li>
-                <p>
-                  <a href={`/demo/live-content-collections/dynamic/${post.id}`}>
-                    {post.data.title}
-                  </a>
-                </p>
-                <p>ID: {post.id}</p>
-                <p>publishedAt: {formatDate(post.data.publishedAt)}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p>データがありません</p>
-      )
-    }
+    {error ? (
+      <div>
+        <strong>エラーが発生しました:</strong>
+        <p>{error.message}</p>
+      </div>
+    ) : entries && entries.length > 0 ? (
+      <div>
+        <p>posts: {entries.length}</p>
+        <ul>
+          {entries.map((post) => <li>
+            <p>
+              <a href={`/demo/live-content-collections/dynamic/${post.id}`}>
+                {post.data.title}
+              </a>
+            </p>
+            <p>ID: {post.id}</p>
+            <p>publishedAt: {formatDate(post.data.publishedAt)}</p>
+          </li>)}
+        </ul>
+      </div>
+    ) : (
+      <p>データがありません</p>
+    )}
   </div>
 </LayoutDemo>

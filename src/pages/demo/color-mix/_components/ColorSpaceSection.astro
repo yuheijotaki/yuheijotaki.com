@@ -6,7 +6,8 @@ import CodeBlock from './CodeBlock.astro';
 <section class="section" aria-labelledby="heading-colorspace">
   <h2 id="heading-colorspace">色空間の比較</h2>
   <p class="desc">
-    同じ2色でも色空間によって混合結果が異なります。特に <code>oklch</code> は知覚的に均一な混合を実現します。
+    同じ2色でも色空間によって混合結果が異なります。特に <code>oklch</code>
+    は知覚的に均一な混合を実現します。
   </p>
 
   <div class="cs-controls">
@@ -15,18 +16,14 @@ import CodeBlock from './CodeBlock.astro';
   </div>
 
   <div class="cs-grid" id="cs-grid">
-    {
-      ['srgb', 'srgb-linear', 'oklch', 'hsl'].map((space) => (
-        <div class="cs-row" data-space={space}>
-          <span class="cs-label">{space}</span>
-          <div class="cs-steps">
-            {[0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100].map((pct) => (
-              <div class="cs-step" data-pct={pct} />
-            ))}
-          </div>
-        </div>
-      ))
-    }
+    {['srgb', 'srgb-linear', 'oklch', 'hsl'].map((space) => <div class="cs-row" data-space={space}>
+      <span class="cs-label">{space}</span>
+      <div class="cs-steps">
+        {[0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100].map((pct) => (
+          <div class="cs-step" data-pct={pct} />
+        ))}
+      </div>
+    </div>)}
   </div>
 
   <CodeBlock

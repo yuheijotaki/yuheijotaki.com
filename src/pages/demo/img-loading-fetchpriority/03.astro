@@ -25,24 +25,20 @@ const images = [
     <h2>loading:あり fetchpriority:なし</h2>
 
     <ul class="images">
-      {
-        images.map((image) => (
-          <li class="item">
-            <p
-              class="info"
-              set:html={`${image.src}<br />loading="${image.loading}"<br />fetchpriority="${image.fetchpriority}"`}
-            />
-            <img
-              src={`/images/${image.src}`}
-              alt=""
-              width="1200"
-              height="800"
-              loading={image.loading as 'lazy' | 'eager' | undefined}
-              fetchpriority={image.fetchpriority as 'low' | 'high' | undefined}
-            />
-          </li>
-        ))
-      }
+      {images.map((image) => <li class="item">
+        <p
+          class="info"
+          set:html={`${image.src}<br />loading="${image.loading}"<br />fetchpriority="${image.fetchpriority}"`}
+        />
+        <img
+          src={`/images/${image.src}`}
+          alt=""
+          width="1200"
+          height="800"
+          loading={image.loading as 'lazy' | 'eager' | undefined}
+          fetchpriority={image.fetchpriority as 'low' | 'high' | undefined}
+        />
+      </li>)}
     </ul>
   </div>
 </LayoutDemo>

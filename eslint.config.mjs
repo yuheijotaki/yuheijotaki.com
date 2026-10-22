@@ -5,7 +5,7 @@ import astroPlugin from 'eslint-plugin-astro';
 import importPlugin from 'eslint-plugin-import';
 import reactPlugin from 'eslint-plugin-react';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import astroParser from 'astro-eslint-parser';
+import * as astroParser from 'astro-eslint-parser';
 import prettierConfig from 'eslint-config-prettier';
 import globals from 'globals';
 

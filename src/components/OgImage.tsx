@@ -29,6 +29,7 @@ export async function getOgImage(title: string) {
     <main
       style={{
         position: 'relative',
+        boxSizing: 'border-box',
         height: '100%',
         width: '100%',
         backgroundColor: '#fffcf0',

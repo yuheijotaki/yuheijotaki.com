@@ -157,14 +157,9 @@ Astro で構築し、Vercel にデプロイしている個人ブログサイト�
 
 リポジトリ Secrets に **`ANTHROPIC_API_KEY`**（個人 Anthropic API キー）が必要。`main` 直 push 運用のため、PR を切らない限り発火しない。
 
-### Renovate
+### 依存パッケージの更新
 
-`renovate.json` で依存更新を自動化（毎週月曜 12〜18 時 JST に実行）:
-
-- patch + minor は「minor and patch dependencies」として 1 PR にグループ化し **automerge**
-- major は個別 PR（手動マージ）
-- Renovate の PR は `allowed_bots: "renovate"` により claude-code-review の対象になる
-- 手動での一括更新は `.claude/skills/update-deps/SKILL.md` のワークフローを使用
+Renovate 等の自動更新ボットは使っていない（2026-10 に Renovate を廃止）。依存更新は `.claude/skills/update-deps/SKILL.md` のワークフローで手動一括更新し、`main` に直接コミットする。
 
 ## コミット規約
 

@@ -15,7 +15,7 @@ description: npm パッケージを patch+minor で一括更新する。major �
 ## 前提
 
 - パッケージマネージャ: **npm**
-- **Renovate 併用**: routine な patch+minor は Renovate（`renovate.json`、毎週月曜に automerge）が処理する。このスキルは「今すぐ手動で一括更新したい」「major を対話で選別したい」ときに使う
+- **自動更新ボットは未使用**: Renovate / Dependabot は導入していない（Renovate は 2026-10 に廃止）。依存更新はすべてこのスキルによる手動一括更新で行う
 - 既定の更新範囲: **patch + minor**（major は対話で個別承認）
 - ブランチ運用: **`main` に直接コミット**
 - 検証: `npm run lint` と `npm run build`、加えて目視確認用に `npm run dev` を起動
@@ -153,7 +153,7 @@ npm view 'glob@^13' version --json | jq -r 'if type=="array" then .[-1] else . e
 - 必要なら別タスクとしてユーザーに以下の選択肢を提案する:
   - **(a) `npm audit fix`（非破壊）だけ試す**: lockfile 内で解決可能な範囲のみ。破壊的変更を含まない
   - **(b) `npm audit` で詳細を確認**: 該当パッケージが本番影響のない devDep のみなら無視も選択肢
-  - **(c) Dependabot / Renovate 等の継続運用に乗せる**: 都度対応せず自動 PR で回す
+  - **(c) 次回の手動更新まで保留する**: 該当パッケージの修正版が出てからこのスキルでまとめて上げる
 
 ---
 
